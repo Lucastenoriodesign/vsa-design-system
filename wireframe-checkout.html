@@ -3,143 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Wireframe — Checkout Modelo</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
+<title>Checkout — Wireframe</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;800&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 :root{
-  --bg:#0B0909; --panel:#141011; --panel-2:#1B1516; --line:#2E2426;
-  --white:#FBF4F1; --text:#E6DAD6; --muted:#A39491;
-  --accent:#E8A598; --accent-hi:#F6CFC4; --accent-glow:rgba(232,165,152,.22);
-  --gain:#9CCFAE; --radius:22px; --maxw:1120px;
-  --display:'Playfair Display','Cormorant Garamond',Georgia,serif;
-  --body:'Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --bg:#0A0705; --panel:#150E0A; --line:#2E1F17;
+  --white:#fff; --text:#EBDCD3; --muted:#A8958A;
+  --shopee:#EE4D2D; --orange:#FF7A1A; --amber:#FFB347;
+  --grad:linear-gradient(135deg,#FF9A3C 0%,#FF6A1F 45%,#EE4D2D 100%);
+  --glow:rgba(238,77,45,.45); --gain:#3DDC84; --radius:20px;
+  --display:'Montserrat',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--text);font:16px/1.6 var(--body)}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-.note{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-/* placeholders */
-.ph{border:1.5px dashed #4a4a55;border-radius:var(--radius);background:repeating-linear-gradient(45deg,#0d0d11,#0d0d11 10px,#12121a 10px,#12121a 20px);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:var(--muted);font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.06em}
-/* top bar */
-.topbar{background:linear-gradient(90deg,#d9958a,var(--accent-hi),#d9958a);color:#2a1612;text-align:center;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:10px}
-/* hero */
-.hero{position:relative;padding:72px 0 88px;overflow:hidden}
-.hero::before{content:"";position:absolute;right:-10%;top:-10%;width:60%;height:120%;background:radial-gradient(closest-side,var(--accent-glow),transparent);opacity:.8}
-.hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
-.eyebrow{display:inline-block;font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--line);border-radius:99px;padding:7px 18px;color:var(--accent-hi);margin-bottom:22px}
-h1{font:500 clamp(30px,4.6vw,48px)/1.2 var(--display);letter-spacing:-.01em;color:var(--white)}
-h1 em{font-style:italic;color:var(--accent)}
-.sub{margin-top:14px;color:var(--muted);font-size:18px}
-.checks{list-style:none;padding:0;margin:30px 0;display:grid;gap:12px}
-.checks li{background:transparent;border:1px solid var(--line);border-radius:99px;padding:13px 22px;color:var(--text);font-weight:300}
-.checks li::before{content:"✓  ";color:var(--gain)}
-.checks b{color:var(--accent-hi)}
-.sorteio{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-bottom:12px}
-.sorteio .ph{height:96px}
-.arrow{font-size:40px;color:var(--accent);text-align:center;line-height:1;animation:bob 1.4s infinite}
-@keyframes bob{50%{transform:translateY(8px)}}
-@media(prefers-reduced-motion:reduce){.arrow{animation:none}}
-.photo{aspect-ratio:4/5;min-height:420px;width:100%;box-shadow:0 0 60px var(--accent-glow)}
-/* form */
-.form-sec{padding:0 0 72px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px;position:relative}
-.card::before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
-.card h2{font:500 26px var(--display);color:var(--white);text-align:center;margin-bottom:26px}
-.form-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:32px}
-.field{display:grid;gap:6px;margin-bottom:14px}
-.field span{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.field input{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;color:var(--white);font:inherit}
-.field input:focus{outline:2px solid var(--accent);outline-offset:2px}
-.cta{display:block;width:100%;border:0;border-radius:99px;padding:17px;background:linear-gradient(180deg,var(--accent-hi),var(--accent));color:#2a1612;font:500 15px var(--mono);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px var(--accent-glow);transition:transform .2s}
-.cta:hover{transform:translateY(-2px)}
+body{background:var(--bg);color:var(--text);font:16px/1.55 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.topbar{background:var(--grad);color:#fff;text-align:center;font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:10px}
+.ph{border:1.5px dashed #5a3f30;border-radius:var(--radius);background:repeating-linear-gradient(45deg,#150e0a,#150e0a 10px,#1b120d 10px,#1b120d 20px);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:var(--muted);font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em}
+
+/* hero: tudo numa dobra só */
+.hero{position:relative;overflow:hidden;padding:48px 0 56px;background:
+  radial-gradient(60% 80% at 85% 20%,rgba(255,106,31,.35),transparent 70%),
+  radial-gradient(50% 70% at 0% 100%,rgba(238,77,45,.22),transparent 70%),var(--bg)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
+h1{font:800 clamp(28px,4.6vw,46px)/1.1 var(--display);letter-spacing:-.02em;color:var(--white)}
+h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.checks{list-style:none;padding:0;margin:22px 0 18px;display:grid;gap:8px}
+.checks li{display:flex;gap:10px;align-items:center;color:var(--white);font-weight:600;font-size:15px}
+.checks li::before{content:"✓";flex:none;width:22px;height:22px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:12px}
+.raffle{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);background:rgba(255,122,26,.08);border-radius:99px;padding:8px 16px;font-size:14px;color:var(--amber)}
+.photo{aspect-ratio:4/5;max-height:480px;width:100%;box-shadow:0 0 70px var(--glow)}
+
+/* checkout */
+.checkout{margin-top:-28px;position:relative;padding-bottom:56px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.5);position:relative}
+.card::before{content:"";position:absolute;left:8%;right:8%;top:0;height:2px;background:var(--grad)}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px}
+.card h2{font:800 20px var(--display);color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card h2 span{font:700 11px var(--mono);background:var(--grad);color:#fff;border-radius:99px;padding:3px 10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:5px;margin-bottom:12px}
+.field span{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--white);font:inherit}
+.field input:focus{outline:2px solid var(--orange);outline-offset:2px}
+.cta{display:block;width:100%;border:0;border-radius:99px;padding:18px;background:var(--grad);color:#fff;font:800 16px var(--display);text-transform:uppercase;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 30px var(--glow);transition:transform .2s,box-shadow .2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 36px var(--glow)}
 .cta:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.summary{background:var(--panel-2);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
-.summary .old{font:600 14px var(--mono);color:var(--muted);text-decoration:line-through}
-.summary .price{font:500 42px var(--display);color:var(--white)}
-.pay{display:flex;gap:8px;margin-top:12px}
-.pay .ph{flex:1;height:32px;padding:0;font-size:10px}
-/* below */
-.below{padding:0 0 80px}
-.below .wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
-.below .ph{min-height:260px}
-.guarantee{border:1px solid var(--gain);border-radius:var(--radius);padding:24px;display:grid;gap:12px;place-items:center;text-align:center;color:var(--white)}
-.seal{width:110px;height:110px;border-radius:50%;border:1px solid var(--gain);outline:1px solid var(--gain);outline-offset:5px;display:grid;place-items:center;font:500 30px var(--display);color:var(--gain);line-height:1}
-.seal small{display:block;font:600 10px var(--mono)}
-footer{border-top:1px solid var(--line);padding:24px 0;text-align:center;color:var(--muted);font-size:13px}
-@media(max-width:820px){
-  .hero .wrap,.form-grid,.below .wrap{grid-template-columns:1fr}
-  .photo{min-height:320px}
-}
+.side{background:linear-gradient(160deg,#1d120c,#150e0a);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:10px;align-content:start;text-align:center}
+.old{font:500 13px var(--mono);color:var(--muted);text-decoration:line-through}
+.price{font:800 40px var(--display);color:var(--white)}
+.price small{font-size:16px}
+.mock{height:120px}
+.seal{display:flex;gap:12px;align-items:center;text-align:left;border:1px solid rgba(61,220,132,.4);border-radius:14px;padding:12px;font-size:13px;color:var(--text)}
+.seal b{flex:none;width:52px;height:52px;border-radius:50%;border:2px solid var(--gain);display:grid;place-items:center;color:var(--gain);font:800 18px var(--display)}
+footer{border-top:1px solid var(--line);padding:20px 0;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:820px){.hero .wrap,.grid{grid-template-columns:1fr}.photo{max-height:340px;aspect-ratio:1}.row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <div class="topbar">🔥 Oferta limitada — vagas encerrando</div>
 
-<!-- DOBRA 1: texto à esquerda + foto da Vitória à direita -->
 <section class="hero">
   <div class="wrap">
     <div>
-      <span class="eyebrow">A oferta mais irresistível que você já viu</span>
-      <h1>O jeito mais <em>rápido</em> e <em>fácil</em> para você fazer no mínimo <em>R$300 por dia</em>!</h1>
+      <h1>O jeito mais <em>rápido</em> e <em>fácil</em> de fazer no mínimo <em>R$300 por dia</em></h1>
       <ul class="checks">
-        <li>Acesso imediato à <b>IA Chinesa</b></li>
-        <li>Acesso imediato a <b>Fornecedores Verificados</b></li>
-        <li>Acesso ao <b>Buscador de Nichos Lucrativos Ocultos</b></li>
+        <li>Acesso imediato à IA Chinesa</li>
+        <li>Fornecedores Verificados</li>
+        <li>Buscador de Nichos Lucrativos Ocultos</li>
       </ul>
-      <div class="sorteio">
-        <div class="ph">Imagem sorteio<br>(Pix + notebook)</div>
-        <p>🎁 <b style="color:#fff">Sorteios mensais</b> de <b style="color:var(--accent-hi)">Pix</b> e <b style="color:var(--accent-hi)">notebook</b> para alunas ativas.</p>
-      </div>
-      <p class="note">Preencha os campos abaixo e garanta a sua vaga!</p>
-      <div class="arrow" aria-hidden="true">↓</div>
+      <div class="raffle">🎁 Sorteio mensal de Pix e notebook</div>
     </div>
-    <div class="ph photo" role="img" aria-label="Foto da Vitória">
-      FOTO DA VITÓRIA<br>(1ª dobra — usar IMG_2013.JPG ou IMG_2012.JPG<br>recortada, fundo preto + rim-light laranja)
-    </div>
+    <div class="ph photo" role="img" aria-label="Foto da Vitória">Foto da Vitória<br>(recorte, rim-light laranja)</div>
   </div>
 </section>
 
-<!-- FORMULÁRIO / CHECKOUT -->
-<section class="form-sec">
+<section class="checkout">
   <div class="wrap">
     <div class="card">
-      <h2>Preencha seus dados e garanta sua vaga</h2>
-      <div class="form-grid">
+      <div class="grid">
         <form onsubmit="return false">
+          <h2><span>1</span> Preencha e garanta sua vaga</h2>
           <label class="field"><span>Nome completo</span><input placeholder="Seu nome"></label>
-          <label class="field"><span>E-mail</span><input type="email" placeholder="seu@email.com"></label>
-          <label class="field"><span>WhatsApp</span><input type="tel" placeholder="(00) 00000-0000"></label>
-          <label class="field"><span>CPF</span><input placeholder="000.000.000-00"></label>
-          <div class="note" style="margin:6px 0 14px">[ Bloco de pagamento: Pix / Cartão — integração checkout ]</div>
+          <div class="row">
+            <label class="field"><span>E-mail</span><input type="email" placeholder="seu@email.com"></label>
+            <label class="field"><span>WhatsApp</span><input type="tel" placeholder="(00) 00000-0000"></label>
+          </div>
           <button class="cta">Quero minha vaga →</button>
         </form>
-        <aside class="summary">
-          <span class="note">Resumo do pedido</span>
+        <aside class="side">
+          <div class="ph mock">Imagem IA Chinesa</div>
           <span class="old">De R$ 000,00</span>
-          <span class="price">R$ 00,00</span>
-          <span class="note">à vista · acesso imediato</span>
-          <div class="pay"><div class="ph">Pix</div><div class="ph">Visa</div><div class="ph">Master</div></div>
+          <span class="price"><small>R$</small> 00,00</span>
+          <div class="seal"><b>60</b><span><strong style="color:#fff">Garantia de 60 dias</strong><br>Risco zero.</span></div>
         </aside>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABAIXO DO FORM: foto da Vitória (dir.) + foto IA Chinesa + garantia 60 dias -->
-<section class="below">
-  <div class="wrap">
-    <div class="guarantee">
-      <div class="seal"><span>60<small>DIAS</small></span></div>
-      <b>Garantia incondicional de 60 dias</b>
-      <span style="color:var(--muted);font-size:14px">Teste sem risco. Se não gostar, devolvemos 100% do valor.</span>
-    </div>
-    <div class="ph">Foto / mockup<br>IA CHINESA</div>
-    <div class="ph">Foto da Vitória<br>(lado direito)<br>IMG_2004.JPG</div>
-  </div>
-</section>
-
-<footer>© VSA · Termos de uso · Política de privacidade</footer>
+<footer>© VSA · Termos · Privacidade</footer>
 </body>
 </html>
