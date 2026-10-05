@@ -31,7 +31,7 @@ h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;back
 .checks li{display:flex;gap:10px;align-items:center;color:var(--white);font-weight:600;font-size:15px}
 .checks li::before{content:"✓";flex:none;width:22px;height:22px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:12px}
 .raffle{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);background:rgba(255,122,26,.08);border-radius:99px;padding:8px 16px;font-size:14px;color:var(--amber)}
-.photo{aspect-ratio:4/5;max-height:480px;width:100%;box-shadow:0 0 70px var(--glow)}
+.photo{display:block;aspect-ratio:4/5;object-fit:cover;object-position:50% 25%;max-height:500px;width:100%;border-radius:var(--radius);box-shadow:0 0 70px var(--glow);border:1px solid rgba(255,122,26,.35)}
 
 /* checkout */
 .checkout{margin-top:-28px;position:relative;padding-bottom:56px}
@@ -73,7 +73,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;text-align:center;color:v
       </ul>
       <div class="raffle">🎁 Sorteio mensal de Pix e notebook</div>
     </div>
-    <div class="ph photo" role="img" aria-label="Foto da Vitória">Foto da Vitória<br>(recorte, rim-light laranja)</div>
+    <img class="photo" src="assets/vitoria.jpg" alt="Vitória, especialista" width="900" height="1350">
   </div>
 </section>
 
