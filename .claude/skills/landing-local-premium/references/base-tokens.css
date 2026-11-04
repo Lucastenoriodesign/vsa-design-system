@@ -1,0 +1,80 @@
+/* Base tokens + building blocks for local-business landing pages.
+ * Wrap the whole page in <div class="lp"> and scope everything under it.
+ * Swap --brand for the colour sampled from the client's logo (scripts/images.py color). */
+.lp {
+  --bg: #09090b; --surface: #0f0f11; --surface-2: #17171a; --border: rgba(255,255,255,0.08);
+  --text: #fafafa; --muted: #a1a1aa;
+  --brand: #ebbe00; --brand-hover: #d6ad00; --brand-ink: #0a0a0a;   /* text on brand */
+  --wa: #25d366;
+  background: var(--bg); color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;   /* no web fonts */
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+.lp *, .lp *::before, .lp *::after { box-sizing: border-box; }
+.lp a { color: inherit; text-decoration: none; }
+
+/* Sections: alternate dark / light */
+.lp-section { padding: 120px 0; border-bottom: 1px solid var(--border); }
+.lp-light { background: #fff; color: #09090b; border-bottom-color: #e4e4e7; }
+.lp-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.lp-h2 { margin: 0; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; }
+.lp-h2 span { display: block; color: var(--brand); }            /* 2nd line in brand colour — dark sections only */
+.lp-light .lp-h2 span { color: #52525b; }                         /* never yellow text on white */
+.lp-eyebrow { display: inline-flex; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--brand); border: 1px solid color-mix(in oklab, var(--brand) 35%, transparent);
+  background: color-mix(in oklab, var(--brand) 8%, transparent); }
+.lp-icon { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 14px; color: var(--brand);
+  background: color-mix(in oklab, var(--brand) 12%, transparent); border: 1px solid color-mix(in oklab, var(--brand) 35%, transparent); }
+.lp-card { padding: 26px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); transition: border-color .25s, transform .25s; }
+.lp-card:hover { border-color: color-mix(in oklab, var(--brand) 45%, transparent); transform: translateY(-4px); }
+
+/* Buttons: big pills (60px+), brand primary with dark text, WhatsApp with icon + pulse */
+.lp-cta-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+.lp-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 62px; padding: 0 36px;
+  border-radius: 999px; font-size: 16px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: background-color .15s, transform .15s; }
+.lp-btn:active { transform: scale(.98); }
+.lp a.lp-btn-primary { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.lp a.lp-btn-primary:hover { background: var(--brand-hover); }
+.lp-btn-wa svg { width: 24px; height: 24px; color: var(--wa); }
+.lp-btn-wa { animation: lp-wa-pulse 1.8s ease-out infinite; }
+@keyframes lp-wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,.6); transform: scale(1); }
+  50% { transform: scale(1.04); }
+  70% { box-shadow: 0 0 0 18px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); transform: scale(1); }
+}
+/* Light travelling around the button border */
+.lp-star { position: absolute; left: 0; top: 0; width: 26px; height: 6px; border-radius: 999px; pointer-events: none;
+  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%); offset-path: inset(0 round 999px); animation: lp-star 3s linear infinite; }
+@keyframes lp-star { to { offset-distance: 100%; } }
+@media (max-width: 720px) {
+  .lp-cta-row { flex-direction: column; align-items: stretch; max-width: 380px; margin-inline: auto; }
+  .lp-btn { width: 100%; height: 60px; padding: 0 20px; }
+}
+
+/* Infinite brand marquee (render the list twice; second copy aria-hidden) */
+.lp-marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.lp-marquee-track { display: flex; width: max-content; animation: lp-marquee 26s linear infinite; }
+.lp-marquee:hover .lp-marquee-track { animation-play-state: paused; }
+@keyframes lp-marquee { to { transform: translateX(-50%); } }
+
+/* Intro overlay (~1.4s, CSS only). Cards: <img style="--x:12vw;--y:-8vh;--r:5deg;--d:.06s"> on golden-angle positions */
+.lp-intro { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; background: #0a0a0a;
+  pointer-events: none; animation: lp-intro-out .35s ease-in 1.05s forwards; }
+.lp-intro-tunnel { position: absolute; inset: 0; overflow: hidden; perspective: 1000px; transform-style: preserve-3d; }
+.lp .lp-intro-tunnel img { position: absolute; left: 50%; top: 50%; width: clamp(120px, 20vmin, 240px) !important; height: auto !important; opacity: 0;
+  transform: translate(-50%,-50%) translate3d(var(--x), var(--y), -1400px) rotate(var(--r)); animation: lp-tunnel .95s cubic-bezier(.3,.1,.3,1) var(--d) forwards; }
+.lp .lp-intro-logo { position: relative; width: clamp(140px, 22vmin, 220px) !important; height: auto !important; opacity: 0; animation: lp-logo-in .5s cubic-bezier(.2,.8,.2,1) .1s forwards; }
+@keyframes lp-tunnel { 0% { opacity: 0; } 20%, 75% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%,-50%) translate3d(var(--x), var(--y), 700px) rotate(var(--r)); } }
+@keyframes lp-logo-in { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes lp-intro-out { to { opacity: 0; visibility: hidden; } }
+
+/* Reduced motion: PAUSE things that need animation for layout, hide ornaments, keep a short logo fade */
+@media (prefers-reduced-motion: reduce) {
+  .lp *:not(.jb-tile):not([class*="tgh-t-"]):not(.lp-intro):not(.lp-intro-logo) { animation: none !important; transition: none !important; }
+  .lp .lp-star { display: none; }
+  .lp-intro-tunnel { display: none; }
+  .lp-intro { animation: lp-intro-out .3s ease-in .7s forwards !important; }
+  .lp .lp-intro-logo { animation: lp-logo-in .3s ease-out forwards !important; }
+}

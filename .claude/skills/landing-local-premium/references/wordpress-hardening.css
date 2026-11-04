@@ -1,0 +1,43 @@
+/* Paste-into-Elementor survival kit. Append to the page CSS (replace .lp with your wrapper).
+ *
+ * Why: the theme's CSS is unlayered, Tailwind v4 utilities live in @layer, and
+ * unlayered rules beat layered ones regardless of specificity. Hello Elementor
+ * makes buttons pink (#c36), forces img{height:auto;max-width:100%}, italicises
+ * figcaption and adds margins to <p>. Elementor's boxed container clips the page.
+ */
+
+/* 1. Full-bleed: escape the boxed container (harmless on a standalone page) */
+.lp { width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); position: relative; }
+html, body { overflow-x: hidden; }
+
+/* 2. Image sizes the theme would override — every sized <img> needs a specific selector + !important */
+.lp .lp-logo img { height: 64px !important; width: auto !important; max-width: none !important; }
+.lp .lp-footer-logo { height: 56px !important; width: auto !important; max-width: none !important; }
+.lp .lp-brand-chip img { height: 66px !important; width: auto !important; max-width: 240px !important; }
+@media (max-width: 720px) {
+  .lp .lp-logo img { height: 52px !important; }
+  .lp .lp-footer-logo { height: 48px !important; }
+}
+
+/* 3. Buttons inside third-party components (carousels, toggles): reset, then style yourself */
+.lp .lp-widget button { all: unset; box-sizing: border-box; cursor: pointer; }
+.lp .lp-widget [data-prev], .lp .lp-widget [data-next] {
+  display: inline-flex; align-items: center; justify-content: center; width: 44px !important; height: 44px !important;
+  border-radius: 999px; border: 1px solid #e4e4e7; background: #fff; color: #09090b; }
+.lp .lp-widget [data-prev]:hover, .lp .lp-widget [data-next]:hover { background: var(--brand); border-color: var(--brand); }
+/* Dots: 44px tall hit area, small visual dot */
+.lp .lp-widget [data-dot] { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 44px; background: transparent !important; }
+.lp .lp-widget [data-dot]::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: #d4d4d8; transition: width .3s, background-color .3s; }
+.lp .lp-widget [data-dot][aria-pressed="true"] { width: 40px; }
+.lp .lp-widget [data-dot][aria-pressed="true"]::before { width: 28px; background: var(--brand); }
+
+/* 4. Typography the theme likes to change */
+.lp figcaption, .lp figcaption p, .lp blockquote, .lp mark { font-style: normal !important; }
+.lp figcaption p { margin: 0 !important; }
+
+/* 5. Embeds */
+.lp .lp-map iframe { display: block; width: 100% !important; height: 440px !important; max-width: none !important; border: 0 !important; margin: 0 !important; }
+@media (max-width: 720px) { .lp .lp-map iframe { height: 340px !important; } }
+
+/* 6. Grid children must be allowed to shrink, or long content pushes them off-screen on mobile */
+.lp [class*="grid"] > *, .lp .lp-two-col > * { min-width: 0; }

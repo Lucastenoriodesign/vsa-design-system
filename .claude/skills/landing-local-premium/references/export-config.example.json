@@ -1,0 +1,18 @@
+{
+  "url": "http://localhost:3100/",
+  "publicDir": "/home/user/ai-website-cloner-template/public",
+  "out": "/tmp/claude-0/<session>/scratchpad/<cliente>.html",
+  "sitePrefix": "/sites/junior-baterias/",
+  "bandImages": [
+    "/sites/junior-baterias/baterias/moura.webp",
+    "/sites/junior-baterias/baterias/kondor-vermelha.webp",
+    "/sites/junior-baterias/baterias/zetta.webp",
+    "/sites/junior-baterias/baterias/mg3.webp",
+    "/sites/junior-baterias/baterias/kondor-branca.webp"
+  ],
+  "band": { "root": ".q-hero-tilted", "tileHeight": 28, "aspect": 1.3333, "gap": 8, "axis": 50, "curve": 55, "speed": 4 },
+  "testimonialsFromTsx": {
+    "file": "/home/user/ai-website-cloner-template/src/components/sites/junior-baterias/JuniorBateriasPage.tsx",
+    "constName": "TESTIMONIALS"
+  }
+}
