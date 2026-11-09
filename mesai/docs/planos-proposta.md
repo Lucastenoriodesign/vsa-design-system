@@ -5,8 +5,8 @@ Preços e custos abaixo são **estimativas de trabalho**, não cotações. Confi
 ## Ideia central
 Quem usa o app (consumidor) tem pouco motivo para pagar assinatura num guia local. Quem tem motivo é o **restaurante**, que quer aparecer, ter foto e horário corretos e ser achado. Recomendação: **consumidor grátis, receita vinda dos estabelecimentos**, com um plano premium opcional para o consumidor depois que houver base de usuários.
 
-## DECISÃO v2: teste grátis de 7 dias, depois R$ 9,90/mês (ou R$ 79/ano)
-Na v2 o consumidor não tem mais plano gratuito permanente: são 7 dias de teste e depois Mesaí+. Hoje não há cobrança nem bloqueio ao fim do teste; a contagem é local.
+## DECISÃO v2 (atual): consumidor grátis, cobrança só para estabelecimentos
+Na v2 o consumidor usa tudo de graça. O Mesaí+ (R$ 9,90/mês ou R$ 79/ano) aparece como "em breve", com coleta de interesse e sem cobrança. A receita inicial vem dos planos Destaque e Premium dos estabelecimentos.
 
 ## DECISÃO: as duas opções valem, lançadas juntas
 - Consumidor: Mesaí+ por R$ 9,90/mês ou R$ 79/ano (R$ 6,58/mês, 33% de desconto sobre R$ 118,80).
