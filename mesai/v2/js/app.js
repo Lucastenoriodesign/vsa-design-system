@@ -1,4 +1,4 @@
-var CATS=[['Tudo','Todos',null],['Restaurantes','Restaurantes','assets/cat-regional.jpg'],['Hamburguerias','Hamburguerias','assets/cat-hamburguer.jpg'],['Pizzarias','Pizzarias','assets/cat-pizza.jpg'],['Lanchonetes','Lanchonetes','assets/cat-lanches.jpg'],['Pastelarias','Pastelarias','assets/cat-lanches.jpg'],['Cafeterias e padarias','Cafeterias e padarias','assets/cat-cafe.jpg']];
+var CATS=[['Tudo','Todos',null],['Restaurantes','Restaurantes','assets/cat-regional.jpg'],['Hamburguerias','Hamburguerias','assets/cat-hamburguer.jpg'],['Pizzarias','Pizzarias','assets/cat-pizza.jpg'],['Lanchonetes','Lanchonetes','assets/cat-lanches.jpg'],['Pastelarias','Pastelarias','assets/cat-lanches.jpg'],['Cafeterias e padarias','Cafeterias e padarias','assets/cat-cafe.jpg'],['Açaíterias','Açaíterias','assets/cat-acai.jpg']];
 var REGIONS=['Tudo','Graciliano Ramos','Cidade Universitária','Eustáquio Gomes','Shopping Pátio'];
 var EVID={indicado_em_listagens_e_avaliacoes:'Indicado em listagens e avaliações online',informado_no_site_oficial:'Informado no site oficial do estabelecimento',a_confirmar:'Ainda não confirmado'};
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
@@ -39,7 +39,7 @@ function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCas
  return true}
 function sorted(a){return a.slice().sort(function(x,y){return S.sort==='reg'?(region(x).localeCompare(region(y))||x.n.localeCompare(y.n)):x.n.localeCompare(y.n)})}
 function pic(p){var a=photosOk[p.id];return a?a.u:p.foto}
-var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472a'],'Pizzarias':['#fff0c9','#8a5d00'],'Lanchonetes':['#fbe4e0','#a3412c'],'Pastelarias':['#ffe9d0','#8d4f10'],'Cafeterias e padarias':['#efe3d6','#6b4a33']};
+var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472a'],'Pizzarias':['#fff0c9','#8a5d00'],'Lanchonetes':['#fbe4e0','#a3412c'],'Pastelarias':['#ffe9d0','#8d4f10'],'Cafeterias e padarias':['#efe3d6','#6b4a33'],'Açaíterias':['#f1e4f3','#6d2f7a']};
 function photo(p,cls){var u=pic(p),c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();
  return '<span class="'+cls+' cov" style="--c1:'+c[0]+';--c2:'+c[1]+'" aria-hidden="true"><b>'+esc(ini)+'</b><small>'+esc(p.g)+'</small>'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>'}
 function heartBtn(p){var on=saved.has(p.id);return '<button class="heart'+(on?' on':'')+'" data-heart="'+esc(p.id)+'" aria-pressed="'+on+'" aria-label="'+(on?'Remover ':'Salvar ')+esc(p.n)+(on?' dos salvos':'')+'">salvar</button>'}
