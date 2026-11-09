@@ -45,6 +45,7 @@ function syncMe() {
   return Promise.all([API.profile(), API.isAdmin(), API.saved()]).then(function (r) {
     S2.points = (r[0] && r[0].points) || 0;
     S2.name = r[0] && r[0].display_name;
+    S2.avatar = (r[0] && r[0].avatar_url) || null;
     S2.admin = !!r[1];
     var server = r[2].map(function (x) { return x.place_id; });
     saved.forEach(function (id) { if (server.indexOf(id) < 0) { API.save(id).catch(function () {}); } });

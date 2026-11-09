@@ -63,7 +63,13 @@ var API = (function () {
     addComment: function (c) { return http('/rest/v1/comments', { method: 'POST', body: { user_id: session.user.id, place_id: c.place_id || null, kind: c.kind, body: c.body, flags: c.flags || [] }, prefer: 'return=minimal' }); },
     setStatus: function (id, status) { return http('/rest/v1/comments?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body: { status: status, reviewed_at: new Date().toISOString() }, prefer: 'return=minimal' }); },
     delComment: function (id) { return http('/rest/v1/comments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); },
-    profile: function () { return http('/rest/v1/profiles?select=display_name,points&id=eq.' + session.user.id).then(function (r) { return r && r[0]; }); },
+    profile: function () { return http('/rest/v1/profiles?select=display_name,points,avatar_url&id=eq.' + session.user.id).then(function (r) { return r && r[0]; }); },
+    uploadAvatar: function (file) {
+      var path = session.user.id + '/avatar.jpg';
+      return fetch(URL + '/storage/v1/object/avatars/' + path, { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + session.access_token, 'Content-Type': file.type || 'image/jpeg', 'x-upsert': 'true' }, body: file })
+        .then(function (r) { if (!r.ok) throw new Error('upload falhou'); var url = URL + '/storage/v1/object/public/avatars/' + path + '?v=' + Date.now();
+          return http('/rest/v1/profiles?id=eq.' + session.user.id, { method: 'PATCH', body: { avatar_url: url }, prefer: 'return=minimal' }).then(function () { return url; }); });
+    },
     isAdmin: function () { return http('/rest/v1/admins?select=user_id').then(function (r) { return !!(r && r.length); }); },
     checkin: function (placeId) { return http('/rest/v1/checkins', { method: 'POST', body: { user_id: session.user.id, place_id: placeId }, prefer: 'return=minimal' }); },
     saved: function () { return http('/rest/v1/saved_places?select=place_id'); },
