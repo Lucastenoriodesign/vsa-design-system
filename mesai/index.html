@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fbf8f2"><meta name="description" content="Descubra restaurantes presenciais e veja o ambiente antes de sair.">
+<title>Mesaí — descubra onde comer</title>
+<style>
+:root{--bg:#fbf8f2;--paper:#fffefa;--ink:#292a2b;--muted:#6f685f;--line:#ebe5dc;--coral:#e87558;--coral-dark:#c25a42;--green:#3d765c;--green-bg:#e9f2eb;--shadow:0 9px 24px #38291b0c}
+[hidden]{display:none!important}*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);font:15px/1.4 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+.app{max-width:1080px;margin:auto;min-height:100dvh;padding-bottom:92px}
+.top{position:sticky;top:0;z-index:12;background:#fbf8f2ee;backdrop-filter:blur(16px);border-bottom:1px solid #292a2b0a;padding:12px 20px 11px}
+.top-row{display:flex;align-items:center;gap:12px}.logo{height:34px;width:auto;display:block}
+.profile-btn{margin-left:auto;width:38px;height:38px;border:1px solid var(--line);background:var(--paper);border-radius:50%;overflow:hidden;padding:0}.profile-btn img{width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:50%}
+.where{display:flex;align-items:center;gap:6px;margin-top:6px;color:#655f57;font-size:12px;font-weight:700}.where svg{width:14px;height:14px;color:var(--coral-dark)}.where button{border:0;background:transparent;padding:2px;color:inherit;font-weight:700}
+.main{padding:0 20px}.view{display:none}.view.on{display:block;animation:fade .18s ease}@keyframes fade{from{opacity:.4}to{opacity:1}}
+.welcome{padding:22px 0 14px}.welcome small{color:var(--coral-dark);font-weight:800;letter-spacing:.02em;font-size:12px}.welcome h1{font-size:29px;line-height:1.05;letter-spacing:-.055em;margin:6px 0 0}
+.page-title{font-size:26px;letter-spacing:-.05em;margin:22px 0 4px}.page-sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.search{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:12px 14px;box-shadow:0 3px 10px #2b211108}.search svg{width:19px;height:19px;flex:none;color:#898278}.search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font-size:14px}.search input::placeholder{color:#8f877d}
+.quickcats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 8px;padding:17px 0 7px;align-items:start}
+.cat{border:0;background:transparent;color:#514d47;padding:0;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;font-weight:750}
+.cat img,.cat-all-icon{width:76px;height:76px;aspect-ratio:1/1;border-radius:50%;flex:none}.cat img{object-fit:contain;background:#fff;box-shadow:0 2px 8px #38291b12}
+.cat-all-icon{display:grid;place-items:center;background:#fff0ce;box-shadow:0 2px 8px #38291b12}.cat-all-icon i{width:15px;height:15px;border-radius:5px;background:#f3a11a;box-shadow:20px 0 #f3a11a,0 20px #f3a11a,20px 20px #f3a11a;transform:translate(-10px,-10px)}
+.cat.active{color:var(--coral-dark)}.cat.active img,.cat.active .cat-all-icon{outline:2px solid var(--coral);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:12px -20px 4px;padding:2px 20px}.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:8px 13px;color:#4f4a43;white-space:nowrap;font-size:12px;font-weight:750;display:flex;align-items:center;gap:6px}.chip img{width:20px;height:20px;border-radius:50%;object-fit:contain;background:#fff}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.section{margin-top:22px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:11px}.section-head h2{font-size:18px;letter-spacing:-.035em;margin:0}.section-head p{color:var(--muted);font-size:12px;margin:3px 0 0}
+.link{border:0;background:transparent;color:var(--coral-dark);font-size:12px;font-weight:800;padding:6px 0;white-space:nowrap}
+.featured{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,72%);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-right:-20px;padding:1px 20px 9px 1px}.featured::-webkit-scrollbar{display:none}
+.fcard{scroll-snap-align:start;background:var(--paper);border:1px solid #292a2b0b;border-radius:17px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;text-align:left;padding:0;color:inherit}
+.fphoto{height:144px;position:relative;background:#ddd}.fphoto img{width:100%;height:100%;object-fit:cover;display:block}
+.pill{position:absolute;left:9px;top:9px;background:#fffefaeb;color:#6a5a4b;border-radius:99px;padding:5px 8px;font-size:10px;font-weight:800}.pill.right{left:auto;right:9px;color:var(--coral-dark)}
+.fbody{padding:10px 11px 12px}.fname{font-weight:800;font-size:14px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fmeta{color:var(--muted);font-size:11px;margin-top:3px}
+.tagline{margin-top:8px;color:var(--green);font-size:11px;font-weight:750}
+.list{display:grid;gap:11px}
+.place{display:grid;grid-template-columns:125px 1fr;min-height:126px;border:1px solid #292a2b0c;background:var(--paper);border-radius:16px;overflow:hidden;box-shadow:0 4px 13px #38291b08;cursor:pointer;text-align:left;padding:0;color:inherit;width:100%}
+.pimg{position:relative;min-height:126px;background:#ddd}.pimg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.pimg .pill{font-size:9px;padding:4px 6px;left:7px;top:7px}
+.pinfo{padding:11px 11px 10px;min-width:0}.ptitle{font-size:14px;font-weight:850;line-height:1.2;letter-spacing:-.02em}.pcat{font-size:11px;color:var(--muted);margin-top:4px}
+.presencial{display:inline-flex;align-items:center;gap:4px;color:var(--green);background:var(--green-bg);border-radius:99px;padding:5px 8px;font-size:10px;font-weight:800;margin-top:8px}
+.ptags{font-size:10px;color:#6f685f;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-weight:900;color:var(--coral-dark);margin-right:5px}
+.filter-row{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;margin:10px -20px 8px;padding:0 20px}.filter-row::-webkit-scrollbar{display:none}
+.filter{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:8px 12px;color:#4f4a43;white-space:nowrap;font-size:11px;font-weight:750}.filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 10px}.count{font-size:12px;color:var(--muted)}
+.seg{display:inline-flex;background:#f0ebe2;border-radius:99px;padding:3px}.seg button{border:0;background:transparent;border-radius:99px;padding:7px 14px;font-size:12px;font-weight:800;color:#5c564e}.seg button.on{background:var(--ink);color:#fff}
+.map{position:relative;height:min(62dvh,440px);border-radius:18px;overflow:hidden;background:#eae8dd;background-image:linear-gradient(30deg,transparent 47%,#fff 48%,#fff 51%,transparent 52%),linear-gradient(145deg,transparent 44%,#fff 45%,#fff 48%,transparent 49%),linear-gradient(90deg,transparent 65%,#d5e5d8 65%,#d5e5d8 75%,transparent 75%);background-size:175px 140px,205px 170px,100% 100%;border:1px solid var(--line)}
+.map-label{position:absolute;top:12px;left:12px;padding:8px 11px;border-radius:11px;background:#fff;font-size:11px;font-weight:800;box-shadow:var(--shadow)}
+.pin{position:absolute;width:34px;height:34px;margin:-34px 0 0 -17px;border:0;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--coral);color:#fff;font-weight:900;box-shadow:0 3px 9px #0002;padding:0}.pin span{display:block;transform:rotate(45deg);font-size:12px}.pin.sel{background:var(--ink);z-index:2;width:40px;height:40px;margin:-40px 0 0 -20px}
+.map-card{position:absolute;left:10px;right:10px;bottom:10px;background:var(--paper);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center;box-shadow:0 6px 18px #0002}.map-card img{width:56px;height:56px;border-radius:10px;object-fit:cover}.map-card div{flex:1;min-width:0}.map-card b{display:block;font-size:13px}.map-card small{color:var(--muted);font-size:11px}.map-card button{border:0;background:var(--coral-dark);color:#fff;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:800}
+.empty{padding:22px;text-align:center;border:1px dashed #d5cec3;border-radius:16px;color:var(--muted);font-size:13px}.empty button{margin-top:10px}
+.suggest{margin:25px 0 10px;padding:17px;border-radius:17px;background:#f1ebe2;display:flex;align-items:center;justify-content:space-between;gap:10px}.suggest strong{font-size:14px}.suggest p{font-size:12px;color:var(--muted);margin:3px 0 0}
+.btn{border:0;background:var(--coral-dark);color:#fff;border-radius:11px;padding:11px 14px;font-size:12px;font-weight:800;white-space:nowrap}.btn.ghost{background:#f0ece6;color:var(--ink)}.btn.block{width:100%;padding:14px;font-size:13px;margin-top:8px;white-space:normal}.btn.saved{background:var(--green)}
+.foot{text-align:center;color:#8a8177;font-size:11px;padding:13px 0 18px}
+.prof-head{display:flex;align-items:center;gap:14px;padding:22px 0 8px}.prof-head img{width:68px;height:68px;border-radius:50%;object-fit:cover;object-position:center 20%;border:1px solid var(--line)}.prof-head h1{font-size:22px;letter-spacing:-.04em;margin:0}.prof-head p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}.card h3{margin:0 0 4px;font-size:15px}.card p{margin:0 0 10px;color:var(--muted);font-size:12px}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;font-weight:700}.toggle:first-of-type{border-top:0}.toggle input{width:44px;height:26px;appearance:none;background:#d9d2c7;border-radius:99px;position:relative;cursor:pointer;transition:.15s;flex:none}.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}.toggle input:checked{background:var(--green)}.toggle input:checked::after{left:21px}
+.mini{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}.mini:first-of-type{border-top:0}.mini button.o{border:0;background:transparent;text-align:left;font-weight:750;color:var(--ink);padding:0}.mini small{color:var(--muted);display:block;font-weight:400}.mini .x{border:0;background:transparent;color:var(--coral-dark);font-weight:800;font-size:12px}
+.bottom{position:fixed;z-index:14;bottom:0;left:0;right:0;padding:7px 12px calc(7px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#fffefaf2;backdrop-filter:blur(18px)}.bottom-in{display:contents}
+.nav{border:0;background:transparent;color:#6f685f;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 3px;font-size:11px;font-weight:750}.nav svg{width:21px;height:21px}.nav.active{color:var(--coral-dark)}
+.overlay{position:fixed;inset:0;background:#211d1ab0;z-index:30;display:none;align-items:end;justify-content:center}.overlay.open{display:flex}
+.sheet{width:min(620px,100%);max-height:90dvh;overflow:auto;padding:14px 19px calc(24px + env(safe-area-inset-bottom));background:var(--paper);border-radius:23px 23px 0 0;animation:up .2s ease}.grab{width:38px;height:4px;border-radius:5px;background:#ddd5cb;margin:0 auto 12px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet-head b{font-size:14px}.close{border:0;background:#f0ece6;border-radius:50%;width:36px;height:36px;font-size:20px;color:#514b45}
+.detail-img{width:100%;height:210px;object-fit:cover;border-radius:15px;margin:12px 0}.detail-title{font-size:22px;letter-spacing:-.04em;margin:9px 0 0}.detail-sub{font-size:12px;color:var(--muted);margin:4px 0 10px}
+.note{padding:10px 11px;border-radius:11px;background:#f2ede5;color:#6d6256;font-size:11px;line-height:1.4;margin-top:12px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.tile{padding:10px;border-radius:12px;background:#f4f0e9}.tile b{display:block;font-size:11px}.tile span{font-size:11px;color:var(--muted)}
+.form{display:grid;gap:10px;margin-top:13px}.form label{font-size:11px;font-weight:800;display:grid;gap:5px}.form input,.form select,.form textarea{border:1px solid var(--line);border-radius:11px;padding:11px;background:#fff;font-size:14px}.form textarea{min-height:65px}
+.toast{position:fixed;z-index:40;left:50%;transform:translate(-50%,15px);bottom:90px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:99px;font-size:12px;font-weight:750;opacity:0;pointer-events:none;transition:.2s;max-width:92vw}.toast.show{opacity:1;transform:translate(-50%,0)}
+@keyframes up{from{transform:translateY(18px);opacity:.6}to{transform:none;opacity:1}}
+@media(min-width:700px){.top{padding:12px 28px}.main{padding:0 28px}.welcome h1{font-size:38px}.search{max-width:620px}.featured{grid-auto-columns:240px;margin-right:0;padding-right:0}.list{grid-template-columns:repeat(2,minmax(0,1fr))}.place{grid-template-columns:115px 1fr}.bottom{left:50%;right:auto;transform:translateX(-50%);width:min(520px,100%);border-radius:18px 18px 0 0;border:1px solid var(--line);border-bottom:0}.overlay{align-items:center}.sheet{border-radius:23px}.chips,.filter-row{margin-left:0;margin-right:0;padding-left:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="top-row">
+  <img class="logo" src="assets/mesai-logo.png" alt="Mesaí">
+  <button class="profile-btn" data-go="perfil" aria-label="Abrir perfil"><img src="assets/avatar.jpg" alt="Foto de perfil"></button>
+ </div>
+ <div class="where"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg><button id="locationButton">Cidade Universitária, Maceió</button></div>
+</header>
+<main class="main">
+
+<!-- INÍCIO -->
+<section class="view" id="view-inicio" aria-label="Início">
+ <div class="welcome"><small>SEU GUIA DE RESTAURANTES</small><h1>Qual sua vontade de comer hoje?</h1></div>
+ <form class="search" id="homeSearch" role="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="homeInput" type="search" enterkeyhint="search" aria-label="Buscar" placeholder="Comida, lugar ou estilo do ambiente" autocomplete="off"></form>
+ <div class="quickcats" id="categories"></div>
+ <section class="section">
+  <div class="section-head"><div><h2>Em alta na Cidade Universitária</h2><p>Lugares que combinam com a sua vontade.</p></div><button class="link" data-go="em-alta">Ver todos</button></div>
+  <div class="featured" id="featured"></div>
+ </section>
+ <section class="section">
+  <div class="section-head"><div><h2>Mais lugares para conhecer</h2><p>Descubra como é o ambiente antes de ir.</p></div><button class="link" data-go="buscar">Ver todos</button></div>
+  <div class="list" id="homeList"></div>
+ </section>
+ <section class="suggest"><div><strong>Faltou algum lugar?</strong><p>Sugira um restaurante para o guia.</p></div><button class="btn" data-open-suggest>Sugerir lugar</button></section>
+</section>
+
+<!-- BUSCAR -->
+<section class="view" id="view-buscar" aria-label="Buscar">
+ <h1 class="page-title">Buscar</h1>
+ <p class="page-sub">Filtre por comida e ambiente. Veja em lista ou no mapa.</p>
+ <label class="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="searchInput" type="search" aria-label="Buscar lugares" placeholder="Comida, lugar ou estilo do ambiente" autocomplete="off"></label>
+ <div class="chips" id="catChips" aria-label="Categorias"></div>
+ <div class="filter-row" id="filters" aria-label="Filtros"></div>
+ <div class="bar"><span class="count" id="count" aria-live="polite"></span><div class="seg" role="group" aria-label="Modo de visualização"><button id="modeList" class="on" aria-pressed="true">Lista</button><button id="modeMap" aria-pressed="false">Mapa</button></div></div>
+ <div class="list" id="list"></div>
+ <div class="map" id="map" hidden></div>
+</section>
+
+<!-- EM ALTA -->
+<section class="view" id="view-em-alta" aria-label="Em alta">
+ <h1 class="page-title">Em alta</h1>
+ <p class="page-sub">Seleção ilustrativa para Cidade Universitária.</p>
+ <div class="list" id="trendList"></div>
+</section>
+
+<!-- PERFIL -->
+<section class="view" id="view-perfil" aria-label="Perfil">
+ <div class="prof-head"><img src="assets/avatar.jpg" alt="Foto de perfil"><div><h1>Lucas Tenório</h1><p>Cidade Universitária, Maceió · AL</p></div></div>
+ <div class="card"><h3>Lugares salvos</h3><p id="savedSummary"></p><div id="savedList"></div></div>
+ <div class="card"><h3>Preferências</h3><p>Aplicadas automaticamente na busca.</p>
+  <label class="toggle">Aceita pets<input type="checkbox" data-pref="Aceita pets"></label>
+  <label class="toggle">Aceita VR<input type="checkbox" data-pref="Aceita VR"></label>
+  <label class="toggle">Ambiente tranquilo<input type="checkbox" data-pref="Tranquilo"></label>
+ </div>
+ <div class="card"><h3>Minhas sugestões</h3><p id="sugSummary"></p><div id="sugList"></div><button class="btn ghost block" data-open-suggest>Sugerir um lugar</button></div>
+ <div class="note">Esta é uma demonstração: favoritos, sugestões e preferências ficam salvos apenas neste navegador. Ainda não há conta, login nem dados reais de estabelecimentos.</div>
+ <div style="text-align:center;margin-top:12px"><button class="link" id="clearData">Limpar dados deste navegador</button></div>
+</section>
+
+<div class="foot">Fotos e fichas desta demonstração são ilustrativas (imagens geradas por IA).</div>
+</main>
+</div>
+
+<nav class="bottom" aria-label="Navegação principal">
+<button class="nav" data-go="inicio"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Início</button>
+<button class="nav" data-go="buscar"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Buscar</button>
+<button class="nav" data-go="em-alta"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12.5 22c4.2 0 7-2.8 7-6.6 0-2.7-1.6-4.6-3.7-6.4.1 2.1-.8 3-1.7 3.4C14.6 7.8 12 3.9 8 2c.6 4.3-.2 6.5-2.2 9-1.3 1.6-2 3-2 4.7C3.8 19.5 7 22 12.5 22Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Em alta</button>
+<button class="nav" data-go="perfil"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Perfil</button>
+</nav>
+
+<div class="overlay" id="detailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailHead"><div class="sheet"><div class="grab"></div><div class="sheet-head"><b id="detailHead">Detalhes do lugar</b><button class="close" data-close aria-label="Fechar">×</button></div><div id="detail"></div></div></div>
+<div class="overlay" id="suggestOverlay" role="dialog" aria-modal="true" aria-labelledby="sugHead"><div class="sheet"><div class="grab"></div><div class="sheet-head"><b id="sugHead">Sugerir um lugar</b><button class="close" data-close aria-label="Fechar">×</button></div><p class="detail-sub">Conte sobre um restaurante presencial. A sugestão fica salva só neste navegador.</p><form class="form" id="suggestForm"><label>Nome do lugar<input name="name" required maxlength="60" placeholder="Nome do restaurante"></label><label>Tipo de comida<select name="category" id="sugCat"></select></label><label>Como é o ambiente?<textarea name="about" maxlength="200" placeholder="Ex.: tranquilo, bom para ir em família..."></textarea></label><button class="btn block" type="submit">Enviar sugestão</button></form></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+var CATS=[['Tudo','Todos',null],['Regional','Regional','assets/cat-regional.jpg'],['Hambúrguer','Hambúrguer','assets/cat-hamburguer.jpg'],['Café','Café','assets/cat-cafe.jpg'],['Pizza','Pizza','assets/cat-pizza.jpg'],['Lanches','Lanches','assets/cat-lanches.jpg'],['Sushi','Japonesa','assets/cat-sushi.jpg'],['Açaí','Açaí','assets/cat-acai.jpg'],['Doces','Doces','assets/cat-doces.jpg']];
+var FILTERS=[['Tudo','Tudo'],['Tranquilo','Tranquilo'],['Ao ar livre','Ao ar livre'],['Família','Para família'],['Presencial','Presencial'],['Aceita VR','Aceita VR'],['Aceita pets','Aceita pets']];
+var photos=['assets/place-regional.jpg','assets/place-hamburguer.jpg','assets/place-cafe.jpg','assets/place-pizzaria.jpg'];
+var BASE=[
+{id:1,name:'Quintal da Brasa',category:'Regional',meta:'Comida regional · $$',tags:['Ao ar livre','Família'],vibe:'Varanda arborizada e mesas para compartilhar',photo:0,rank:1},
+{id:2,name:'Brasa & Ponto',category:'Hambúrguer',meta:'Hambúrguer · $$',tags:['Animado','Grupos'],vibe:'Balcão descontraído e mesas em grupo',photo:1,rank:2},
+{id:3,name:'Café Manhã Boa',category:'Café',meta:'Café e sobremesas · $',tags:['Tranquilo','Café'],vibe:'Luz natural, café e conversa sem pressa',photo:2,rank:3},
+{id:4,name:'Forno da Praça',category:'Pizza',meta:'Pizza · $$',tags:['Família','Grupos'],vibe:'Mesas espaçosas e clima de encontro',photo:3,rank:4},
+{id:5,name:'Dona Tapioca',category:'Regional',meta:'Tapioca e cuscuz · $',tags:['Tranquilo','Café'],vibe:'Pequeno, acolhedor e bom para um café rápido',photo:2},
+{id:6,name:'Pátio do Sabor',category:'Lanches',meta:'Lanches · $',tags:['Ao ar livre','Grupos'],vibe:'Pátio aberto com mesas compartilhadas',photo:0},
+{id:7,name:'Bendito Cuscuz',category:'Regional',meta:'Comida regional · $$',tags:['Família','Tranquilo'],vibe:'Ambiente familiar e mesas confortáveis',photo:3},
+{id:8,name:'Varanda 081',category:'Hambúrguer',meta:'Hambúrguer e porções · $$',tags:['Ao ar livre','Animado','Aceita VR'],vibe:'Varanda iluminada e mesas para grupos',photo:1},
+{id:9,name:'Sushi da Vila',category:'Sushi',meta:'Japonesa · $$',tags:['Tranquilo','Aceita VR'],vibe:'Ambiente calmo com mesas para casal',photo:2},
+{id:10,name:'Açaí da Praça',category:'Açaí',meta:'Açaí e frutas · $',tags:['Ao ar livre','Aceita pets'],vibe:'Mesas externas e clima descontraído',photo:0},
+{id:11,name:'Doce Encontro',category:'Doces',meta:'Doces e sobremesas · $',tags:['Tranquilo','Aceita pets'],vibe:'Cafeteria acolhedora com sobremesas',photo:2}
+];
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var sugg=load('mesai-suggestions',[]).filter(function(s){return s&&s.id&&s.name});
+var saved=new Set(load('mesai-saved',[]));
+var prefs=load('mesai-prefs',[]);
+var places=BASE.concat(sugg);
+var S={cat:'Tudo',filters:prefs.slice(),q:'',mode:'list',sel:null};
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function byId(id){return places.find(function(p){return p.id===id})}
+function match(p){var t=(p.name+' '+p.category+' '+p.meta+' '+p.tags.join(' ')+' '+p.vibe).toLowerCase();
+ if(S.q&&t.indexOf(S.q.toLowerCase())<0)return false;
+ if(S.cat!=='Tudo'&&p.category!==S.cat)return false;
+ return S.filters.every(function(f){return f==='Presencial'||p.tags.indexOf(f)>-1})}
+function pillText(p){return p.suggested?'Sugestão':'Exemplo'}
+function placeCard(p,rank){return '<button class="place" data-open="'+p.id+'"><span class="pimg"><img src="'+photos[p.photo]+'" alt="Foto ilustrativa do ambiente de '+esc(p.name)+'" loading="lazy"><span class="pill">'+pillText(p)+'</span>'+(saved.has(p.id)?'<span class="pill right">♥ Salvo</span>':'')+'</span><span class="pinfo"><div class="ptitle">'+(rank?'<span class="rank">'+rank+'</span>':'')+esc(p.name)+'</div><div class="pcat">'+esc(p.meta)+'</div><span class="presencial">'+(p.suggested?'Aguardando revisão':'✓ Presencial')+'</span><div class="ptags">'+esc(p.tags.join(' · '))+'</div></span></button>'}
+function emptyBox(msg){return '<div class="empty">'+msg+'<br><button class="btn ghost" data-reset>Limpar filtros</button></div>'}
+
+/* ---- render ---- */
+function renderHome(){
+ $('categories').innerHTML=CATS.map(function(c){return '<button class="cat" data-homecat="'+c[0]+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'<span class="cat-all-icon"><i></i></span>')+c[1]+'</button>'}).join('');
+ $('featured').innerHTML=places.filter(function(p){return p.rank}).sort(function(a,b){return a.rank-b.rank}).map(function(p){return '<button class="fcard" data-open="'+p.id+'"><div class="fphoto"><img src="'+photos[p.photo]+'" alt="Foto ilustrativa do ambiente de '+esc(p.name)+'" loading="lazy"><span class="pill">Exemplo</span>'+(saved.has(p.id)?'<span class="pill right">♥ Salvo</span>':'')+'</div><div class="fbody"><div class="fname">'+esc(p.name)+'</div><div class="fmeta">'+esc(p.meta)+'</div><div class="tagline">✓ Atendimento presencial</div></div></button>'}).join('');
+ $('homeList').innerHTML=places.filter(function(p){return !p.rank}).slice(0,4).map(function(p){return placeCard(p)}).join('');
+}
+function renderSearch(){
+ $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+c[0]+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
+ $('filters').innerHTML=FILTERS.map(function(f){var on=f[0]==='Tudo'?S.filters.length===0:S.filters.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-filter="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ var rows=places.filter(match);
+ $('count').textContent=rows.length+(rows.length===1?' lugar encontrado':' lugares encontrados');
+ var map=S.mode==='map';
+ $('list').hidden=map;$('map').hidden=!map;
+ $('modeList').classList.toggle('on',!map);$('modeMap').classList.toggle('on',map);$('modeList').setAttribute('aria-pressed',!map);$('modeMap').setAttribute('aria-pressed',map);
+ $('list').innerHTML=rows.length?rows.map(function(p){return placeCard(p)}).join(''):emptyBox('Não encontrei um lugar com esses filtros.');
+ if(map)renderMap(rows);
+}
+function pos(id){var h=(id*2654435761)>>>0;return [12+(h%7600)/100,24+((h>>>8)%5400)/100]}
+function renderMap(rows){
+ if(S.sel&&!rows.some(function(p){return p.id===S.sel}))S.sel=null;
+ var h='<div class="map-label">Mapa ilustrativo · posições de exemplo</div>';
+ if(!rows.length)h+='<div class="map-card"><div><b>Nenhum lugar neste filtro</b><small>Ajuste os filtros para ver pins.</small></div></div>';
+ rows.forEach(function(p,i){var q=pos(p.id);h+='<button class="pin'+(S.sel===p.id?' sel':'')+'" style="left:'+q[0]+'%;top:'+q[1]+'%" data-pin="'+p.id+'" aria-label="'+esc(p.name)+'"><span>'+(i+1)+'</span></button>'});
+ var s=S.sel&&byId(S.sel);
+ if(s)h+='<div class="map-card"><img src="'+photos[s.photo]+'" alt=""><div><b>'+esc(s.name)+'</b><small>'+esc(s.meta)+'</small></div><button data-open="'+s.id+'">Detalhes</button></div>';
+ $('map').innerHTML=h;
+}
+function renderTrend(){var r=places.filter(function(p){return p.rank}).sort(function(a,b){return a.rank-b.rank});$('trendList').innerHTML=r.map(function(p){return placeCard(p,'#'+p.rank)}).join('')}
+function renderProfile(){
+ var sv=places.filter(function(p){return saved.has(p.id)});
+ $('savedSummary').textContent=sv.length?sv.length+(sv.length===1?' lugar salvo':' lugares salvos'):'Você ainda não salvou nenhum lugar. Abra um lugar e toque em “Salvar lugar”.';
+ $('savedList').innerHTML=sv.map(function(p){return '<div class="mini"><button class="o" data-open="'+p.id+'">'+esc(p.name)+'<small>'+esc(p.meta)+'</small></button><button class="x" data-unsave="'+p.id+'" aria-label="Remover '+esc(p.name)+' dos salvos">Remover</button></div>'}).join('');
+ $('sugSummary').textContent=sugg.length?sugg.length+(sugg.length===1?' sugestão enviada':' sugestões enviadas'):'Nenhuma sugestão ainda.';
+ $('sugList').innerHTML=sugg.map(function(p){return '<div class="mini"><button class="o" data-open="'+p.id+'">'+esc(p.name)+'<small>'+esc(p.category)+' · aguardando revisão</small></button><button class="x" data-delsug="'+p.id+'" aria-label="Excluir sugestão '+esc(p.name)+'">Excluir</button></div>'}).join('');
+ document.querySelectorAll('[data-pref]').forEach(function(i){i.checked=prefs.indexOf(i.dataset.pref)>-1});
+}
+function renderAll(){renderHome();renderSearch();renderTrend();renderProfile()}
+
+/* ---- detalhe ---- */
+var lastFocus=null;
+function openDetail(id){var p=byId(id);if(!p)return;lastFocus=document.activeElement;var s=saved.has(id);
+ $('detail').innerHTML='<img class="detail-img" src="'+photos[p.photo]+'" alt="Foto ilustrativa do ambiente de '+esc(p.name)+'"><span class="presencial" style="margin:0">'+(p.suggested?'Sugestão aguardando revisão':'✓ Atendimento presencial')+'</span><h2 class="detail-title">'+esc(p.name)+'</h2><p class="detail-sub">'+esc(p.meta)+' · Cidade Universitária (localização ilustrativa)</p><div class="tiles"><div class="tile"><b>Ambiente</b><span>'+esc(p.vibe)+'</span></div><div class="tile"><b>Experiência</b><span>'+esc(p.tags.join(' · '))+'</span></div><div class="tile"><b>Horários</b><span>A confirmar</span></div><div class="tile"><b>Endereço</b><span>A confirmar</span></div></div><button class="btn block'+(s?' saved':'')+'" id="saveBtn" aria-pressed="'+s+'">'+(s?'♥ Salvo · toque para remover':'♡ Salvar lugar')+'</button><button class="btn ghost block" id="routeBtn">Ver rota</button><div class="note">'+(p.suggested?'Esta sugestão está salva só neste navegador e aguarda revisão.':'Exemplo ilustrativo: nome, foto e informações não representam um estabelecimento real.')+'</div>';
+ $('saveBtn').onclick=function(){toggleSave(id);openDetail(id)};
+ $('routeBtn').onclick=function(){toast('Rotas ainda não disponíveis: endereço ilustrativo')};
+ $('detailOverlay').classList.add('open');$('detail').parentNode.querySelector('.close').focus()}
+function toggleSave(id){if(saved.has(id)){saved.delete(id);toast('Removido dos salvos')}else{saved.add(id);toast('Lugar salvo')}store('mesai-saved',Array.from(saved));renderAll()}
+function closeOverlays(){document.querySelectorAll('.overlay.open').forEach(function(o){o.classList.remove('open')});if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(function(){t.classList.remove('show')},2200)}
+
+/* ---- rotas por hash ---- */
+var VIEWS=['inicio','buscar','em-alta','perfil'];
+function route(){var v=(location.hash||'').replace(/^#\/?/,'');if(VIEWS.indexOf(v)<0)v='inicio';
+ VIEWS.forEach(function(x){$('view-'+x).classList.toggle('on',x===v)});
+ document.querySelectorAll('.nav').forEach(function(n){var on=n.dataset.go===v;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current')});
+ closeOverlays();window.scrollTo(0,0);document.title={inicio:'Mesaí — descubra onde comer',buscar:'Buscar · Mesaí','em-alta':'Em alta · Mesaí',perfil:'Perfil · Mesaí'}[v]}
+function go(v){if(location.hash==='#/'+v)route();else location.hash='#/'+v}
+function resetSearch(){S.cat='Tudo';S.filters=prefs.slice();S.q='';S.sel=null;$('searchInput').value=''}
+
+/* ---- eventos ---- */
+document.addEventListener('click',function(e){var t=e.target.closest('button');if(!t)return;
+ if(t.dataset.go){if(t.dataset.go==='buscar'&&!t.closest('.nav')&&false){}go(t.dataset.go);return}
+ if(t.dataset.open){var id=Number(t.dataset.open);openDetail(id);return}
+ if(t.dataset.homecat!==undefined){resetSearch();S.cat=t.dataset.homecat;renderSearch();go('buscar');return}
+ if(t.dataset.cat!==undefined){S.cat=t.dataset.cat;S.sel=null;renderSearch();return}
+ if(t.dataset.filter!==undefined){var f=t.dataset.filter;if(f==='Tudo')S.filters=[];else{var i=S.filters.indexOf(f);if(i>-1)S.filters.splice(i,1);else S.filters.push(f)}S.sel=null;renderSearch();return}
+ if(t.dataset.pin){S.sel=Number(t.dataset.pin);renderMap(places.filter(match));return}
+ if(t.dataset.unsave){toggleSave(Number(t.dataset.unsave));return}
+ if(t.dataset.delsug){var d=Number(t.dataset.delsug);sugg=sugg.filter(function(s){return s.id!==d});saved.delete(d);store('mesai-suggestions',sugg);store('mesai-saved',Array.from(saved));places=BASE.concat(sugg);renderAll();toast('Sugestão excluída');return}
+ if(t.dataset.reset!==undefined){resetSearch();renderSearch();return}
+ if(t.dataset.openSuggest!==undefined){lastFocus=t;$('suggestOverlay').classList.add('open');$('suggestForm').name.focus();return}
+ if(t.hasAttribute('data-close')){closeOverlays();return}
+});
+document.querySelectorAll('.overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)closeOverlays()})});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeOverlays()});
+$('modeList').onclick=function(){S.mode='list';renderSearch()};
+$('modeMap').onclick=function(){S.mode='map';renderSearch()};
+$('searchInput').oninput=function(e){S.q=e.target.value.trim();S.sel=null;renderSearch()};
+$('homeSearch').onsubmit=function(e){e.preventDefault();var q=$('homeInput').value.trim();resetSearch();S.q=q;$('searchInput').value=q;$('homeInput').value='';renderSearch();go('buscar')};
+$('locationButton').onclick=function(){toast('Área inicial: Cidade Universitária. Outras cidades virão depois.')};
+document.querySelectorAll('[data-pref]').forEach(function(i){i.onchange=function(){var k=i.dataset.pref,j=prefs.indexOf(k);if(i.checked&&j<0)prefs.push(k);if(!i.checked&&j>-1)prefs.splice(j,1);store('mesai-prefs',prefs);S.filters=prefs.slice();renderSearch();toast(i.checked?'Preferência ativada':'Preferência removida')}});
+$('clearData').onclick=function(){if(!confirm('Apagar favoritos, sugestões e preferências deste navegador?'))return;['mesai-saved','mesai-suggestions','mesai-prefs'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});saved=new Set();sugg=[];prefs=[];places=BASE.slice();resetSearch();renderAll();toast('Dados apagados')};
+var sc=$('sugCat');CATS.slice(1).forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];sc.appendChild(o)});
+$('suggestForm').onsubmit=function(e){e.preventDefault();var f=new FormData(e.target),name=String(f.get('name')||'').trim();if(!name)return;var cat=String(f.get('category')||'Regional'),about=String(f.get('about')||'').trim();
+ var ph={'Hambúrguer':1,'Café':2,'Pizza':3}[cat];var p={id:Date.now(),name:name,category:cat,meta:cat+' · sugestão',tags:['Aguardando revisão'],vibe:about||'Detalhes do ambiente a confirmar',photo:ph===undefined?0:ph,suggested:true};
+ sugg.unshift(p);store('mesai-suggestions',sugg);places=BASE.concat(sugg);e.target.reset();closeOverlays();resetSearch();renderAll();go('buscar');toast('Sugestão adicionada neste navegador')};
+window.addEventListener('hashchange',route);
+renderAll();route();
+</script>
+</body>
+</html>
