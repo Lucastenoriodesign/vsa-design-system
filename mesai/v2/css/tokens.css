@@ -1,0 +1,30 @@
+/* Mesaí · tokens de design. Cores, raios, sombras e espaços ficam só aqui. */
+:root{
+  /* superfícies */
+  --bg:#ffffff;--paper:#ffffff;--surface:#ffffff;--fill:#f0ece6;--cream:#fbf8f2;
+  /* texto */
+  --ink:#292a2b;--ink-2:#4f4a43;--ink-3:#5c564e;--muted:#6f685f;--icon-dim:#8a8379;
+  --ink-warm:#3b1f2b;--ink-warm-2:#6d5a60;--on-accent:#ffffff;
+  /* linhas */
+  --line:#e8e5e0;
+  /* marca */
+  --coral:#e87558;--coral-dark:#c25a42;--coral-bg:#fbe4de;--coral-ink:#a3412c;
+  --green:#3d765c;--green-bg:#e9f2eb;--amber:#f3a11a;--amber-bg:#fff0ce;
+  /* sombras */
+  --shadow:0 9px 24px #38291b0c;--shadow-float:0 12px 32px #38291b26,0 2px 6px #38291b14;
+  /* raios */
+  --r-sm:11px;--r-md:16px;--r-lg:23px;--r-pill:99px;
+  /* espaços */
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;
+  --focus:var(--coral);
+}
+/* Tema escuro: tokens prontos, ainda não ativado no app (ativar com data-theme="dark" no <html>). */
+:root[data-theme="dark"]{
+  --bg:#141312;--paper:#1c1b19;--surface:#1c1b19;--fill:#2a2825;--cream:#1c1b19;
+  --ink:#f4f1ec;--ink-2:#d9d4cc;--ink-3:#c4beb4;--muted:#a39d93;--icon-dim:#8b857b;
+  --ink-warm:#f4e9ee;--ink-warm-2:#cdbcc2;--on-accent:#1a0f0b;
+  --line:#34312d;
+  --coral:#ee826a;--coral-dark:#f09a86;--coral-bg:#3a2520;--coral-ink:#f2b3a4;
+  --green:#7cc6a4;--green-bg:#1f3329;--amber:#f3b13c;--amber-bg:#3a2f16;
+  --shadow:0 9px 24px #00000040;--shadow-float:0 12px 32px #00000066,0 2px 6px #00000040;
+}
