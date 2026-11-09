@@ -16,10 +16,10 @@ def ler(p):
 
 html = ler('index.html')
 css = ler('css/tokens.css') + '\n' + ler('css/app.css')
-js = ler('js/data.js') + '\n' + ler('js/app.js')
+js = '\n'.join(ler('js/' + n) for n in ['data.js', 'config.js', 'api.js', 'app.js', 'sync.js'])
 
 html = re.sub(r'<link rel="stylesheet" href="css/tokens.css">\s*<link rel="stylesheet" href="css/app.css">', lambda m: '<style>' + css + '</style>', html)
-html = html.replace('<script src="js/data.js"></script>\n<script src="js/app.js"></script>', '<script>' + js + '</script>')
+html = re.sub(r'(<script src="js/[a-z]+\.js"></script>\s*)+', lambda m: '<script>' + js + '</script>', html)
 html = re.sub(r'<link rel="manifest"[^>]*>', '', html)
 html = re.sub(r'<link rel="apple-touch-icon"[^>]*>', '', html)
 

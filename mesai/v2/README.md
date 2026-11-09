@@ -13,3 +13,8 @@ Estrutura:
 Rodar: `python3 -m http.server 8124` nesta pasta e abrir http://localhost:8124.
 Testes: `BASE=http://localhost:8124 NODE_PATH=$(npm root -g) node tests/smoke.js` (e `offline.js`).
 Arquivo único: `python3 tools/build-standalone.py dist/mesai.html`.
+
+## Servidor (Supabase)
+- `js/config.js` guarda a URL e a chave pública (publishable). `js/api.js` é o cliente; `js/sync.js` liga o app ao servidor.
+- Sem resposta do servidor, o app funciona só com dados locais.
+- Teste com servidor simulado: `BASE=http://localhost:8124 NODE_PATH=$(npm root -g) node tests/servidor-simulado.js`.
