@@ -23,7 +23,12 @@ var saved=new Set(load('mesai-saved',[]).filter(function(id){return places.some(
 var posts=load('mesai-posts',[]).filter(function(x){return x&&x.id&&x.text});
 var S={cat:'Tudo',region:'Tudo',q:'',mode:'list',flags:[],sort:'az'};
 function byId(id){return places.find(function(p){return p.id===id})}
-function pubPlaces(){return places.filter(visible)}
+var BAIRROS_ATIVOS=['Graciliano Ramos','Cidade Universitária'];
+var BAIRROS_MCZ=['Abolição','Antares','Barro Duro','Bebedouro','Benedito Bentes','Bom Parto','Canaã','Centro','Chã da Jaqueira','Chã de Bebedouro','Clima Bom','Cruz das Almas','Farol','Feitosa','Fernão Velho','Garça Torta','Gruta de Lourdes','Guaxuma','Ipioca','Jacarecica','Jacintinho','Jaraguá','Jardim Petrópolis','Levada','Mangabeiras','Mutange','Ouro Preto','Pajuçara','Pescaria','Petrópolis','Pinheiro','Pitanguinha','Poço','Ponta da Terra','Ponta Grossa','Ponta Verde','Pontal da Barra','Prado','Riacho Doce','Rio Novo','Santa Amélia','Santa Lúcia','Santos Dumont','São Jorge','Serraria','Tabuleiro do Martins','Trapiche da Barra','Vergel do Lago'];
+var bairro=load('mesai-bairro','Cidade Universitária');if(BAIRROS_ATIVOS.indexOf(bairro)<0)bairro='Cidade Universitária';
+function inBairro(p){return bairro==='Graciliano Ramos'?region(p)==='Graciliano Ramos':true}
+function pubPlaces(){return places.filter(visible).filter(inBairro)}
+function renderBairro(){var b=$('locationButton');if(b)b.textContent=bairro+', Maceió'}
 function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCase();
  if(S.q&&t.indexOf(S.q.toLowerCase())<0)return false;
  if(S.cat!=='Tudo'&&p.g!==S.cat)return false;
@@ -70,8 +75,10 @@ var prof=load('mesai-profile',{name:'Lucas Tenório'});var notif=load('mesai-not
 function renderProfile(){var nm=prof.name||'Lucas Tenório';$('pName').textContent=nm;$('rvName').textContent=nm;
  var n=places.filter(function(p){return saved.has(p.id)}).length;$('rvSaved').textContent=n;$('rvPts').textContent=points();$('rvSugg').textContent=sugg.length}
 function listRows(arr,act,lbl){return arr.length?arr.map(function(p){return '<div class="mini"><button class="o" data-open="'+esc(p.id)+'">'+esc(p.n)+'<small>'+esc(p.g)+'</small></button><button class="x" data-'+act+'="'+esc(p.id)+'">'+lbl+'</button></div>'}).join(''):''}
+function bairroRow(n,on){return '<button class="opt brr'+(n===bairro?' sel':'')+'" data-bairro="'+esc(n)+'" aria-pressed="'+(n===bairro)+'"><span>'+esc(n)+'</span><i>'+(n===bairro?'✓':'')+'</i></button>'}
 function openSheet(k){lastFocus=document.activeElement;var T='',B='';
- if(k==='edit'){T='Gerenciar perfil';B='<form class="form" id="profForm"><label>Seu nome<input name="name" maxlength="40" value="'+esc(prof.name||'')+'" required></label><button class="btn block" type="submit">Salvar</button></form><div class="note">O nome fica salvo só neste aparelho. Ainda não há conta nem e-mail.</div>'}
+ if(k==='bairro'){T='Escolher bairro';B='<p class="sheet-copy">Por enquanto o Mesaí cobre só estes dois bairros. Os outros chegam aos poucos.</p>'+BAIRROS_ATIVOS.map(function(n){return bairroRow(n)}).join('')+'<h3 class="sec-t">Em breve</h3>'+BAIRROS_MCZ.filter(function(n){return BAIRROS_ATIVOS.indexOf(n)<0}).map(function(n){return '<div class="opt brr off"><span>'+esc(n)+'</span><em>em breve</em></div>'}).join('')}
+ else if(k==='edit'){T='Gerenciar perfil';B='<form class="form" id="profForm"><label>Seu nome<input name="name" maxlength="40" value="'+esc(prof.name||'')+'" required></label><button class="btn block" type="submit">Salvar</button></form><div class="note">O nome fica salvo só neste aparelho. Ainda não há conta nem e-mail.</div>'}
  else if(k==='security'){T='Senha e segurança';B='<p class="sheet-copy">O Mesaí ainda não tem conta, login nem senha. Por isso não há o que proteger aqui por enquanto. Quando o login existir, você vai definir senha e acessos nesta tela.</p><div class="note">Seus dados (favoritos, sugestões, mensagens) ficam guardados apenas neste navegador. Quem usar este aparelho pode vê-los.</div><button class="btn ghost block" data-cleardata>Apagar dados deste aparelho</button>'}
  else if(k==='notif'){T='Notificações';B='<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Por enquanto só guardamos a sua preferência. O app ainda não envia avisos.</div>'}
  else if(k==='lang'){T='Idioma';B='<label class="opt">Português (Brasil)<input type="radio" name="lg" checked></label><label class="opt"><span>English <small>em breve</small></span><input type="radio" name="lg" disabled></label><label class="opt"><span>Español <small>em breve</small></span><input type="radio" name="lg" disabled></label>'}
@@ -108,7 +115,7 @@ function screen(t){var m=[],x=t.toLowerCase();
 function renderMod(){var pend=posts.filter(function(x){return x.status==='pendente'});
  $('modSum').textContent=pend.length+(pend.length===1?' comentário aguardando':' comentários aguardando')+'. A triagem é automática por regras simples: ela sugere, quem decide é você.';
  $('modList').innerHTML=pend.map(function(x){var m=x.flags||[];return '<div class="card"><h3>'+esc(x.kind)+(x.place&&byId(x.place)?' · '+esc(byId(x.place).n):'')+'</h3><p style="color:var(--ink);font-size:14px">'+esc(x.text)+'</p><span class="badge '+(m.length?'no':'ok')+'">'+(m.length?'Atenção: '+esc(m.join(', ')):'Triagem: nada suspeito')+'</span><div class="mod-row"><button class="btn" data-approve="'+x.id+'">Aprovar</button><button class="btn ghost" data-reject="'+x.id+'">Rejeitar</button></div></div>'}).join('')||'<div class="empty">Nenhum comentário para revisar.</div>'}
-function renderAll(){renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin()}
+function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
 function openDetail(id){var p=byId(id);if(!p)return;lastFocus=document.activeElement;var s=saved.has(id);
@@ -134,6 +141,7 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
  if(D.go){go(D.go);return}
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}
+ if(D.bairro){bairro=D.bairro;store('mesai-bairro',bairro);resetSearch();renderBairro();renderAll();closeOverlays();toast('Bairro: '+bairro);return}
  if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
  if(D.open){openDetail(D.open);return}
@@ -164,8 +172,8 @@ $('modeList').onclick=function(){S.mode='list';renderSearch()};
 $('modeMap').onclick=function(){S.mode='map';renderSearch()};
 $('searchInput').oninput=function(e){S.q=e.target.value.trim();renderSearch()};
 $('homeSearch').onsubmit=function(e){e.preventDefault();var q=$('homeInput').value.trim();resetSearch();S.q=q;$('searchInput').value=q;$('homeInput').value='';renderSearch();go('buscar')};
-$('locationButton').onclick=function(){toast('Área inicial: Graciliano Ramos e Cidade Universitária. Outros bairros virão depois.')};
-function clearAll(){if(!confirm('Apagar favoritos, sugestões, mensagens, fotos aplicadas e perfil deste navegador?'))return;['mesai-saved','mesai-suggestions','mesai-published','mesai-posts','mesai-photos','mesai-profile','mesai-notif','mesai-onboarded','mesai-interest','mesai-amb','mesai-checkins','mesai-trial'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});saved=new Set();sugg=[];interest=[];amb={};checkins=[];posts=[];published=new Set();photosOk={};prof={name:'Lucas Tenório'};notif={novos:true,comunidade:true};closeOverlays();places=BASE.slice();resetSearch();renderAll();toast('Dados apagados')}
+$('locationButton').onclick=function(){openSheet('bairro')};
+function clearAll(){if(!confirm('Apagar favoritos, sugestões, mensagens, fotos aplicadas e perfil deste navegador?'))return;['mesai-saved','mesai-suggestions','mesai-published','mesai-posts','mesai-photos','mesai-profile','mesai-notif','mesai-onboarded','mesai-interest','mesai-amb','mesai-checkins','mesai-trial','mesai-bairro'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});saved=new Set();sugg=[];interest=[];amb={};checkins=[];bairro='Cidade Universitária';posts=[];published=new Set();photosOk={};prof={name:'Lucas Tenório'};notif={novos:true,comunidade:true};closeOverlays();places=BASE.slice();resetSearch();renderAll();toast('Dados apagados')}
 CATS.slice(1).forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];$('sugCat').appendChild(o)});
 $('suggestForm').onsubmit=function(e){e.preventDefault();var f=new FormData(e.target),name=String(f.get('name')||'').trim();if(!name)return;var cat=String(f.get('category')||'Restaurantes'),about=String(f.get('about')||'').trim();
  var p={id:'sug-'+Date.now(),n:name,g:cat,c:cat,r:'Cidade Universitária',e:about||'Endereço a confirmar',d:'Sugestão da comunidade, aguardando revisão.',t:null,ev:'a_confirmar',pub:true,f:null,m:null,lat:null,lng:null,foto:null,h:null,suggested:true};
