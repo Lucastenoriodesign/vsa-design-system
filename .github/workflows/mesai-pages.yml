@@ -1,0 +1,33 @@
+name: Publicar Mesaí (GitHub Pages)
+
+on:
+  push:
+    branches: [main, claude/mesai-projeto-continuacao-xavx7b]
+    paths: ['mesai/v2/**', '.github/workflows/mesai-pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Remove arquivos que não vão para o site
+        run: rm -rf mesai/v2/tests mesai/v2/tools mesai/v2/README.md
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: mesai/v2
+      - id: deploy
+        uses: actions/deploy-pages@v4
