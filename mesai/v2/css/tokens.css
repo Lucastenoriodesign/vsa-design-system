@@ -18,13 +18,3 @@
   --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;
   --focus:var(--coral);
 }
-/* Tema escuro: tokens prontos, ainda não ativado no app (ativar com data-theme="dark" no <html>). */
-:root[data-theme="dark"]{
-  --bg:#141312;--paper:#1c1b19;--surface:#1c1b19;--fill:#2a2825;--cream:#1c1b19;
-  --ink:#f4f1ec;--ink-2:#d9d4cc;--ink-3:#c4beb4;--muted:#a39d93;--icon-dim:#8b857b;
-  --ink-warm:#f4e9ee;--ink-warm-2:#cdbcc2;--on-accent:#1a0f0b;
-  --line:#34312d;
-  --coral:#ee826a;--coral-dark:#f09a86;--coral-bg:#3a2520;--coral-ink:#f2b3a4;
-  --green:#7cc6a4;--green-bg:#1f3329;--amber:#f3b13c;--amber-bg:#3a2f16;
-  --shadow:0 9px 24px #00000040;--shadow-float:0 12px 32px #00000066,0 2px 6px #00000040;
-}

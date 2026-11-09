@@ -2,7 +2,7 @@
 
 Estrutura:
 - `index.html` — marcação das telas
-- `css/tokens.css` — todas as cores, raios, sombras e espaços (inclui tokens do tema escuro, ainda não ativado)
+- `css/tokens.css` — todas as cores, raios, sombras e espaços (só tema branco)
 - `css/app.css` — estilos que usam os tokens
 - `js/data.js` — cadastro dos 23 estabelecimentos
 - `js/app.js` — lógica do app
