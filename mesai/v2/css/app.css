@@ -170,3 +170,9 @@ html,body{background:var(--surface)}
 @media(min-width:1100px){
  .list{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+/* Desktop: banner em tamanho menor, centralizado */
+@media(min-width:720px){
+ .bslide{display:flex;justify-content:center}
+ .bslide img{width:auto;height:auto;max-width:620px;max-height:none;aspect-ratio:16/9;margin:0 auto}
+}
