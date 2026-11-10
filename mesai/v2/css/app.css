@@ -189,3 +189,10 @@ html,body{background:var(--surface)}
 @media(min-width:720px){
  #view-inicio>*:not(.bstage){max-width:1000px;margin-left:auto;margin-right:auto}
 }
+
+/* Lista de notificações */
+.nlist{display:grid;gap:8px;margin-bottom:16px}
+.nitem{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:14px;background:var(--cream);border:1px solid var(--line)}
+.nitem b{display:block;font-size:14px;color:var(--ink)}
+.nitem p{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.35}
+.nico{width:36px;height:36px;border-radius:50%;background:var(--coral-bg);display:grid;place-items:center;flex:none;font-size:16px}

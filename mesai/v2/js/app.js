@@ -88,7 +88,7 @@ function openSheet(k){lastFocus=document.activeElement;var T='',B='';
  if(k==='bairro'){T='Escolher bairro';B='<p class="sheet-copy">Por enquanto o Mesaí cobre só este bairro. Os outros chegam aos poucos.</p>'+BAIRROS_ATIVOS.map(function(n){return bairroRow(n)}).join('')+'<h3 class="sec-t">Em breve</h3>'+BAIRROS_MCZ.filter(function(n){return BAIRROS_ATIVOS.indexOf(n)<0}).map(function(n){return '<div class="opt brr off"><span>'+esc(n)+'</span><em>em breve</em></div>'}).join('')}
  else if(k==='edit'){T='Gerenciar perfil';B='<form class="form" id="profForm"><label>Seu nome<input name="name" maxlength="40" value="'+esc(prof.name||'')+'" required></label><button class="btn block" type="submit">Salvar</button></form><div class="note">O nome fica salvo só neste aparelho. Ainda não há conta nem e-mail.</div>'}
  else if(k==='security'){T='Conta e segurança';B=accountHtml()}
- else if(k==='notif'){T='Notificações';B='<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Por enquanto só guardamos a sua preferência. O app ainda não envia avisos.</div>'}
+ else if(k==='notif'){T='Notificações';B=NOTIFS_HTML+'<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Por enquanto só guardamos a sua preferência. O app ainda não envia avisos.</div>'}
  else if(k==='lang'){T='Idioma';B='<label class="opt">Português (Brasil)<input type="radio" name="lg" checked></label><label class="opt"><span>English <small>em breve</small></span><input type="radio" name="lg" disabled></label><label class="opt"><span>Español <small>em breve</small></span><input type="radio" name="lg" disabled></label>'}
  else if(k==='theme'){T='Tema';B='<label class="opt">Claro<input type="radio" name="th" checked></label><label class="opt"><span>Escuro <small>em breve</small></span><input type="radio" name="th" disabled></label><label class="opt"><span>Automático <small>em breve</small></span><input type="radio" name="th" disabled></label>'}
  else if(k==='points'){T='Meus pontos';var hist=checkins.slice().reverse().map(function(c){var p=byId(c.id);return '<div class="mini"><span>'+esc(p?p.n:'Lugar')+'<small>'+esc(c.d)+'</small></span><b>+10</b></div>'}).join('');B='<div class="pts"><b>'+points()+'</b><span>pontos neste aparelho</span></div><p class="sheet-copy">Ganhe 10 pontos por marcar “Estive aqui” em um lugar (1 vez por lugar por dia). Em breve: pontos por avaliações aprovadas e fotos.</p><div class="note">Os pontos ainda são locais. Viram pontos de verdade, com níveis e recompensas, quando existir conta e servidor.</div>'+(hist||'<div class="empty">Sem check-ins ainda.</div>')}
@@ -232,3 +232,14 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.add
  function upd(){ticking=false;var w=t.clientWidth||1,i=Math.round(t.scrollLeft/w);i=Math.min(dots.length-1,Math.max(0,i));if(i===cur)return;cur=i;for(var k=0;k<dots.length;k++)dots[k].classList.toggle('on',k===i)}
  t.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});
 })();
+
+/* Notificações de exemplo (lista local, ainda sem envio real) */
+var NOTIFS=[
+ {i:'📍',t:'Lugar novo no seu bairro',p:'Sabor Nordestino Restaurante e Pizzaria entrou no guia de Graciliano Ramos.'},
+ {i:'💬',t:'Seu comentário foi publicado',p:'Obrigado por ajudar quem vai comer no mesmo lugar.'},
+ {i:'⭐',t:'+10 pontos',p:'Você marcou check-in. Continue visitando lugares para subir no ranking.'},
+ {i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.'},
+ {i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.'},
+ {i:'✨',t:'Novidade no app',p:'Agora você filtra lugares por tipo e região, com os filtros recolhidos na busca.'}
+];
+var NOTIFS_HTML='<div class="nlist">'+NOTIFS.map(function(n){return '<div class="nitem"><span class="nico" aria-hidden="true">'+n.i+'</span><div><b>'+n.t+'</b><p>'+n.p+'</p></div></div>'}).join('')+'</div>';
