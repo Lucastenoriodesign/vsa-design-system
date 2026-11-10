@@ -208,3 +208,9 @@ html,body{background:var(--surface)}
 .nitem.k-comentario .nico{background:var(--coral-bg)}
 .nitem.k-plus .nico{background:var(--ink);color:#fff}
 .ndot{position:absolute;right:14px;top:16px;width:9px;height:9px;border-radius:50%;background:var(--coral)}
+
+/* Ícone das notificações: logo da marca */
+.nico{color:var(--coral)}
+.nlogo{width:22px;height:22px;display:block}
+.nitem.unread .nico{background:#fff}
+.nitem.k-plus .nico{background:var(--ink);color:#fff}
