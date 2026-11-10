@@ -269,3 +269,7 @@ body.is-home .top{padding-bottom:6px}
 body.is-home .top-row{margin-bottom:0}
 body.is-home .where{margin-top:0}
 body.is-home .greet{margin-bottom:0}
+
+/* Hub: o sino não empurra a localização para baixo */
+body.is-home .top-row{height:auto;align-items:flex-start}
+body.is-home .profile-btn{margin-top:-14px;margin-bottom:-14px}
