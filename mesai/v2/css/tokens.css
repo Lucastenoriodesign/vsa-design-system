@@ -16,5 +16,5 @@
   --r-sm:11px;--r-md:16px;--r-lg:23px;--r-pill:99px;
   /* espaços */
   --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;
-  --focus:var(--coral);
+  --focus:var(--coral-dark);
 }
