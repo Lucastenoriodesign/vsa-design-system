@@ -140,28 +140,17 @@ html,body{background:var(--surface)}
 .brr{width:100%;min-height:52px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;color:var(--ink);font-size:16px;font-weight:600;padding:0 2px}.brr:first-of-type{border-top:0}.brr i{font-style:normal;color:var(--coral-dark);font-size:20px}.brr.sel{color:var(--coral-dark)}
 .brr.off{color:#8a8379;font-weight:500}.brr.off em{font-style:normal;font-size:12px;background:var(--fill);border-radius:var(--r-pill);padding:2px 9px}
 
-/* Banners da tela inicial: estilo jovial com texto 3D e adesivos */
-.banners{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:6px -20px 8px;padding:6px 20px 14px}
-.banners::-webkit-scrollbar{display:none}
-.banner{position:relative;overflow:hidden;flex:0 0 82%;scroll-snap-align:start;min-height:196px;border:0;border-radius:26px;padding:20px 18px 18px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:10px;background:var(--coral);color:#fff;box-shadow:0 6px 0 #a3412c;transform:rotate(-1deg)}
-.banner:nth-child(even){transform:rotate(1deg)}
-.banner.b1{background:var(--coral)}
-.banner.b2{background:var(--amber);color:#fff;box-shadow:0 6px 0 #b86e07}
-.banner.b3{background:var(--green);box-shadow:0 6px 0 #22463a}
-.banner.b4{background:#292a2b;box-shadow:0 6px 0 #0f0f10}
-.bk{position:absolute;top:16px;left:16px;background:#fff;color:var(--coral-ink);font-size:12px;font-weight:900;letter-spacing:.02em;padding:6px 11px;border-radius:99px;transform:rotate(-4deg);box-shadow:0 2px 0 #292a2b}
-.b2 .bk{color:#7a4a06}.b3 .bk{color:#2c5a45}.b4 .bk{color:#292a2b;background:var(--amber)}
-.banner strong{position:relative;z-index:1;font-size:40px;line-height:.92;font-weight:900;letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-shadow:0 3px 0 #a3412c,0 6px 0 #7a2d1d,0 9px 14px #0003}
-.b2 strong{text-shadow:0 3px 0 #b86e07,0 6px 0 #7a4a06,0 9px 14px #0003}
-.b3 strong{text-shadow:0 3px 0 #22463a,0 6px 0 #142d24,0 9px 14px #0003}
-.b4 strong{color:var(--amber);text-shadow:0 3px 0 #b86e07,0 6px 0 #7a4a06,0 9px 14px #0005}
-.bcta{position:relative;z-index:1;background:#292a2b;color:#fff;border-radius:99px;padding:9px 16px;font-size:14px;font-weight:800;box-shadow:0 3px 0 #0f0f10}
-.b4 .bcta{background:var(--amber);color:#292a2b;box-shadow:0 3px 0 #b86e07}
-.art{position:absolute;right:-6px;top:14px;width:120px;height:120px;filter:drop-shadow(0 4px 0 #0002);pointer-events:none}
-.spark{position:absolute;color:#fff;font-size:26px;line-height:1;pointer-events:none;text-shadow:0 2px 0 #0002}
-.s1{right:150px;top:52px;font-size:20px}.s2{right:126px;top:118px;font-size:14px}
-.banner:active{transform:scale(.98) rotate(0)}
-@media(min-width:720px){.banner{flex-basis:calc(50% - 7px)}}
+/* Banner que troca ao rolar: cada imagem ocupa uma faixa da rolagem */
+.bstage{position:relative;height:250vh;margin:6px -20px 10px}
+.bsticky{position:sticky;top:76px;height:auto;padding:0 20px}
+.bslide{position:absolute;left:20px;right:20px;top:0;width:calc(100% - 40px);border:0;padding:0;background:none;border-radius:22px;overflow:hidden;opacity:0;transform:scale(.97);transition:opacity .35s ease,transform .35s ease;box-shadow:0 6px 0 #0001;display:block;pointer-events:none}
+.bslide img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.bslide.on{opacity:1;transform:scale(1);pointer-events:auto;position:relative}
+.bsticky{display:block}
+.bdots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.bdots i{width:7px;height:7px;border-radius:99px;background:var(--line);transition:width .3s,background .3s}
+.bdots i.on{width:22px;background:var(--coral)}
+@media(min-width:720px){.bslide,.bslide.on{width:calc(100% - 40px)}}
 /* Busca: chips quebram linha (sem arrastar), busca fixa ao rolar, filtros recolhidos */
 #view-buscar .chips{flex-wrap:wrap;overflow:visible;margin:12px 0 6px;padding:0}
 #view-buscar .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
