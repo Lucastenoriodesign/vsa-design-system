@@ -23,7 +23,13 @@
 <section class="view" id="view-inicio" aria-label="Início">
  <div class="welcome"><small>SEU GUIA DE RESTAURANTES</small><h1>Qual sua vontade de comer hoje?</h1></div>
  <form class="search" id="homeSearch" role="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="homeInput" type="search" enterkeyhint="search" aria-label="Buscar" placeholder="Nome, tipo de comida ou rua" autocomplete="off"></form>
- <div class="quickcats" id="categories"></div>
+ <div class="banners" aria-label="Destaques do Mesaí">
+  <button class="banner b1" data-go="buscar"><span class="bk">Lugar do dia</span><strong>Uma escolha por dia na parte alta de Maceió</strong><span class="bcta">Descobrir</span><i class="bmark" aria-hidden="true"></i></button>
+  <button class="banner b2" data-go="buscar"><span class="bk">Descubra</span><strong>Mesa, balcão ou lanchonete: veja o que dá para fazer no local</strong><span class="bcta">Explorar</span><i class="bmark" aria-hidden="true"></i></button>
+  <button class="banner b3" data-go="comunidade"><span class="bk">Comunidade</span><strong>Conte como foi sua experiência e ajude quem vem depois</strong><span class="bcta">Ver comentários</span><i class="bmark" aria-hidden="true"></i></button>
+  <button class="banner b4" data-go="planos"><span class="bk">Mesaí+</span><strong>Ganhe pontos marcando check-in nos lugares que visitou</strong><span class="bcta">Conhecer</span><i class="bmark" aria-hidden="true"></i></button>
+</div>
+<div class="quickcats" id="categories"></div>
  <section class="section">
   <div class="section-head"><div><h2>Lugar do dia</h2><p>Uma sugestão por dia na parte alta de Maceió.</p></div></div>
   <div id="hero"></div>

@@ -139,3 +139,19 @@ html,body{background:var(--surface)}
 #locationButton::after{content:"";display:inline-block;width:7px;height:7px;margin-left:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px)}
 .brr{width:100%;min-height:52px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;color:var(--ink);font-size:16px;font-weight:600;padding:0 2px}.brr:first-of-type{border-top:0}.brr i{font-style:normal;color:var(--coral-dark);font-size:20px}.brr.sel{color:var(--coral-dark)}
 .brr.off{color:#8a8379;font-weight:500}.brr.off em{font-style:normal;font-size:12px;background:var(--fill);border-radius:var(--r-pill);padding:2px 9px}
+
+/* Banners da tela inicial: identidade Mesaí (coral + âmbar, arcos do logo) */
+.banners{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:4px -20px 6px;padding:4px 20px 10px}
+.banners::-webkit-scrollbar{display:none}
+.banner{position:relative;overflow:hidden;flex:0 0 84%;scroll-snap-align:start;min-height:150px;border:0;border-radius:var(--r-lg);padding:18px 18px 16px;text-align:left;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;background:linear-gradient(135deg,var(--coral) 0%,var(--coral-dark) 100%);box-shadow:var(--shadow)}
+.banner.b2{background:linear-gradient(135deg,var(--amber) 0%,#e88a14 100%);color:#2b1d10}
+.banner.b3{background:linear-gradient(135deg,#3d765c 0%,#2c5a45 100%)}
+.banner.b4{background:linear-gradient(135deg,#292a2b 0%,#43362b 100%)}
+.bk{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.banner strong{font-size:20px;line-height:1.12;letter-spacing:-.03em;max-width:88%;font-weight:800}
+.bcta{margin-top:6px;align-self:flex-start;background:#fff;color:var(--coral-ink);border-radius:var(--r-pill);padding:8px 14px;font-size:13px;font-weight:750}
+.b2 .bcta{color:#7a4a06}.b3 .bcta{color:#2c5a45}.b4 .bcta{color:#292a2b}
+.bmark{position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:#ffffff1f;pointer-events:none}
+.bmark::after{content:"";position:absolute;left:38px;top:38px;width:74px;height:74px;border-radius:50%;background:#ffffff26}
+.banner:active{transform:scale(.985)}
+@media(min-width:720px){.banner{flex-basis:calc(50% - 6px)}}
