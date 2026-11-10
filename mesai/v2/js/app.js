@@ -38,7 +38,10 @@ function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCas
  if(S.flags.indexOf('tel')>-1&&!p.t)return false;
  if(S.flags.indexOf('shop')>-1&&region(p)!=='Shopping Pátio')return false;
  if(S.flags.indexOf('amb')>-1&&!(amb[p.id]&&amb[p.id].length))return false;
+ if(S.flags.indexOf('kid')>-1&&p.kid!==true)return false;
+ if(S.flags.indexOf('pet')>-1&&p.pet!==true)return false;
  return true}
+function yn(v){return v===true?'Aceita':v===false?'Não aceita':'Não informado'}
 function sorted(a){return a.slice().sort(function(x,y){return S.sort==='reg'?(region(x).localeCompare(region(y))||x.n.localeCompare(y.n)):x.n.localeCompare(y.n)})}
 function pic(p){var a=photosOk[p.id];return a?a.u:p.foto}
 var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472a'],'Pizzarias':['#fff0c9','#8a5d00'],'Lanchonetes':['#fbe4e0','#a3412c'],'Pastelarias':['#ffe9d0','#8d4f10'],'Cafeterias e padarias':['#efe3d6','#6b4a33'],'Açaíterias':['#f1e4f3','#6d2f7a']};
@@ -56,14 +59,14 @@ function renderHome(){
 }
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
- $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
  var rows=sorted(pubPlaces().filter(match));
  $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':'A–Z');
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
  $('count').textContent=rows.length+(rows.length===1?' lugar encontrado':' lugares encontrados');
  var map=S.mode==='map';$('list').hidden=map;$('map').hidden=!map;
  $('modeList').classList.toggle('on',!map);$('modeMap').classList.toggle('on',map);$('modeList').setAttribute('aria-pressed',!map);$('modeMap').setAttribute('aria-pressed',map);
- $('list').innerHTML=rows.length?rows.map(placeCard).join(''):emptyBox('Não encontrei um lugar com esses filtros.');
+ $('list').innerHTML=rows.length?rows.map(placeCard).join(''):emptyBox((S.flags.indexOf('kid')>-1||S.flags.indexOf('pet')>-1)?'Ainda estamos confirmando, lugar por lugar, quem aceita crianças e pets. Volte em breve.':'Não encontrei um lugar com esses filtros.');
  if(map)renderMap(rows);
 }
 function valid(p){return typeof p.lat==='number'&&typeof p.lng==='number'&&p.lat<-9.3&&p.lat>-9.9&&p.lng<-35.5&&p.lng>-36.0}
@@ -133,7 +136,7 @@ var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
 function openDetail(id){var p=byId(id);if(!p)return;lastFocus=document.activeElement;var s=saved.has(id);
  var dest=encodeURIComponent(p.n+', '+p.e);
- $('detail').innerHTML='<div class="dphoto">'+photo(p,'dph')+'</div>'+(pic(p)?'<div class="credit">Foto de terceiro, usada com autorização informada pelo responsável do app. <a href="'+esc((photosOk[p.id]||p).s||p.fs)+'" target="_blank" rel="noopener noreferrer">Fonte</a></div>':'')+'<span class="presencial" style="margin:0">'+esc(p.g)+'</span><h2 class="detail-title">'+esc(p.n)+'</h2><p class="detail-sub">'+esc(p.d)+'</p><div class="tiles"><div class="tile wide"><b>Endereço</b><span>'+esc(p.e)+'</span></div><div class="tile"><b>Telefone</b><span>'+esc(p.t||'Não informado')+'</span></div><div class="tile"><b>Horários</b><span>Não informado</span></div><div class="tile wide"><b>Atendimento no local</b><span>'+esc(EVID[p.ev]||'Não informado')+'. Sem visita física da equipe.</span></div></div>'+
+ $('detail').innerHTML='<div class="dphoto">'+photo(p,'dph')+'</div>'+(pic(p)?'<div class="credit">Foto de terceiro, usada com autorização informada pelo responsável do app. <a href="'+esc((photosOk[p.id]||p).s||p.fs)+'" target="_blank" rel="noopener noreferrer">Fonte</a></div>':'')+'<span class="presencial" style="margin:0">'+esc(p.g)+'</span><h2 class="detail-title">'+esc(p.n)+'</h2><p class="detail-sub">'+esc(p.d)+'</p><div class="tiles"><div class="tile wide"><b>Endereço</b><span>'+esc(p.e)+'</span></div><div class="tile"><b>Telefone</b><span>'+esc(p.t||'Não informado')+'</span></div><div class="tile"><b>Horários</b><span>Não informado</span></div><div class="tile"><b>Crianças</b><span>'+yn(p.kid)+'</span></div><div class="tile"><b>Pets</b><span>'+yn(p.pet)+'</span></div><div class="tile wide"><b>Atendimento no local</b><span>'+esc(EVID[p.ev]||'Não informado')+'. Sem visita física da equipe.</span></div></div>'+
  '<a class="btn block" href="https://www.google.com/maps/dir/?api=1&destination='+dest+'" target="_blank" rel="noopener noreferrer">Traçar rota</a>'+(p.t?'<a class="btn ghost block" href="tel:'+telHref(p.t)+'">Ligar · '+esc(p.t)+'</a>':'')+(p.m?'<a class="btn ghost block" href="'+esc(p.m)+'" target="_blank" rel="noopener noreferrer">Abrir no Google Maps</a>':'')+'<h3 class="sec-t">Ambiente</h3><p class="sec-s">Marque o que você viu. Com servidor, as marcações de todos aparecem aqui; por enquanto valem só no seu aparelho.</p><div class="ambs">'+AMB.map(function(a){var on=(amb[p.id]||[]).indexOf(a)>-1;var n=(S2.amb[p.id]&&S2.amb[p.id][a])||0;return '<button class="amb'+(on?' on':'')+'" data-amb="'+esc(p.id)+'|'+esc(a)+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+esc(a)+(n?' · '+n:'')+'</button>'}).join('')+'</div><button class="btn ghost block" data-checkin="'+esc(p.id)+'">📍 Estive aqui · +10 pontos</button>'+
  '<button class="btn ghost block'+(s?' saved':'')+'" id="saveBtn" aria-pressed="'+s+'">'+(s?'♥ Salvo · toque para remover':'♡ Salvar lugar')+'</button>'+
  '<div class="note">Dados reunidos de listagens públicas em 09/11/2026'+(p.f?' (<a href="'+esc(p.f)+'" target="_blank" rel="noopener noreferrer">fonte</a>)':'')+'. Telefone vindo de listagem pública: confirme ao ligar. Confira horário e se há mesas antes de ir. Ainda não há fotos, preços, cardápio ou avaliações.</div>';
