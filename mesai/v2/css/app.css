@@ -273,3 +273,7 @@ body.is-home .greet{margin-bottom:0}
 /* Hub: o sino não empurra a localização para baixo */
 body.is-home .top-row{height:auto;align-items:flex-start}
 body.is-home .profile-btn{margin-top:-14px;margin-bottom:-14px}
+
+/* Hub: localização com fonte menor */
+body.is-home .where button,body.is-home .where span{font-size:17px}
+body.is-home .where svg:first-child{width:18px;height:18px}
