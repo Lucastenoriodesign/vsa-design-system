@@ -263,3 +263,9 @@ body.is-home .cat span,body.is-home .cat{font-size:12px;line-height:1.2}
 body.is-home .where{flex-wrap:nowrap;white-space:nowrap;min-width:0}
 body.is-home .where button,body.is-home .where span{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.is-home .where svg:last-child{width:18px;height:18px;flex:none}
+
+/* Hub: localização colada na saudação */
+body.is-home .top{padding-bottom:6px}
+body.is-home .top-row{margin-bottom:0}
+body.is-home .where{margin-top:0}
+body.is-home .greet{margin-bottom:0}
