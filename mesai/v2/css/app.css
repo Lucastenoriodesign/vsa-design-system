@@ -97,7 +97,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}:focus-visible{o
 .cov{position:relative;display:grid;place-items:center;align-content:center;gap:2px;background:linear-gradient(145deg,var(--c1),var(--paper) 140%);color:var(--c2);text-align:center;overflow:hidden}
 .cov b{font-size:54px;line-height:1;font-weight:850;letter-spacing:-.05em;opacity:.9}.cov small{font-size:13px!important;font-weight:700;color:var(--c2)!important;opacity:.85}
 .cov>img{position:absolute!important;inset:0;width:100%!important;height:100%!important;border-radius:0!important;object-fit:cover!important;box-shadow:none!important;background:#eee}
-.pimg.cov b{font-size:44px}.pimg.cov small{font-size:11px!important}.dph.cov b{font-size:72px}
+.pimg.cov b{font-size:44px}.pimg.cov small{font-size:12px!important}.dph.cov b{font-size:72px}
 .hero{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}.hero-main{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left;color:inherit}.hphoto{height:180px;display:grid}.hbody{display:grid;gap:3px;padding:14px 16px 4px}.hbody b{font-size:20px;letter-spacing:-.035em}.hbody small{color:var(--muted);font-size:13px}.hbody i{font-style:normal;color:var(--ink-2);font-size:14px;margin-top:4px}.hero-act{display:flex;gap:8px;padding:10px 16px 16px}.hero-act .btn{flex:1}
 .sortbar{display:flex;justify-content:space-between;align-items:center;margin:-2px 0 6px}
 .sec-t{font-size:16px;margin:18px 0 2px}.sec-s{font-size:13px;color:var(--muted);margin:0 0 10px}.ambs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}.amb{min-height:44px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:0 14px;font-size:13px;font-weight:700;color:var(--ink-2)}.amb.on{background:var(--green-bg);border-color:var(--green);color:var(--green)}
@@ -215,7 +215,7 @@ html,body{background:var(--surface)}
 
 /* Contador de notificações no sininho */
 .profile-btn{position:relative}
-.nbadge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--coral-dark);color:#fff;font-size:11px;font-weight:800;line-height:19px;text-align:center;border:2px solid var(--bg);box-sizing:content-box}
+.nbadge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--coral-dark);color:#fff;font-size:12px;font-weight:800;line-height:19px;text-align:center;border:2px solid var(--bg);box-sizing:content-box}
 .nbadge[hidden]{display:none}
 
 /* Home: saudação no lugar do logo; sem título e sem barra de busca (a busca fica na aba Buscar) */
@@ -228,7 +228,7 @@ body.is-home #view-inicio .welcome,body.is-home #view-inicio #homeSearch{display
 /* Sininho: ícone inteiro e contador visível fora do círculo */
 .profile-btn{overflow:visible}
 .profile-btn svg{width:22px;height:22px;display:block;position:relative;z-index:0}
-.nbadge{top:-6px;right:-6px;min-width:18px;height:18px;line-height:18px;font-size:11px;padding:0 4px;border-width:2px;z-index:2}
+.nbadge{top:-6px;right:-6px;min-width:18px;height:18px;line-height:18px;font-size:12px;padding:0 4px;border-width:2px;z-index:2}
 
 /* Visualização travada no formato celular (coluna de 430px), também no computador */
 @media(min-width:520px){
