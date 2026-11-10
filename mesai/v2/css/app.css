@@ -240,3 +240,18 @@ body.is-home #view-inicio .welcome,body.is-home #view-inicio #homeSearch{display
  .bslide img{width:84%!important;max-width:none!important;height:auto!important;aspect-ratio:16/9}
  #view-inicio>*:not(.bstage){max-width:none!important}
 }
+
+/* Hub no estilo da referência: saudação, bairro em destaque, sino em círculo, categorias em 5 colunas */
+body.is-home .top{padding-top:14px}
+body.is-home .top-row{align-items:center;justify-content:space-between;gap:12px}
+body.is-home .greet{font-size:17px;font-weight:500;color:var(--muted);letter-spacing:0;line-height:1.2}
+body.is-home .where{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.03em;margin-top:4px}
+body.is-home .where svg{width:20px;height:20px;color:var(--coral)}
+body.is-home .profile-btn{width:52px;height:52px;border:0;background:var(--fill);box-shadow:none}
+body.is-home .profile-btn svg{width:24px;height:24px;color:var(--ink)}
+body.is-home .nbadge{top:-2px;right:-2px;min-width:22px;height:22px;line-height:22px;font-size:13px;background:#e5322d;border:0;padding:0 6px}
+body.is-home .quickcats{grid-template-columns:repeat(5,minmax(0,1fr));gap:18px 4px;padding:18px 0 8px}
+body.is-home .cat{font-size:12px;font-weight:700;gap:8px}
+body.is-home .cat img,body.is-home .cat-all-icon{width:64px;height:64px}
+body.is-home .cat-all-icon{background:var(--fill);box-shadow:none}
+body.is-home .cat-all-icon i{background:var(--ink-2)}
