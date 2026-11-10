@@ -1,7 +1,7 @@
 // Mesaí · service worker: abre o app mesmo com sinal fraco ou sem internet.
 // Estratégia: o "casco" do app (HTML, CSS, JS, imagens) vem do cache primeiro e é atualizado em segundo plano.
 // Mapas e fotos de terceiros não são guardados.
-const VERSAO = 'mesai-notif-logo-20';
+const VERSAO = 'mesai-rede-primeiro-21';
 const CASCO = [
   './', 'index.html', 'manifest.webmanifest',
   'css/tokens.css', 'css/app.css', 'js/data.js', 'js/config.js', 'js/api.js', 'js/app.js', 'js/sync.js',
@@ -27,13 +27,11 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return; // fotos e mapas de terceiros passam direto
+  // Rede primeiro: sempre busca a versão nova; sem internet, usa o cache
   e.respondWith(
-    caches.match(req).then(cached => {
-      const rede = fetch(req).then(res => {
-        if (res && res.ok) caches.open(VERSAO).then(c => c.put(req, res.clone()));
-        return res;
-      }).catch(() => cached);
-      return cached || rede;
-    })
+    fetch(req).then(res => {
+      if (res && res.ok) caches.open(VERSAO).then(c => c.put(req, res.clone()));
+      return res;
+    }).catch(() => caches.match(req))
   );
 });
