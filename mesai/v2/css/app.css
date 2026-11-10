@@ -212,3 +212,8 @@ html,body{background:var(--surface)}
 /* Ícone das notificações: logo da marca, na cor original */
 .nico{width:40px;height:40px;border-radius:12px;overflow:hidden;padding:0;background:none}
 .nlogo{width:100%;height:100%;display:block;object-fit:cover}
+
+/* Contador de notificações no sininho */
+.profile-btn{position:relative}
+.nbadge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--coral);color:#fff;font-size:11px;font-weight:800;line-height:19px;text-align:center;border:2px solid var(--bg);box-sizing:content-box}
+.nbadge[hidden]{display:none}

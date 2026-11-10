@@ -156,7 +156,7 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}
  if(D.bairro){bairro=D.bairro;store('mesai-bairro',bairro);resetSearch();renderBairro();renderAll();closeOverlays();toast('Bairro: '+bairro);return}
- if(D.notifRead!==undefined){NOTIFS.forEach(function(n){n.u=false});openSheet('notif');toast('Notificações marcadas como lidas');return}
+ if(D.notifRead!==undefined){NOTIFS.forEach(function(n){n.u=false});updateNotifBadge();openSheet('notif');toast('Notificações marcadas como lidas');return}
 if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
 if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
@@ -252,3 +252,7 @@ function notifItems(){
  return out;
 }
 var NOTIFS_HTML='<div class="nhead"><span>'+NOTIFS.filter(function(n){return n.u}).length+' não lidas</span><button class="link" data-notif-read>Marcar todas como lidas</button></div><div class="nlist">'+notifItems()+'</div><h3 class="nday">Preferências</h3>';
+
+/* Contador de notificações não lidas no sininho */
+function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas')}
+(function(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',updateNotifBadge);else updateNotifBadge()})();
