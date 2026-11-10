@@ -47,9 +47,9 @@
  <p class="page-sub">Busque por nome, filtre por tipo e região.</p>
  <label class="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="searchInput" type="search" aria-label="Buscar lugares" placeholder="Nome, tipo de comida ou rua" autocomplete="off"></label>
  <div class="chips" id="catChips" aria-label="Categorias"></div>
- <div class="filter-row" id="filters" aria-label="Filtros"></div>
+ <div class="filter-row" id="filters" aria-label="Filtros" hidden></div>
  <div class="bar"><span class="count" id="count" aria-live="polite"></span><div class="seg" role="group" aria-label="Modo de visualização"><button id="modeList" class="on" aria-pressed="true">Lista</button><button id="modeMap" aria-pressed="false">Mapa</button></div></div>
- <div class="sortbar"><button class="link" id="sortBtn">Ordenar: A–Z</button><button class="link" data-surprise>🎲 Surpreenda-me</button></div>
+ <div class="sortbar"><button class="link" data-filt-toggle aria-expanded="false" aria-controls="filters" id="filtBtn">Filtros</button><button class="link" id="sortBtn">Ordenar: A–Z</button><button class="link" data-surprise>🎲 Surpreenda-me</button></div>
  <div class="list" id="list"></div>
  <div class="map" id="map" hidden></div>
 </section>

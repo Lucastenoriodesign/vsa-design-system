@@ -155,3 +155,10 @@ html,body{background:var(--surface)}
 .bmark::after{content:"";position:absolute;left:38px;top:38px;width:74px;height:74px;border-radius:50%;background:#ffffff26}
 .banner:active{transform:scale(.985)}
 @media(min-width:720px){.banner{flex-basis:calc(50% - 6px)}}
+
+/* Busca: chips quebram linha (sem arrastar), busca fixa ao rolar, filtros recolhidos */
+#view-buscar .chips{flex-wrap:wrap;overflow:visible;margin:12px 0 6px;padding:0}
+#view-buscar .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+#view-buscar .filter-row[hidden]{display:none}
+#view-buscar .search{position:sticky;top:0;z-index:5;background:var(--bg);padding-top:6px;padding-bottom:6px}
+#filtBtn{font-weight:750}

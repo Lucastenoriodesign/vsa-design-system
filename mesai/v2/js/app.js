@@ -59,6 +59,7 @@ function renderSearch(){
  $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
  var rows=sorted(pubPlaces().filter(match));
  $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':'A–Z');
+ $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
  $('count').textContent=rows.length+(rows.length===1?' lugar encontrado':' lugares encontrados');
  var map=S.mode==='map';$('list').hidden=map;$('map').hidden=!map;
  $('modeList').classList.toggle('on',!map);$('modeMap').classList.toggle('on',map);$('modeList').setAttribute('aria-pressed',!map);$('modeMap').setAttribute('aria-pressed',map);
@@ -155,7 +156,8 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}
  if(D.bairro){bairro=D.bairro;store('mesai-bairro',bairro);resetSearch();renderBairro();renderAll();closeOverlays();toast('Bairro: '+bairro);return}
- if(D.sheet){openSheet(D.sheet);return}
+ if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
+if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
  if(D.open){openDetail(D.open);return}
  if(D.homecat!==undefined){resetSearch();S.cat=D.homecat;renderSearch();go('buscar');return}
