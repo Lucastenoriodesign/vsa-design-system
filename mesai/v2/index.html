@@ -13,6 +13,7 @@
 <header class="top">
  <div class="top-row">
   <img class="logo" src="assets/mesai-logo.png" alt="Mesaí">
+  <p class="greet" id="greet" hidden></p>
   <button class="profile-btn" data-sheet="notif" aria-label="Notificações"><span class="nbadge" id="nBadge" hidden></span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15L6 16.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
  </div>
  <div class="where"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg><button id="locationButton" aria-haspopup="dialog" aria-label="Escolher bairro">Cidade Universitária, Maceió</button></div>
@@ -23,8 +24,8 @@
 <section class="view" id="view-inicio" aria-label="Início">
  <div class="welcome"><small>SEU GUIA DE RESTAURANTES</small><h1>Qual sua vontade de comer hoje?</h1></div>
  <form class="search" id="homeSearch" role="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="homeInput" type="search" enterkeyhint="search" aria-label="Buscar" placeholder="Nome, tipo de comida ou rua" autocomplete="off"></form>
- <div class="bstage" aria-label="Destaques do Mesaí"><div class="btrack" id="btrack"><button class="bslide" data-go="buscar"><img src="img/banners/banner-1.webp" alt="#Lugar do dia: Bora comer?"></button><button class="bslide" data-go="buscar"><img src="img/banners/banner-2.webp" alt="#Descubra: Onde sentar" loading="lazy"></button><button class="bslide" data-go="comunidade"><img src="img/banners/banner-3.webp" alt="#Comunidade: Conta como foi!" loading="lazy"></button><button class="bslide" data-go="planos"><img src="img/banners/banner-4.webp" alt="#Mesaí+: Ganhe pontos" loading="lazy"></button></div><div class="bdots" id="bdots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div></div>
  <div class="quickcats" id="categories"></div>
+ <div class="bstage" aria-label="Destaques do Mesaí"><div class="btrack" id="btrack"><button class="bslide" data-go="buscar"><img src="img/banners/banner-1.webp" alt="#Lugar do dia: Bora comer?"></button><button class="bslide" data-go="buscar"><img src="img/banners/banner-2.webp" alt="#Descubra: Onde sentar" loading="lazy"></button><button class="bslide" data-go="comunidade"><img src="img/banners/banner-3.webp" alt="#Comunidade: Conta como foi!" loading="lazy"></button><button class="bslide" data-go="planos"><img src="img/banners/banner-4.webp" alt="#Mesaí+: Ganhe pontos" loading="lazy"></button></div><div class="bdots" id="bdots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div></div>
  <section class="section">
   <div class="section-head"><div><h2>Lugar do dia</h2><p>Uma sugestão por dia na parte alta de Maceió.</p></div></div>
   <div id="hero"></div>

@@ -128,7 +128,7 @@ function renderMod(){var pend=S2.on?S2.pend:posts.filter(function(x){return x.st
 function initialAvatar(name){var l=(name||'?').trim().charAt(0).toUpperCase()||'?';var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#e8e2d6"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="sans-serif" font-size="46" fill="#5c564e">'+l+'</text></svg>';return 'data:image/svg+xml,'+encodeURIComponent(svg)}
 function setMyAvatar(){var nm=(S2.on&&API.user()&&(S2.name||''))||'';var src=(S2.on&&API.user()&&S2.avatar)||initialAvatar(nm);document.querySelectorAll('.myav').forEach(function(i){i.src=src})}
 var avFile=$('avFile');if(avFile)avFile.onchange=function(){var f=avFile.files&&avFile.files[0];if(!f)return;if(!(S2.on&&API.user())){toast('Entre na conta para trocar a foto');avFile.value='';return}API.uploadAvatar(f).then(function(url){S2.avatar=url;setMyAvatar();toast('Foto atualizada')}).catch(function(){toast('Não foi possível trocar a foto')}).then(function(){avFile.value=''})};
-function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar()}
+function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
 function openDetail(id){var p=byId(id);if(!p)return;lastFocus=document.activeElement;var s=saved.has(id);
@@ -145,7 +145,7 @@ function closeOverlays(){document.querySelectorAll('.overlay.open').forEach(func
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(function(){t.classList.remove('show')},2200)}
 var VIEWS=['inicio','buscar','comunidade','em-alta','perfil','admin','planos'];
 var TITLES={inicio:'Mesaí — descubra onde comer',buscar:'Buscar · Mesaí',comunidade:'Comunidade · Mesaí','em-alta':'Em alta · Mesaí',perfil:'Perfil · Mesaí',admin:'Pendentes · Mesaí',planos:'Planos · Mesaí'};
-function route(){var v=(location.hash||'').replace(/^#\/?/,'');if(VIEWS.indexOf(v)<0)v='inicio';
+function route(){document.body.classList.toggle("is-home",(location.hash||"").replace(/^#\/?/,"")===""||(location.hash||"").indexOf("inicio")>-1);updateGreet();var v=(location.hash||'').replace(/^#\/?/,'');if(VIEWS.indexOf(v)<0)v='inicio';
  VIEWS.forEach(function(x){$('view-'+x).classList.toggle('on',x===v)});
  document.querySelectorAll('.nav').forEach(function(n){var on=n.dataset.go===v||((v==='admin'||v==='planos')&&n.dataset.go==='perfil');n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current')});
  closeOverlays();window.scrollTo(0,0);document.title=TITLES[v]}
@@ -256,3 +256,6 @@ var NOTIFS_HTML='<div class="nhead"><span>'+NOTIFS.filter(function(n){return n.u
 /* Contador de notificações não lidas no sininho */
 function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas')}
 (function(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',updateNotifBadge);else updateNotifBadge()})();
+
+/* Saudação na home: bom dia / boa tarde / boa noite + nome */
+function updateGreet(){var g=document.getElementById('greet');if(!g)return;var hr=new Date().getHours(),p=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';var nm=(S2.on&&API.user()&&S2.name)||'';g.textContent=nm?p+', '+nm.split(' ')[0]+'!':p+'!';g.hidden=!document.body.classList.contains('is-home')}
