@@ -209,8 +209,6 @@ html,body{background:var(--surface)}
 .nitem.k-plus .nico{background:var(--ink);color:#fff}
 .ndot{position:absolute;right:14px;top:16px;width:9px;height:9px;border-radius:50%;background:var(--coral)}
 
-/* Ícone das notificações: logo da marca */
-.nico{color:var(--coral)}
-.nlogo{width:22px;height:14px;display:block;background:currentColor;-webkit-mask:url(../img/logo-mark.png) center/contain no-repeat;mask:url(../img/logo-mark.png) center/contain no-repeat}
-.nitem.unread .nico{background:#fff}
-.nitem.k-plus .nico{background:var(--ink);color:#fff}
+/* Ícone das notificações: logo da marca, na cor original */
+.nico{width:40px;height:40px;border-radius:12px;overflow:hidden;padding:0;background:none}
+.nlogo{width:100%;height:100%;display:block;object-fit:cover}

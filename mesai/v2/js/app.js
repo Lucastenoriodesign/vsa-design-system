@@ -242,7 +242,7 @@ var NOTIFS=[
  {k:'dia',i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.',h:'ontem',d:'Esta semana',u:false},
  {k:'plus',i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.',h:'há 3 dias',d:'Esta semana',u:false}
 ];
-var NLOGO='<span class="nlogo"></span>';
+var NLOGO='<img class="nlogo" src="img/logo-app.png" alt="">';
 function notifItems(){
  var out='',last='';
  NOTIFS.forEach(function(n){
