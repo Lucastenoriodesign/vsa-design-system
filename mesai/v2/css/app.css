@@ -224,3 +224,8 @@ body.is-home .top-row{justify-content:space-between}
 .greet{margin:0;flex:1;font-size:20px;font-weight:850;letter-spacing:-.03em;color:var(--ink);line-height:1.1}
 .greet[hidden]{display:none}
 body.is-home #view-inicio .welcome,body.is-home #view-inicio #homeSearch{display:none}
+
+/* Sininho: ícone inteiro e contador visível fora do círculo */
+.profile-btn{overflow:visible}
+.profile-btn svg{width:22px;height:22px;display:block;position:relative;z-index:0}
+.nbadge{top:-6px;right:-6px;min-width:18px;height:18px;line-height:18px;font-size:10px;padding:0 4px;border-width:2px;z-index:2}
