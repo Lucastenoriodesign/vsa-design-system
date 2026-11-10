@@ -1,5 +1,7 @@
 [hidden]{display:none!important}*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);font:15px/1.4 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg)}
 button,input,select,textarea{font:inherit}button{cursor:pointer}:focus-visible{outline:2px solid var(--coral-dark);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--coral-dark);color:var(--on-accent);padding:10px 14px;border-radius:var(--r-sm);font-size:14px;font-weight:800;text-decoration:none}.skip:focus{top:12px}
 .app{max-width:1080px;margin:auto;min-height:100dvh;padding-bottom:92px}
 .top{position:sticky;top:0;z-index:12;background:#fbf8f2ee;backdrop-filter:blur(16px);border-bottom:1px solid var(--ink)0a;padding:12px 20px 11px}
 .top-row{display:flex;align-items:center;gap:12px}.logo{height:26px;width:auto;display:block}
@@ -249,7 +251,7 @@ body.is-home .where{font-size:24px;font-weight:800;color:var(--ink);letter-spaci
 body.is-home .where svg{width:20px;height:20px;color:var(--coral)}
 body.is-home .profile-btn{width:52px;height:52px;border:0;background:var(--fill);box-shadow:none}
 body.is-home .profile-btn svg{width:24px;height:24px;color:var(--ink)}
-body.is-home .nbadge{top:-2px;right:-2px;min-width:22px;height:22px;line-height:22px;font-size:13px;background:#e5322d;border:0;padding:0 6px}
+body.is-home .nbadge{top:-2px;right:-2px;min-width:22px;height:22px;line-height:22px;font-size:13px;background:var(--coral-dark);border:0;padding:0 6px}
 body.is-home .quickcats{grid-template-columns:repeat(5,minmax(0,1fr));gap:18px 4px;padding:18px 0 8px}
 body.is-home .cat{font-size:12px;font-weight:700;gap:8px}
 body.is-home .cat img,body.is-home .cat-all-icon{width:64px;height:64px}
