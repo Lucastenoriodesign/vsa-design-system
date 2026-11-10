@@ -14,6 +14,7 @@ const BASE = process.env.BASE || 'http://localhost:8124';
   ok(await p.$('#hero .hero'), 'lugar do dia aparece');
   await p.click('.nav[data-go=buscar]');
   ok((await p.$$('#list .place')).length === 19, '19 lugares publicados');
+  await p.click('#filtBtn');
   await p.click('[data-flag=tel]');
   ok((await p.$$('#list .place')).length === 18, 'filtro "tem telefone"');
   await p.click('[data-flag=tel]');
