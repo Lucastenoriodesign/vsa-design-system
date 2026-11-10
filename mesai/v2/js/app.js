@@ -156,7 +156,8 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}
  if(D.bairro){bairro=D.bairro;store('mesai-bairro',bairro);resetSearch();renderBairro();renderAll();closeOverlays();toast('Bairro: '+bairro);return}
- if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
+ if(D.notifRead!==undefined){NOTIFS.forEach(function(n){n.u=false});openSheet('notif');toast('Notificações marcadas como lidas');return}
+if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
 if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
  if(D.open){openDetail(D.open);return}
@@ -235,11 +236,18 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.add
 
 /* Notificações de exemplo (lista local, ainda sem envio real) */
 var NOTIFS=[
- {i:'📍',t:'Lugar novo no seu bairro',p:'Sabor Nordestino Restaurante e Pizzaria entrou no guia de Graciliano Ramos.'},
- {i:'💬',t:'Seu comentário foi publicado',p:'Obrigado por ajudar quem vai comer no mesmo lugar.'},
- {i:'⭐',t:'+10 pontos',p:'Você marcou check-in. Continue visitando lugares para subir no ranking.'},
- {i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.'},
- {i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.'},
- {i:'✨',t:'Novidade no app',p:'Agora você filtra lugares por tipo e região, com os filtros recolhidos na busca.'}
+ {k:'lugar',i:'📍',t:'Lugar novo no seu bairro',p:'Sabor Nordestino Restaurante e Pizzaria entrou no guia de Graciliano Ramos.',h:'agora',d:'Hoje',u:true},
+ {k:'pontos',i:'⭐',t:'+10 pontos no seu perfil',p:'Você marcou check-in. Continue visitando lugares para subir no ranking.',h:'há 2 h',d:'Hoje',u:true},
+ {k:'comentario',i:'💬',t:'Seu comentário foi publicado',p:'Obrigado por ajudar quem vai comer no mesmo lugar.',h:'há 5 h',d:'Hoje',u:false},
+ {k:'dia',i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.',h:'ontem',d:'Esta semana',u:false},
+ {k:'plus',i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.',h:'há 3 dias',d:'Esta semana',u:false}
 ];
-var NOTIFS_HTML='<div class="nlist">'+NOTIFS.map(function(n){return '<div class="nitem"><span class="nico" aria-hidden="true">'+n.i+'</span><div><b>'+n.t+'</b><p>'+n.p+'</p></div></div>'}).join('')+'</div>';
+function notifItems(){
+ var out='',last='';
+ NOTIFS.forEach(function(n){
+  if(n.d!==last){out+='<h3 class="nday">'+n.d+'</h3>';last=n.d}
+  out+='<div class="nitem k-'+n.k+(n.u?' unread':'')+'"><span class="nico" aria-hidden="true">'+n.i+'</span><div class="nbody"><b>'+n.t+'</b><p>'+n.p+'</p><small>'+n.h+'</small></div>'+(n.u?'<span class="ndot" aria-label="Não lida"></span>':'')+'</div>';
+ });
+ return out;
+}
+var NOTIFS_HTML='<div class="nhead"><span>'+NOTIFS.filter(function(n){return n.u}).length+' não lidas</span><button class="link" data-notif-read>Marcar todas como lidas</button></div><div class="nlist">'+notifItems()+'</div><h3 class="nday">Preferências</h3>';
