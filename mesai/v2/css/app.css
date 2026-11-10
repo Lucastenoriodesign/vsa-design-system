@@ -176,3 +176,10 @@ html,body{background:var(--surface)}
  .bslide{display:flex;justify-content:center}
  .bslide img{width:auto;height:auto;max-width:620px;max-height:none;aspect-ratio:16/9;margin:0 auto}
 }
+
+/* Banners menores (celular e desktop), mantendo proporção e centralizados */
+.bslide{display:flex;justify-content:center}
+.bslide img{width:84%;height:auto;max-width:none;aspect-ratio:16/9;margin:0 auto;border-radius:18px}
+@media(min-width:720px){
+ .bslide img{width:auto;max-width:480px}
+}
