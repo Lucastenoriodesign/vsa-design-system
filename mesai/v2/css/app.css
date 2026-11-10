@@ -140,17 +140,15 @@ html,body{background:var(--surface)}
 .brr{width:100%;min-height:52px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;color:var(--ink);font-size:16px;font-weight:600;padding:0 2px}.brr:first-of-type{border-top:0}.brr i{font-style:normal;color:var(--coral-dark);font-size:20px}.brr.sel{color:var(--coral-dark)}
 .brr.off{color:#8a8379;font-weight:500}.brr.off em{font-style:normal;font-size:12px;background:var(--fill);border-radius:var(--r-pill);padding:2px 9px}
 
-/* Banner que troca ao rolar: cada imagem ocupa uma faixa da rolagem */
-.bstage{position:relative;height:250vh;margin:6px -20px 10px}
-.bsticky{position:sticky;top:76px;height:auto;padding:0 20px}
-.bslide{position:absolute;left:20px;right:20px;top:0;width:calc(100% - 40px);border:0;padding:0;background:none;border-radius:22px;overflow:hidden;opacity:0;transform:scale(.97);transition:opacity .35s ease,transform .35s ease;box-shadow:0 6px 0 #0001;display:block;pointer-events:none}
-.bslide img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
-.bslide.on{opacity:1;transform:scale(1);pointer-events:auto;position:relative}
-.bsticky{display:block}
-.bdots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+/* Banners da tela inicial: carrossel horizontal de tela cheia, arrastar para o lado */
+.bstage{margin:26px -20px 14px}
+.btrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.btrack::-webkit-scrollbar{display:none}
+.bslide{flex:0 0 100%;scroll-snap-align:center;border:0;padding:0;margin:0;background:none;display:block}
+.bslide img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.bdots{display:flex;justify-content:center;gap:6px;margin-top:12px}
 .bdots i{width:7px;height:7px;border-radius:99px;background:var(--line);transition:width .3s,background .3s}
 .bdots i.on{width:22px;background:var(--coral)}
-@media(min-width:720px){.bslide,.bslide.on{width:calc(100% - 40px)}}
 /* Busca: chips quebram linha (sem arrastar), busca fixa ao rolar, filtros recolhidos */
 #view-buscar .chips{flex-wrap:wrap;overflow:visible;margin:12px 0 6px;padding:0}
 #view-buscar .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}

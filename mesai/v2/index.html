@@ -23,16 +23,8 @@
 <section class="view" id="view-inicio" aria-label="Início">
  <div class="welcome"><small>SEU GUIA DE RESTAURANTES</small><h1>Qual sua vontade de comer hoje?</h1></div>
  <form class="search" id="homeSearch" role="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="homeInput" type="search" enterkeyhint="search" aria-label="Buscar" placeholder="Nome, tipo de comida ou rua" autocomplete="off"></form>
- <div class="bstage" id="bstage" aria-label="Destaques do Mesaí">
-  <div class="bsticky">
-    <button class="bslide on" data-go="buscar"><img src="img/banners/banner-1.webp" alt="#Lugar do dia: Bora comer?"></button>
-    <button class="bslide" data-go="buscar"><img src="img/banners/banner-2.webp" alt="#Descubra: Onde sentar" loading="lazy"></button>
-    <button class="bslide" data-go="comunidade"><img src="img/banners/banner-3.webp" alt="#Comunidade: Conta como foi!" loading="lazy"></button>
-    <button class="bslide" data-go="planos"><img src="img/banners/banner-4.webp" alt="#Mesaí+: Ganhe pontos" loading="lazy"></button>
-    <div class="bdots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
-  </div>
-</div>
-<div class="quickcats" id="categories"></div>
+ <div class="bstage" aria-label="Destaques do Mesaí"><div class="btrack" id="btrack"><button class="bslide" data-go="buscar"><img src="img/banners/banner-1.webp" alt="#Lugar do dia: Bora comer?"></button><button class="bslide" data-go="buscar"><img src="img/banners/banner-2.webp" alt="#Descubra: Onde sentar" loading="lazy"></button><button class="bslide" data-go="comunidade"><img src="img/banners/banner-3.webp" alt="#Comunidade: Conta como foi!" loading="lazy"></button><button class="bslide" data-go="planos"><img src="img/banners/banner-4.webp" alt="#Mesaí+: Ganhe pontos" loading="lazy"></button></div><div class="bdots" id="bdots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div></div>
+ <div class="quickcats" id="categories"></div>
  <section class="section">
   <div class="section-head"><div><h2>Lugar do dia</h2><p>Uma sugestão por dia na parte alta de Maceió.</p></div></div>
   <div id="hero"></div>

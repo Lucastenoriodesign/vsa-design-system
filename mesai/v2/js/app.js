@@ -225,19 +225,10 @@ renderAll();route();
 
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',function(){try{navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}})}
 
-/* Banner da tela inicial: troca conforme a rolagem da página */
+/* Banners da tela inicial: indicador acompanha o arrasto lateral */
 (function(){
- var stage=document.getElementById('bstage');if(!stage)return;
- var slides=stage.querySelectorAll('.bslide'),dots=stage.querySelectorAll('.bdots i'),n=slides.length,ticking=false,cur=-1;
- function update(){
-  ticking=false;
-  var r=stage.getBoundingClientRect(),sticky=stage.querySelector('.bsticky'),range=stage.offsetHeight-sticky.offsetHeight;
-  var p=range>0?Math.min(1,Math.max(0,-r.top/range)):0;
-  var idx=Math.min(n-1,Math.floor(p*n));
-  if(idx===cur)return;cur=idx;
-  for(var k=0;k<n;k++){slides[k].classList.toggle('on',k===idx);if(dots[k])dots[k].classList.toggle('on',k===idx)}
- }
- window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
- window.addEventListener('resize',update);
- update();
+ var t=document.getElementById('btrack');if(!t)return;
+ var dots=document.querySelectorAll('#bdots i'),ticking=false,cur=0;
+ function upd(){ticking=false;var w=t.clientWidth||1,i=Math.round(t.scrollLeft/w);i=Math.min(dots.length-1,Math.max(0,i));if(i===cur)return;cur=i;for(var k=0;k<dots.length;k++)dots[k].classList.toggle('on',k===i)}
+ t.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});
 })();
