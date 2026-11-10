@@ -255,3 +255,11 @@ body.is-home .cat{font-size:12px;font-weight:700;gap:8px}
 body.is-home .cat img,body.is-home .cat-all-icon{width:64px;height:64px}
 body.is-home .cat-all-icon{background:var(--fill);box-shadow:none}
 body.is-home .cat-all-icon i{background:var(--ink-2)}
+
+/* Ajustes do hub: categorias em 4 colunas sem sobreposição; localização em uma linha */
+body.is-home .quickcats{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 8px}
+body.is-home .cat{min-width:0}
+body.is-home .cat span,body.is-home .cat{font-size:12px;line-height:1.2}
+body.is-home .where{flex-wrap:nowrap;white-space:nowrap;min-width:0}
+body.is-home .where button,body.is-home .where span{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.is-home .where svg:last-child{width:18px;height:18px;flex:none}

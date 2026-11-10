@@ -258,4 +258,4 @@ function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,
 (function(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',updateNotifBadge);else updateNotifBadge()})();
 
 /* Saudação na home: bom dia / boa tarde / boa noite + nome */
-function updateGreet(){var g=document.getElementById('greet');if(!g)return;var hr=parseInt(new Intl.DateTimeFormat('pt-BR',{hour:'numeric',hour12:false,timeZone:'America/Maceio'}).format(new Date()),10)||0,p=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';var nm=(S2.on&&API.user()&&S2.name)||'';g.textContent=nm?p+', '+nm.split(' ')[0]+'!':p+'!';g.hidden=!document.body.classList.contains('is-home')}
+function updateGreet(){var g=document.getElementById('greet');if(!g)return;var hr=parseInt(new Intl.DateTimeFormat('pt-BR',{hour:'numeric',hour12:false,timeZone:'America/Maceio'}).format(new Date()),10)||0,p=(hr<5||hr>=18)?'Boa noite':hr<12?'Bom dia':'Boa tarde';var nm=(S2.on&&API.user()&&S2.name)||'';g.textContent=nm?p+', '+nm.split(' ')[0]+'!':p+'!';g.hidden=!document.body.classList.contains('is-home')}
