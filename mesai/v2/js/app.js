@@ -242,7 +242,7 @@ var NOTIFS=[
  {k:'dia',i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.',h:'ontem',d:'Esta semana',u:false},
  {k:'plus',i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.',h:'há 3 dias',d:'Esta semana',u:false}
 ];
-var NLOGO='<svg class="nlogo" viewBox="0 0 1080 1080" aria-hidden="true"><rect x="258" y="385" width="564" height="100" rx="50" fill="currentColor"/><path d="M372 505H418L390 630Q380 690 366 690Q322 695 322 650Q335 580 350 530Q356 510 372 505Z" fill="currentColor"/><path d="M670 505H714Q730 515 745 580Q760 640 764 668Q766 692 740 692Q712 692 700 620Q690 560 670 505Z" fill="currentColor"/></svg>';
+var NLOGO='<span class="nlogo"></span>';
 function notifItems(){
  var out='',last='';
  NOTIFS.forEach(function(n){
