@@ -211,6 +211,6 @@ html,body{background:var(--surface)}
 
 /* Ícone das notificações: logo da marca */
 .nico{color:var(--coral)}
-.nlogo{width:22px;height:14px;display:block;background:currentColor;-webkit-mask:url(img/logo-mark.png) center/contain no-repeat;mask:url(img/logo-mark.png) center/contain no-repeat}
+.nlogo{width:22px;height:14px;display:block;background:currentColor;-webkit-mask:url(../img/logo-mark.png) center/contain no-repeat;mask:url(../img/logo-mark.png) center/contain no-repeat}
 .nitem.unread .nico{background:#fff}
 .nitem.k-plus .nico{background:var(--ink);color:#fff}
