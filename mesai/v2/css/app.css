@@ -374,3 +374,36 @@ body.is-home .where svg:first-child{width:18px;height:18px}
 .nav{letter-spacing:-.01em}
 .bottom{padding:0 10px}
 .srv-on .only-local{display:none}
+
+/* Rodada 11/11/2026 (3): padrões vistos no iFood e na 99 */
+/* 1. Buscar: categorias em uma linha com rolagem lateral */
+#view-buscar .chips{flex-wrap:nowrap;overflow-x:auto;margin:12px -20px 6px;padding:2px 20px}
+#view-buscar .chips .chip{flex:none}
+/* 2. Cartão de lugar mais compacto */
+.place{grid-template-columns:104px 1fr;min-height:104px}
+.pimg{min-height:104px}
+.pimg.cov b{font-size:36px}
+.cw.p .heart{left:calc(104px - 46px)}
+.pinfo{padding:10px 12px;display:flex;flex-direction:column;justify-content:center}
+.pcat{margin-top:3px}.ptags{margin-top:3px}
+/* 5. Carregando */
+.skel{display:grid;grid-template-columns:104px 1fr;min-height:104px;border-radius:var(--r-md);overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.skel i,.skel b,.skel em,.skel.big{background:linear-gradient(90deg,var(--fill) 25%,#f7f4ef 50%,var(--fill) 75%);background-size:200% 100%;animation:skel 1.2s linear infinite}
+.skel span{display:grid;align-content:center;gap:9px;padding:0 14px}
+.skel b{height:14px;width:70%;border-radius:7px}.skel em{height:11px;width:50%;border-radius:6px}.skel em:last-child{width:85%}
+.skel.big{display:block;min-height:260px;border:0;border-radius:var(--r-lg)}
+@keyframes skel{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.skel i,.skel b,.skel em,.skel.big{animation:none}}
+/* 4. Vistos recentemente */
+.rrow{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px 4px}.rrow::-webkit-scrollbar{display:none}
+.rtile{flex:none;width:92px;border:0;background:transparent;padding:0;color:var(--ink);text-align:left;font-size:13px;font-weight:700;line-height:1.2}
+.rtile .rimg{display:grid;width:92px;height:92px;border-radius:var(--r-md);margin-bottom:6px}
+.rtile .rimg.cov b{font-size:34px}.rtile .rimg.cov small{display:none}
+.rtile>span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* 7. Perfil: explicação em cada linha e contador de não lidas */
+.row{min-height:64px}
+.row .rl small{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rv{flex:none;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rbadge{min-width:22px;height:22px;padding:0 6px;border-radius:var(--r-pill);background:var(--coral-dark);color:var(--on-accent);font-size:13px;font-weight:800;line-height:22px;text-align:center}
+.row .rbadge[hidden]{display:none}
+.pcat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

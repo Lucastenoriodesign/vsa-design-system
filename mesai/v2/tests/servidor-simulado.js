@@ -82,6 +82,18 @@ function filtro(q, campo) { const v = q.get(campo); return v && v.startsWith('eq
   ok(geo.on && geo.n > 0 && geo.comLocal, 'lugar do servidor sem coordenada usa a do cadastro local');
   ok(geo.semLocal, 'lugar sem coordenada em lugar nenhum continua sem pin');
 
+  // 0b) sem conta, com servidor: check-in pede login e não rende pontos
+  await p.goto(BASE + '/#/buscar');
+  await p.waitForTimeout(300);
+  ok((await p.$$('#list .skel')).length === 0 && (await p.$$('#list .place')).length > 0, 'lista sai do estado de carregamento');
+  await p.click('#list .place');
+  await p.click('[data-checkin]');
+  await p.waitForTimeout(300);
+  ok(await p.$('#authForm'), 'check-in sem conta pede para entrar');
+  ok(db.checkins.length === 0, 'check-in sem conta não é gravado');
+  await p.goto(BASE + '/#/comunidade');
+  await p.waitForTimeout(300);
+
   // 1) sem conta: não dá para comentar
   await p.fill('#postText', 'Gostei do ambiente');
   await p.click('#postForm .btn');

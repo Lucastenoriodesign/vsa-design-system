@@ -48,13 +48,19 @@ var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472
 function photo(p,cls){var u=pic(p),c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();
  return '<span class="'+cls+' cov" style="--c1:'+c[0]+';--c2:'+c[1]+'" aria-hidden="true"><b>'+esc(ini)+'</b><small>'+esc(p.g)+'</small>'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>'}
 function heartBtn(p){var on=saved.has(p.id);return '<button class="heart'+(on?' on':'')+'" data-heart="'+esc(p.id)+'" aria-pressed="'+on+'" aria-label="'+(on?'Remover ':'Salvar ')+esc(p.n)+(on?' dos salvos':'')+'">salvar</button>'}
-function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place" data-open="'+esc(p.id)+'">'+photo(p,'pimg')+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat">'+esc(p.g)+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
+function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place" data-open="'+esc(p.id)+'">'+photo(p,'pimg')+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat">'+esc(p.g)+' · '+esc(region(p))+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
+var LOADING=!!(typeof API!=='undefined'&&typeof MESAI_CONFIG!=='undefined'&&MESAI_CONFIG.supabaseUrl);
+function skel(n){var h='';for(var i=0;i<n;i++)h+='<div class="skel" aria-hidden="true"><i></i><span><b></b><em></em><em></em></span></div>';return h}
 function emptyBox(msg){return '<div class="empty">'+msg+'<br><button class="btn ghost" data-reset>Limpar filtros</button></div>'}
+var recent=load('mesai-recent',[]);
+function addRecent(id){recent=[id].concat(recent.filter(function(x){return x!==id})).slice(0,8);store('mesai-recent',recent);renderRecent()}
+function renderRecent(){var box=$('recentBox');if(!box)return;var rows=LOADING?[]:recent.map(byId).filter(function(p){return p&&visible(p)});box.hidden=!rows.length;$('recentList').innerHTML=rows.map(function(p){return '<button class="rtile" data-open="'+esc(p.id)+'">'+photo(p,'rimg')+'<span>'+esc(p.n)+'</span></button>'}).join('')}
 function renderHome(){
  $('categories').innerHTML=CATS.map(function(c){return '<button class="cat" data-homecat="'+esc(c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'<span class="cat-all-icon"><i></i></span>')+c[1]+'</button>'}).join('');
  var pp=pubPlaces();var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  $('hero').innerHTML=h?'<div class="hero"><button class="hero-main" data-open="'+esc(h.id)+'">'+photo(h,'hphoto')+'<span class="hbody"><b>'+esc(h.n)+'</b><small>'+esc(h.g)+' · '+esc(region(h))+'</small><i>'+esc(h.d)+'</i></span></button><div class="hero-act"><button class="btn" data-open="'+esc(h.id)+'">Ver detalhes</button><button class="btn ghost" data-surprise>Surpreenda-me</button></div></div>':'';
- $('homeList').innerHTML=pp.slice(0,6).map(placeCard).join('');
+ if(LOADING){$('hero').innerHTML='<div class="skel big" aria-hidden="true"></div>';$('homeList').innerHTML=skel(3);$('homeList').setAttribute('aria-busy','true');$('homeCount').textContent='Ver todos';renderRecent();return}
+ $('homeList').removeAttribute('aria-busy');$('homeList').innerHTML=pp.slice(0,6).map(placeCard).join('');renderRecent();
  $('homeCount').textContent='Ver todos os '+pp.length;
 }
 function renderSearch(){
@@ -63,6 +69,8 @@ function renderSearch(){
  var rows=sorted(pubPlaces().filter(match));
  $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':'A–Z');
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
+ (function(){var c=$('catChips'),a=c.querySelector('.active');if(a)c.scrollLeft=Math.max(0,a.offsetLeft-(c.clientWidth-a.offsetWidth)/2)})();
+ if(LOADING){$('count').textContent='Carregando lugares…';$('list').innerHTML=skel(5);$('list').setAttribute('aria-busy','true');return}$('list').removeAttribute('aria-busy');
  $('count').textContent=rows.length+(rows.length===1?' lugar encontrado':' lugares encontrados');
  var map=S.mode==='map';$('list').hidden=map;$('map').hidden=!map;
  $('modeList').classList.toggle('on',!map);$('modeMap').classList.toggle('on',map);$('modeList').setAttribute('aria-pressed',!map);$('modeMap').setAttribute('aria-pressed',map);
@@ -134,7 +142,7 @@ var avFile=$('avFile');if(avFile)avFile.onchange=function(){var f=avFile.files&&
 function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
-function openDetail(id){var p=byId(id);if(!p)return;lastFocus=document.activeElement;var s=saved.has(id);
+function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(id);lastFocus=document.activeElement;var s=saved.has(id);
  var dest=encodeURIComponent(p.n+', '+p.e);
  $('detail').innerHTML='<div class="dphoto">'+photo(p,'dph')+'</div>'+(pic(p)?'<div class="credit">Foto de terceiro, usada com autorização informada pelo responsável do app. <a href="'+esc((photosOk[p.id]||p).s||p.fs)+'" target="_blank" rel="noopener noreferrer">Fonte</a></div>':'')+'<span class="presencial" style="margin:0">'+esc(p.g)+'</span><h2 class="detail-title">'+esc(p.n)+'</h2><p class="detail-sub">'+esc(p.d)+'</p><div class="tiles"><div class="tile wide"><b>Endereço</b><span>'+esc(p.e)+'</span></div><div class="tile"><b>Telefone</b><span>'+esc(p.t||'Não informado')+'</span></div><div class="tile"><b>Horários</b><span>Não informado</span></div><div class="tile"><b>Crianças</b><span>'+yn(p.kid)+'</span></div><div class="tile"><b>Pets</b><span>'+yn(p.pet)+'</span></div><div class="tile wide"><b>Atendimento no local</b><span>'+esc(EVID[p.ev]||'Não informado')+'. Sem visita física da equipe.</span></div></div>'+
  '<a class="btn block" href="https://www.google.com/maps/dir/?api=1&destination='+dest+'" target="_blank" rel="noopener noreferrer">Traçar rota</a>'+(p.t?'<a class="btn ghost block" href="tel:'+telHref(p.t)+'">Ligar · '+esc(p.t)+'</a>':'')+(p.m?'<a class="btn ghost block" href="'+esc(p.m)+'" target="_blank" rel="noopener noreferrer">Abrir no Google Maps</a>':'')+'<h3 class="sec-t">Ambiente</h3><p class="sec-s">Marque o que você viu. Com servidor, as marcações de todos aparecem aqui; por enquanto valem só no seu aparelho.</p><div class="ambs">'+AMB.map(function(a){var on=(amb[p.id]||[]).indexOf(a)>-1;var n=(S2.amb[p.id]&&S2.amb[p.id][a])||0;return '<button class="amb'+(on?' on':'')+'" data-amb="'+esc(p.id)+'|'+esc(a)+'" aria-pressed="'+on+'">'+(on?'✓ ':'')+esc(a)+(n?' · '+n:'')+'</button>'}).join('')+'</div><button class="btn ghost block" data-checkin="'+esc(p.id)+'">📍 Estive aqui · +10 pontos</button>'+
@@ -194,7 +202,7 @@ $('modeMap').onclick=function(){S.mode='map';renderSearch()};
 $('searchInput').oninput=function(e){S.q=e.target.value.trim();renderSearch()};
 $('homeSearch').onsubmit=function(e){e.preventDefault();var q=$('homeInput').value.trim();resetSearch();S.q=q;$('searchInput').value=q;$('homeInput').value='';renderSearch();go('buscar')};
 $('locationButton').onclick=function(){openSheet('bairro')};
-function clearAll(){if(!confirm('Apagar favoritos, sugestões, mensagens, fotos aplicadas e perfil deste navegador?'))return;['mesai-saved','mesai-suggestions','mesai-published','mesai-posts','mesai-photos','mesai-profile','mesai-notif','mesai-onboarded','mesai-interest','mesai-amb','mesai-checkins','mesai-trial','mesai-bairro'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});saved=new Set();sugg=[];interest=[];amb={};checkins=[];bairro='Cidade Universitária';posts=[];published=new Set();photosOk={};prof={name:'Lucas Tenório'};notif={novos:true,comunidade:true};closeOverlays();places=BASE.slice();resetSearch();renderAll();toast('Dados apagados')}
+function clearAll(){if(!confirm('Apagar favoritos, sugestões, mensagens, fotos aplicadas e perfil deste navegador?'))return;['mesai-saved','mesai-suggestions','mesai-published','mesai-posts','mesai-photos','mesai-profile','mesai-notif','mesai-onboarded','mesai-interest','mesai-amb','mesai-checkins','mesai-trial','mesai-bairro','mesai-recent'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});saved=new Set();sugg=[];interest=[];recent=[];amb={};checkins=[];bairro='Cidade Universitária';posts=[];published=new Set();photosOk={};prof={name:'Lucas Tenório'};notif={novos:true,comunidade:true};closeOverlays();places=BASE.slice();resetSearch();renderAll();toast('Dados apagados')}
 CATS.slice(1).forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];$('sugCat').appendChild(o)});
 $('suggestForm').onsubmit=function(e){e.preventDefault();var f=new FormData(e.target),name=String(f.get('name')||'').trim();if(!name)return;var cat=String(f.get('category')||'Restaurantes'),about=String(f.get('about')||'').trim();
  if(S2.on&&API.user()){API.suggest({name:name,category:cat,about:about}).catch(function(){})}
@@ -257,8 +265,15 @@ function notifItems(){
 var NOTIFS_HTML='<div class="nhead"><span>'+NOTIFS.filter(function(n){return n.u}).length+' não lidas</span><button class="link" data-notif-read>Marcar todas como lidas</button></div><div class="nlist">'+notifItems()+'</div><h3 class="nday">Preferências</h3>';
 
 /* Contador de notificações não lidas no sininho */
-function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas')}
+function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas');var rn=document.getElementById('rvNotif');if(rn){rn.textContent=n?(n>9?'9+':String(n)):'';rn.hidden=!n;rn.setAttribute('aria-label',n+' não lidas')}}
 (function(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',updateNotifBadge);else updateNotifBadge()})();
 
 /* Saudação na home: bom dia / boa tarde / boa noite + nome */
 function updateGreet(){var g=document.getElementById('greet');if(!g)return;var hr=parseInt(new Intl.DateTimeFormat('pt-BR',{hour:'numeric',hour12:false,timeZone:'America/Maceio'}).format(new Date()),10)||0,p=(hr<5||hr>=18)?'Boa noite':hr<12?'Bom dia':'Boa tarde';var nm=(S2.on&&API.user()&&S2.name)||'';g.textContent=nm?p+', '+nm.split(' ')[0]+'!':p+'!';g.hidden=!document.body.classList.contains('is-home')}
+
+/* Exemplos que se revezam no campo de busca (param quando a pessoa foca ou digita, e com "reduzir movimento") */
+(function(){var ex=['pizza','hambúrguer','pastel','açaí','feijoada','self-service'],i=0,ins=[$('homeInput'),$('searchInput')].filter(Boolean);
+ if(!ins.length||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+ setInterval(function(){i=(i+1)%ex.length;ins.forEach(function(el){if(document.activeElement!==el&&!el.value)el.placeholder='Buscar “'+ex[i]+'”'})},3500)})();
+/* Se o servidor demorar, mostra o cadastro local em vez de ficar carregando */
+if(LOADING)setTimeout(function(){if(LOADING){LOADING=false;renderAll()}},2500);

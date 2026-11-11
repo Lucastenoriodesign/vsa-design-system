@@ -100,7 +100,8 @@ document.addEventListener('click', function (e) {
     BASE = rows.map(mapPlace);
     places = BASE.concat(sugg);
     S2.on = true;
+    LOADING = false;
     document.body.classList.add('srv-on'); // esconde avisos que só valem no modo local
     return syncAll();
-  }).catch(function () { S2.on = false; document.body.classList.remove('srv-on'); });
+  }).catch(function () { S2.on = false; document.body.classList.remove('srv-on'); if (LOADING) { LOADING = false; renderAll(); } });
 })();

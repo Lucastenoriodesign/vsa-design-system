@@ -12,7 +12,8 @@ const BASE = process.env.BASE || 'http://localhost:8124';
   await p.waitForTimeout(800);
   await ctx.setOffline(true);
   await p.reload();
-  await p.waitForTimeout(500);
+  // o app mostra blocos de carregamento por até 2,5 s antes de cair no cadastro local
+  await p.waitForSelector('#hero .hero', { timeout: 4000 }).catch(() => {});
   const ok = !!(await p.$('#hero .hero')) && (await p.title()).includes('Mesaí');
   console.log(ok ? 'OK: abre offline' : 'FALHA: não abriu offline');
   await b.close();

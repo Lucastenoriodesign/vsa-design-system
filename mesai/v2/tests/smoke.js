@@ -9,6 +9,9 @@ const BASE = process.env.BASE || 'http://localhost:8124';
   p.on('pageerror', x => err.push('erro de página: ' + x.message));
   const ok = (c, m) => { if (!c) err.push('FALHA: ' + m); };
   await p.addInitScript(() => localStorage.setItem('mesai-onboarded', 'true'));
+  // Modo local (js/data.js): o servidor é bloqueado para o resultado não depender da rede.
+  // O modo com servidor (inclusive check-in que pede login) fica em tests/servidor-simulado.js.
+  await p.route(u => /supabase\.co/.test(u.hostname), r => r.abort());
   await p.goto(BASE + '/');
   await p.waitForTimeout(300);
   ok(await p.$('#hero .hero'), 'lugar do dia aparece');
@@ -25,7 +28,9 @@ const BASE = process.env.BASE || 'http://localhost:8124';
   await p.click('[data-checkin]');
   await p.keyboard.press('Escape');
   await p.click('.nav[data-go=perfil]');
-  ok((await p.textContent('#rvPts')) === '0', 'sem login, check-in não rende pontos (pede login)');
+  ok((await p.textContent('#rvPts')) === '10', 'sem servidor, check-in vale 10 pontos neste aparelho');
+  await p.click('.nav[data-go=inicio]');
+  ok((await p.$$('#recentList .rtile')).length === 1, 'lugar aberto aparece em Vistos recentemente');
   await p.goto(BASE + '/#/comunidade');
   await p.fill('#postText', 'teste');
   await p.click('#postForm .btn');
