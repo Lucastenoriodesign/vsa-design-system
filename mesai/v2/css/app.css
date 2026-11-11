@@ -348,3 +348,19 @@ body.is-home .where svg:first-child{width:18px;height:18px}
 .onb.o2 .onb-s h2{text-wrap:balance;max-width:none}
 .onb.o2 .onb-s h2 .nw{display:inline-block;white-space:nowrap}
 @media(max-height:700px){.o2-art{height:34vh}.onb.o2 .onb-s p{font-size:15px}.o2-txt{padding-top:14px}.onb.o2 .onb-s h2{margin-top:12px}}
+
+/* Rodada 11/11/2026: contraste do rodapé (AA), alvo de toque do atalho de teclado, campo de lugar da comunidade e telas de 320px */
+.foot{color:var(--muted)}
+.skip{min-height:44px;display:inline-flex;align-items:center}
+.composer .row #postPlace{flex:1.8}
+.composer .row select{text-overflow:ellipsis}
+@media(max-width:374px){
+ .quickcats{gap:14px 2px}
+ body.is-home .cat,body.is-home .cat span{font-size:11px;letter-spacing:-.02em}
+ .nav{font-size:11px;letter-spacing:-.02em}
+ .bottom{padding:0 8px}
+}
+@media(max-width:359px){
+ body.is-home .where{max-width:calc(100% - 60px)}
+ body.is-home .where button{min-width:0}
+}
