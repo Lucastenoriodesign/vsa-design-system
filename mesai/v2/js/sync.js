@@ -3,9 +3,16 @@
 
 function mapPlace(r) {
   var local = (typeof DATA !== 'undefined' ? DATA : []).filter(function (d) { return d.id === r.id; })[0] || {};
-  return { id: r.id, n: r.name, g: r.category, c: r.category_source || r.category, r: r.region, e: r.address, d: r.description || '',
-    t: r.phone, ev: r.evidence, pub: !!r.published, f: r.source_url, m: r.maps_url, lat: r.lat, lng: r.lng,
+  // Coordenadas, crianças e pets: vale o servidor; se ele não tiver o dado, usa o cadastro local (js/data.js).
+  var num = function (a, b) { return typeof a === 'number' ? a : (typeof b === 'number' ? b : null); };
+  var p = { id: r.id, n: r.name, g: r.category, c: r.category_source || r.category, r: r.region, e: r.address, d: r.description || '',
+    t: r.phone, ev: r.evidence, pub: !!r.published, f: r.source_url, m: r.maps_url, lat: num(r.lat, local.lat), lng: num(r.lng, local.lng),
     foto: r.photo_url || local.foto || null, fs: r.photo_source || local.fs || null, h: r.hours, fc: local.fc || [], obs: local.obs || '' };
+  ['kid', 'pet'].forEach(function (k) {
+    var v = typeof r[k] === 'boolean' ? r[k] : local[k];
+    if (typeof v === 'boolean') p[k] = v;
+  });
+  return p;
 }
 
 function mapComment(r) {

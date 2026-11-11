@@ -77,6 +77,11 @@ function filtro(q, campo) { const v = q.get(campo); return v && v.startsWith('eq
   await p.goto(BASE + '/#/comunidade');
   await p.waitForTimeout(600);
 
+  // 0) servidor sem coordenada: o app aproveita a do cadastro local (js/data.js) e não inventa nas demais
+  const geo = await p.evaluate(() => ({ on: S2.on, comLocal: BASE.filter(x => { var d = DATA.filter(q => q.id === x.id)[0]; return d && typeof d.lat === 'number'; }).every(x => typeof x.lat === 'number' && typeof x.lng === 'number'), semLocal: BASE.filter(x => { var d = DATA.filter(q => q.id === x.id)[0]; return !d || d.lat == null; }).every(x => x.lat === null && x.lng === null), n: BASE.filter(x => typeof x.lat === 'number').length }));
+  ok(geo.on && geo.n > 0 && geo.comLocal, 'lugar do servidor sem coordenada usa a do cadastro local');
+  ok(geo.semLocal, 'lugar sem coordenada em lugar nenhum continua sem pin');
+
   // 1) sem conta: não dá para comentar
   await p.fill('#postText', 'Gostei do ambiente');
   await p.click('#postForm .btn');
@@ -112,16 +117,18 @@ function filtro(q, campo) { const v = q.get(campo); return v && v.startsWith('eq
   // 4) ana não consegue moderar; admin consegue
   await p.goto(BASE + '/#/admin');
   await p.waitForTimeout(300);
-  ok((await p.$$('[data-approve]')).length === 0, 'usuária comum não vê botão de aprovar');
+  ok((await p.$$('[data-reject]')).length === 0, 'usuária comum não vê botão de moderação');
   await p.evaluate(() => { localStorage.setItem('mesai-session', JSON.stringify({ access_token: 'tok-u-admin', refresh_token: 'ref', expires_at: Date.now() + 3600000, user: { id: 'u-admin', email: 'admin@mesai.com' } })); });
   await p.reload();
   await p.waitForTimeout(800);
   await p.goto(BASE + '/#/admin');
   await p.waitForTimeout(400);
-  ok((await p.$$('[data-approve]')).length === 1, 'moderadora vê o comentário pendente');
-  await p.click('[data-approve]');
+  // O painel não tem mais botão de aprovar (a triagem é automática); a moderadora só remove.
+  ok((await p.$$('[data-approve]')).length === 0, 'painel sem botão de aprovar');
+  ok((await p.$$('[data-reject]')).length === 1, 'moderadora vê o comentário na fila');
+  await p.click('[data-reject]');
   await p.waitForTimeout(500);
-  ok(db.comments[0].status === 'aprovado', 'aprovação gravada no servidor');
+  ok(db.comments[0].status === 'rejeitado', 'remoção gravada no servidor');
 
   console.log(err.length ? err : 'OK');
   await b.close();
