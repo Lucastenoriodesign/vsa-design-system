@@ -364,3 +364,13 @@ body.is-home .where svg:first-child{width:18px;height:18px}
  body.is-home .where{max-width:calc(100% - 60px)}
  body.is-home .where button{min-width:0}
 }
+
+/* Rodada 11/11/2026 (2): detalhes de leitura em formulários, folhas e estados vazios */
+::placeholder{color:var(--muted);opacity:1;font-weight:400}
+.search input::placeholder{color:var(--muted)}
+.form input,.form select,.form textarea{font-weight:500;color:var(--ink)}
+.sheet-head b{font-size:17px;letter-spacing:-.02em}
+.sheet .empty,.note+.empty{margin-top:12px}
+.nav{letter-spacing:-.01em}
+.bottom{padding:0 10px}
+.srv-on .only-local{display:none}
