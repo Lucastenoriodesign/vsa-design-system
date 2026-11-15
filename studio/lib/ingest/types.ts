@@ -1,0 +1,21 @@
+export type Block = { tag: string; text: string; y: number; section: number };
+export type Extraction = {
+  kind: "url" | "pdf" | "brief";
+  title: string;
+  finalUrl?: string;
+  lang?: string;
+  meta: Record<string, string>;
+  blocks: Block[];
+  sections: { index: number; heading: string; y: number; height: number }[];
+  links: { href: string; text: string; kind: "checkout" | "whatsapp" | "internal" | "external" | "anchor" }[];
+  images: { src: string; alt: string; w: number; h: number; y: number }[];
+  videos: string[];
+  forms: { action: string; fields: string[]; submit: string }[];
+  prices: string[];
+  fonts: string[];
+  colors: string[];
+  screenshots: { desktop?: string; mobile?: string; pages?: string[] };
+  pageHeight?: number;
+  limitations: string[];
+  pages?: number;
+};

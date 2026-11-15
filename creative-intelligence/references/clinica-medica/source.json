@@ -1,0 +1,11 @@
+{
+  "name": "Clínica Médico",
+  "behanceUrl": "https://www.behance.net/gallery/255877709/",
+  "checkedAt": "2026-11-15",
+  "access": "blocked",
+  "detail": "www.behance.net answered the automated browser (Playwright/Chromium headless) with a JavaScript bot challenge: HTTP 403, then HTTP 400 after the challenge reload. The challenge was not bypassed. No image, module or external link of this project was seen.",
+  "publishedSite": "unknown (not visible without opening the project)",
+  "publicCodeInspected": false,
+  "componentsReconstructed": 0,
+  "status": "pending — needs material supplied by the user (exported images/PDF of the project, or the published site URL)"
+}
