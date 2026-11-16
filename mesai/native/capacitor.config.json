@@ -1,0 +1,13 @@
+{
+  "appId": "com.mesaiapp.app",
+  "appName": "Mesaí",
+  "webDir": "www",
+  "backgroundColor": "#fbf8f2",
+  "ios": { "contentInset": "never", "scheme": "Mesaí" },
+  "android": { "allowMixedContent": false },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 800, "backgroundColor": "#e87558", "showSpinner": false },
+    "StatusBar": { "style": "LIGHT", "backgroundColor": "#fbf8f2", "overlaysWebView": false },
+    "PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] }
+  }
+}
