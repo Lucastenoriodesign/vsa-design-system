@@ -1,11 +1,12 @@
 {
-  "name": "Pensae",
+  "name": "Pensae — Landing Page",
   "behanceUrl": "https://www.behance.net/gallery/242766259/",
   "checkedAt": "2026-11-15",
-  "access": "blocked",
-  "detail": "www.behance.net answered the automated browser (Playwright/Chromium headless) with a JavaScript bot challenge: HTTP 403, then HTTP 400 after the challenge reload. The challenge was not bypassed. No image, module or external link of this project was seen.",
-  "publishedSite": "unknown (not visible without opening the project)",
+  "access": "ok",
+  "detail": "Opened in logged-in Chrome (Claude in Chrome). 15 module image(s) saved as NN.jpg at highest available resolution (01:720x1280, 02:1200x675, 03:300x580, 04:300x580, 05:300x580, 06:300x580, 07:300x580, 08:300x580, 09:1200x608, 10:1200x608, 11:1200x608, 12:1200x608, 13:1200x608, 14:1200x608, 15:1200x8218).",
+  "publishedSite": "none found in project",
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
-  "status": "pending — needs material supplied by the user (exported images/PDF of the project, or the published site URL)"
+  "imageCount": 15,
+  "status": "ok"
 }

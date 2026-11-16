@@ -2,10 +2,11 @@
   "name": "Paula Fukuda — Landing Page",
   "behanceUrl": "https://www.behance.net/gallery/246601461/",
   "checkedAt": "2026-11-15",
-  "access": "blocked",
-  "detail": "www.behance.net answered the automated browser (Playwright/Chromium headless) with a JavaScript bot challenge: HTTP 403, then HTTP 400 after the challenge reload. The challenge was not bypassed. No image, module or external link of this project was seen.",
-  "publishedSite": "unknown (not visible without opening the project)",
+  "access": "ok",
+  "detail": "Opened in logged-in Chrome (Claude in Chrome). 5 module image(s) saved as NN.jpg at highest available resolution (01:3240x1335, 02:3240x1489, 03:3240x1104, 04:3240x9152, 05:3240x1780).",
+  "publishedSite": "none found in project",
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
-  "status": "pending — needs material supplied by the user (exported images/PDF of the project, or the published site URL)"
+  "imageCount": 5,
+  "status": "ok"
 }
