@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { sanitizeGenerated } from "./html-ops";
 import type { PageIntelligenceReport, ConversionStrategy, CreativeDirections, DesignSpec, QAReport } from "./schemas";
 import type { Extraction } from "./ingest/types";
 
@@ -107,7 +108,7 @@ export function writeVersion(id: string, html: string, reason: string, prompt?: 
   let n = 0;
   updateProject(id, (p) => {
     n = (p.versions.at(-1)?.n ?? 0) + 1;
-    fs.writeFileSync(versionFile(id, n), html);
+    fs.writeFileSync(versionFile(id, n), sanitizeGenerated(html));
     p.versions.push({ n, createdAt: new Date().toISOString(), reason, prompt });
     p.currentVersion = n;
   });

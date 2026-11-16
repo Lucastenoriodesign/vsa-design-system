@@ -97,3 +97,18 @@ export function replaceText(html: string, id: string, from: string, to: string) 
   el.set_content(before.replace(from, to.replace(/</g, "&lt;")));
   return root.toString();
 }
+
+/** Removes trackers and cookie/consent UI copied from the source page (code-level guard, not just a prompt rule). */
+export function sanitizeGenerated(html: string) {
+  const root = parse(html, opts);
+  root.querySelectorAll("script").forEach((s) => {
+    const src = s.getAttribute("src") || "";
+    if (/fbq\(|gtag\(|googletagmanager|google-analytics|clarity\.ms|hotjar|tiktok\.com\/i18n\/pixel|connect\.facebook\.net/i.test(src + s.innerHTML)) s.remove();
+  });
+  root.querySelectorAll("noscript").forEach((n) => { if (/facebook\.com\/tr|googletagmanager/i.test(n.innerHTML)) n.remove(); });
+  root.querySelectorAll("[id],[class],[aria-label]").forEach((el) => {
+    const k = `${el.getAttribute("id") ?? ""} ${el.getAttribute("class") ?? ""} ${el.getAttribute("aria-label") ?? ""}`;
+    if (/(^|[\s_-])(cookie|cookies|consent|lgpd|gdpr)([\s_-]|$)/i.test(k) && !el.closest("[data-section]")?.getAttribute("data-section")?.match(/faq|privac/)) el.remove();
+  });
+  return root.toString();
+}
