@@ -408,3 +408,5 @@ body.is-home .where svg:first-child{width:18px;height:18px}
 .row .rbadge[hidden]{display:none}
 .pcat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .btn.ghost.danger{background:transparent;color:var(--coral-dark);border:2px solid var(--coral-dark);margin-top:16px}
+button.nitem{width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.nitem .nbody{display:block}.nitem .nbody b{display:block}.nitem .np{display:block;color:var(--muted);font-size:14px;line-height:1.35;margin-top:2px}

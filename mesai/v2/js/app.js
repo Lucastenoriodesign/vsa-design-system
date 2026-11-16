@@ -99,7 +99,7 @@ function openSheet(k){lastFocus=document.activeElement;var T='',B='';
  if(k==='bairro'){T='Escolher bairro';B='<p class="sheet-copy">Por enquanto o Mesaí cobre só este bairro. Os outros chegam aos poucos.</p>'+BAIRROS_ATIVOS.map(function(n){return bairroRow(n)}).join('')+'<h3 class="sec-t">Em breve</h3>'+BAIRROS_MCZ.filter(function(n){return BAIRROS_ATIVOS.indexOf(n)<0}).map(function(n){return '<div class="opt brr off"><span>'+esc(n)+'</span><em>em breve</em></div>'}).join('')}
  else if(k==='edit'){T='Gerenciar perfil';B='<form class="form" id="profForm"><label>Seu nome<input name="name" maxlength="40" value="'+esc(prof.name||'')+'" required></label><button class="btn block" type="submit">Salvar</button></form><div class="note only-local">O nome fica salvo só neste aparelho. Ainda não há conta nem e-mail.</div>'}
  else if(k==='security'){T='Conta e segurança';B=accountHtml()}
- else if(k==='notif'){T='Notificações';B=NOTIFS_HTML+'<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Por enquanto só guardamos a sua preferência. O app ainda não envia avisos.</div>'}
+ else if(k==='notif'){T='Notificações';B=notifsHtml()+'<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Por enquanto só guardamos a sua preferência. O app ainda não envia avisos.</div>'}
  else if(k==='lang'){T='Idioma';B='<label class="opt">Português (Brasil)<input type="radio" name="lg" checked></label><label class="opt"><span>English <small>em breve</small></span><input type="radio" name="lg" disabled></label><label class="opt"><span>Español <small>em breve</small></span><input type="radio" name="lg" disabled></label>'}
  else if(k==='theme'){T='Tema';B='<label class="opt">Claro<input type="radio" name="th" checked></label><label class="opt"><span>Escuro <small>em breve</small></span><input type="radio" name="th" disabled></label><label class="opt"><span>Automático <small>em breve</small></span><input type="radio" name="th" disabled></label>'}
  else if(k==='points'){T='Meus pontos';var hist=checkins.slice().reverse().map(function(c){var p=byId(c.id);return '<div class="mini"><span>'+esc(p?p.n:'Lugar')+'<small>'+esc(c.d)+'</small></span><b>+10</b></div>'}).join('');B='<div class="pts"><b>'+points()+'</b><span>pontos neste aparelho</span></div><p class="sheet-copy">Ganhe 10 pontos por marcar “Estive aqui” em um lugar (1 vez por lugar por dia). Em breve: pontos por avaliações aprovadas e fotos.</p><div class="note only-local">Os pontos ainda são locais. Viram pontos de verdade, com níveis e recompensas, quando existir conta e servidor.</div>'+(hist||'<div class="empty">Sem check-ins ainda.</div>')}
@@ -139,7 +139,7 @@ function renderMod(){var pend=S2.on?S2.pend:posts.filter(function(x){return x.st
 function initialAvatar(name){var l=(name||'?').trim().charAt(0).toUpperCase()||'?';var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#e8e2d6"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="sans-serif" font-size="46" fill="#5c564e">'+l+'</text></svg>';return 'data:image/svg+xml,'+encodeURIComponent(svg)}
 function setMyAvatar(){var nm=(S2.on&&API.user()&&(S2.name||''))||prof.name||'';var src=(S2.on&&API.user()&&S2.avatar)||initialAvatar(nm);document.querySelectorAll('.myav').forEach(function(i){i.src=src})}
 var avFile=$('avFile');if(avFile)avFile.onchange=function(){var f=avFile.files&&avFile.files[0];if(!f)return;if(!(S2.on&&API.user())){toast('Entre na conta para trocar a foto');avFile.value='';return}API.uploadAvatar(f).then(function(url){S2.avatar=url;setMyAvatar();toast('Foto atualizada')}).catch(function(){toast('Não foi possível trocar a foto')}).then(function(){avFile.value=''})};
-function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet()}
+function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet();updateNotifBadge()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
 function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(id);lastFocus=document.activeElement;var s=saved.has(id);
@@ -167,7 +167,7 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}
  if(D.bairro){bairro=D.bairro;store('mesai-bairro',bairro);resetSearch();renderBairro();renderAll();closeOverlays();toast('Bairro: '+bairro);return}
- if(D.notifRead!==undefined){NOTIFS.forEach(function(n){n.u=false});updateNotifBadge();openSheet('notif');toast('Notificações marcadas como lidas');return}
+ if(D.notifRead!==undefined){buildNotifs();store('mesai-notif-read',NOTIFS.map(function(n){return n.id}));updateNotifBadge();openSheet('notif');toast('Notificações marcadas como lidas');return}
 if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
 if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
@@ -246,26 +246,30 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.add
 })();
 
 /* Notificações de exemplo (lista local, ainda sem envio real) */
-var NOTIFS=[
- {k:'lugar',i:'📍',t:'Lugar novo no seu bairro',p:'Sabor Nordestino Restaurante e Pizzaria entrou no guia de Graciliano Ramos.',h:'agora',d:'Hoje',u:true},
- {k:'pontos',i:'⭐',t:'+10 pontos no seu perfil',p:'Você marcou check-in. Continue visitando lugares para subir no ranking.',h:'há 2 h',d:'Hoje',u:true},
- {k:'comentario',i:'💬',t:'Seu comentário foi publicado',p:'Obrigado por ajudar quem vai comer no mesmo lugar.',h:'há 5 h',d:'Hoje',u:false},
- {k:'dia',i:'🍽️',t:'Lugar do dia',p:'Hoje a sugestão tem mesa, ambiente agradável e bom custo-benefício.',h:'ontem',d:'Esta semana',u:false},
- {k:'plus',i:'🎁',t:'Mesaí+ com 14 dias grátis',p:'Seu período de teste está ativo. Veja o que está incluído.',h:'há 3 dias',d:'Esta semana',u:false}
-];
+/* Notificações reais, montadas com o que existe no app (sem exemplos inventados) */
+var NOTIFS=[];
+function buildNotifs(){
+ var read=load('mesai-notif-read',[]),pp=(typeof pubPlaces==='function'?pubPlaces():[]),out=[];
+ var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
+ if(h)out.push({id:'dia-'+d.toISOString().slice(0,10),k:'dia',t:'Lugar do dia: '+h.n,p:h.g+' em '+region(h)+'. Toque para ver endereço e rota.',d:'Hoje',open:h.id});
+ pp.slice(-3).reverse().forEach(function(x){out.push({id:'novo-'+x.id,k:'lugar',t:'Lugar novo no guia',p:x.n+' entrou no Mesaí ('+region(x)+').',d:'Novidades',open:x.id})});
+ var pts=points();if(pts>0)out.push({id:'pts-'+pts,k:'pontos',t:'Você tem '+pts+' pontos',p:'Cada check-in em um lugar soma 10 pontos.',d:'Novidades'});
+ out.forEach(function(n){n.u=read.indexOf(n.id)<0});
+ NOTIFS=out;return out}
+function notifsHtml(){buildNotifs();var un=NOTIFS.filter(function(n){return n.u}).length;
+ return '<div class="nhead"><span>'+(un?un+' não lidas':'Tudo lido')+'</span>'+(un?'<button class="link" data-notif-read>Marcar todas como lidas</button>':'')+'</div><div class="nlist">'+notifItems()+'</div><h3 class="nday">Preferências</h3>'}
 var NLOGO='<img class="nlogo" src="img/logo-app.png" alt="">';
 function notifItems(){
  var out='',last='';
  NOTIFS.forEach(function(n){
   if(n.d!==last){out+='<h3 class="nday">'+n.d+'</h3>';last=n.d}
-  out+='<div class="nitem k-'+n.k+(n.u?' unread':'')+'"><span class="nico" aria-hidden="true">'+NLOGO+'</span><div class="nbody"><b>'+n.t+'</b><p>'+n.p+'</p><small>'+n.h+'</small></div>'+(n.u?'<span class="ndot" aria-label="Não lida"></span>':'')+'</div>';
+  out+='<'+(n.open?'button data-open="'+esc(n.open)+'"':'div')+' class="nitem k-'+n.k+(n.u?' unread':'')+'"><span class="nico" aria-hidden="true">'+NLOGO+'</span><span class="nbody"><b>'+esc(n.t)+'</b><span class="np">'+esc(n.p)+'</span></span>'+(n.u?'<span class="ndot" aria-label="Não lida"></span>':'')+'</'+(n.open?'button':'div')+'>';
  });
  return out;
 }
-var NOTIFS_HTML='<div class="nhead"><span>'+NOTIFS.filter(function(n){return n.u}).length+' não lidas</span><button class="link" data-notif-read>Marcar todas como lidas</button></div><div class="nlist">'+notifItems()+'</div><h3 class="nday">Preferências</h3>';
 
 /* Contador de notificações não lidas no sininho */
-function updateNotifBadge(){var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas');var rn=document.getElementById('rvNotif');if(rn){rn.textContent=n?(n>9?'9+':String(n)):'';rn.hidden=!n;rn.setAttribute('aria-label',n+' não lidas')}}
+function updateNotifBadge(){buildNotifs();var n=NOTIFS.filter(function(x){return x.u}).length,b=document.getElementById('nBadge');if(!b)return;b.textContent=n>9?'9+':String(n);b.hidden=!n;b.setAttribute('aria-label',n+' notificações não lidas');var rn=document.getElementById('rvNotif');if(rn){rn.textContent=n?(n>9?'9+':String(n)):'';rn.hidden=!n;rn.setAttribute('aria-label',n+' não lidas')}}
 (function(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',updateNotifBadge);else updateNotifBadge()})();
 
 /* Saudação na home: bom dia / boa tarde / boa noite + nome */
