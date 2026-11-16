@@ -8,5 +8,11 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "plano recomendado em dourado sólido",
+    "capas de módulo pôster",
+    "mosaico de prova"
+  ]
 }

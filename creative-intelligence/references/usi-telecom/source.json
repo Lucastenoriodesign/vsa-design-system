@@ -8,5 +8,12 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 2,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "listras de luz diagonais",
+    "bento de benefícios",
+    "plano destacado elevado",
+    "néon monocromático"
+  ]
 }

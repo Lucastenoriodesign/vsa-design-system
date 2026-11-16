@@ -8,5 +8,11 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "faixa gradiente com cards pretos",
+    "métricas flutuantes no retrato",
+    "tradicional vs curso"
+  ]
 }

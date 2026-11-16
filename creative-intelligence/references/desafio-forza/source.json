@@ -8,5 +8,11 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "piso em grade de perspectiva",
+    "ícones vítreos 3D",
+    "faixa gradiente secundária"
+  ]
 }

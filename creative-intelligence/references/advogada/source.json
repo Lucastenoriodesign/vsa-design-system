@@ -8,5 +8,13 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "halo luminoso atrás do retrato",
+    "preço com centavos sobrescritos",
+    "selo-moeda de garantia",
+    "números de autoridade em cards",
+    "CTA pill gradiente"
+  ]
 }

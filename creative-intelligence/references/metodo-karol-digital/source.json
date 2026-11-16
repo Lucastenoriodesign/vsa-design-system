@@ -8,5 +8,12 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "fitas diagonais cruzadas",
+    "selo circular com texto",
+    "marquee",
+    "ícones 3D glossy"
+  ]
 }

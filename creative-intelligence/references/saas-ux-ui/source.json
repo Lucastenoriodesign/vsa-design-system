@@ -8,5 +8,12 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 12,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "produto real como hero",
+    "sem vs com",
+    "toggle mensal/anual",
+    "bento com UI real"
+  ]
 }

@@ -8,5 +8,12 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 1,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "tipografia mono técnica",
+    "glow incandescente",
+    "bio como post social",
+    "card de destaque invertido"
+  ]
 }

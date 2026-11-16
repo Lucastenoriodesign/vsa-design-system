@@ -8,5 +8,13 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 5,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "fita diagonal repetida",
+    "foto recortada com moldura de app social",
+    "cards de etapa coloridos",
+    "prova em prints",
+    "countdown"
+  ]
 }

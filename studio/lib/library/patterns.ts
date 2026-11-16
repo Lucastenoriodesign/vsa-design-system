@@ -302,6 +302,112 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(0,0,0,.35),0 3
 .ss .l{position:sticky;top:0;align-self:start;padding:30px 0}.ss .l b{font:300 64px Georgia,serif;color:#9be3b9}.ss .r div{min-height:220px;padding:30px 0;border-bottom:1px solid #fff2}</style>
 <div class="ss" onscroll="const i=Math.min(3,Math.floor(this.scrollTop/220)+1);this.querySelector('b').textContent='0'+i"><div class="l"><small>Método em 3 etapas</small><br><b>01</b></div><div class="r"><div>Etapa 1 — diagnóstico</div><div>Etapa 2 — construção</div><div>Etapa 3 — escala</div></div></div>`,
   },
+  {
+    id: "portrait-halo-glow",
+    name: "Retrato com halo luminoso",
+    category: "hero",
+    intents: ["retrato", "autoridade", "glow", "halo", "especialista", "mentora", "hero com foto"],
+    fits: ["advocacia", "especialistas", "cursos premium"],
+    avoidWhen: "Não há foto recortada de boa qualidade.",
+    technique: "Arco/círculo atrás do retrato: radial-gradient da cor de marca + anel com border e box-shadow de glow; foto PNG recortada sobrepõe a borda inferior do arco. Fundo escuro com vinheta.",
+    inspiration: "Referência: advogada (Behance) — reinterpretado.",
+    demo: `<style>.ph2{min-height:360px;background:radial-gradient(60% 70% at 70% 40%,#0f3a33,#06110f 70%);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:30px;font-family:system-ui;color:#e6f5ef}
+.ph2 .a{position:relative;height:300px;display:grid;place-items:end center}.ph2 .a:before{content:"";position:absolute;width:240px;height:240px;top:10px;border-radius:50%;border:10px solid #5fd3a6;box-shadow:0 0 60px #5fd3a680,inset 0 0 40px #5fd3a640}
+.ph2 .a i{position:relative;width:180px;height:250px;border-radius:90px 90px 0 0;background:linear-gradient(#c9b8a4,#6b5a48)}.ph2 h3{font-size:26px;margin:0}.ph2 h3 b{color:#5fd3a6}</style>
+<div class="ph2"><h3>Domine o tema que <b>decide grandes casos</b></h3><div class="a"><i></i></div></div>`,
+  },
+  {
+    id: "ribbon-diagonal-marquee",
+    name: "Fita diagonal com nome da marca",
+    category: "transition",
+    intents: ["fita", "marquee", "faixa diagonal", "transição", "lançamento", "energia"],
+    fits: ["cursos expressivos", "lançamentos", "marcas jovens"],
+    avoidWhen: "Marcas sóbrias (jurídico, médico).",
+    technique: "Duas faixas rotacionadas (±3–5deg) cruzando a junção de seções; texto repetido em animação translateX infinita (pausada em reduced-motion). Uma faixa sólida, outra contorno/transparente.",
+    inspiration: "Referências: metodo-karol-digital, pensae, paula-fukuda (Behance) — reinterpretado.",
+    demo: `<style>.rb{height:260px;background:#121212;position:relative;overflow:hidden;font:800 18px system-ui;text-transform:uppercase}
+.rb div{position:absolute;left:-10%;width:120%;white-space:nowrap;padding:10px 0}.rb .x{top:90px;background:#ff2f7d;color:#fff;transform:rotate(-4deg)}.rb .y{top:110px;color:#ff2f7d;border-block:1px solid #ff2f7d;transform:rotate(3deg)}
+.rb span{display:inline-block;animation:mq 14s linear infinite}@keyframes mq{to{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){.rb span{animation:none}}</style>
+<div class="rb"><div class="y"><span>Método próprio · Método próprio · Método próprio · Método próprio · Método próprio · Método próprio · Método próprio · Método próprio ·</span></div><div class="x"><span>Método próprio ★ Método próprio ★ Método próprio ★ Método próprio ★ Método próprio ★ Método próprio ★ Método próprio ★</span></div></div>`,
+  },
+  {
+    id: "compare-without-with",
+    name: "Sem × Com (antes e depois)",
+    category: "composition",
+    intents: ["comparação", "antes e depois", "sem com", "transformação", "objeções"],
+    fits: ["SaaS", "cursos", "serviços com transformação clara"],
+    avoidWhen: "Não há diferença concreta e verificável para mostrar.",
+    technique: "Duas colunas assimétricas: 'sem' menor, dessaturada, ícones ×; 'com' maior, cor da marca, ícones ✓, levemente elevada e sobreposta. No mobile, 'com' vem depois e ocupa a largura.",
+    inspiration: "Referências: saas-ux-ui, giullya-becker, start-magnetico, lo-dias (Behance) — reinterpretado.",
+    demo: `<style>.cw{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;padding:36px;background:#f3f0fb;font:14px system-ui;align-items:center}
+.cw div{padding:22px}.cw .s{background:#fff;color:#777;border:1px solid #ddd}.cw .c{background:#5b2ee6;color:#fff;margin-left:-14px;box-shadow:0 20px 40px -20px #5b2ee6;transform:translateY(-8px)}
+.cw h4{margin:0 0 10px;font-size:18px}.cw li{margin:6px 0;list-style:none}@media(max-width:640px){.cw{grid-template-columns:1fr}.cw .c{margin:0}}</style>
+<div class="cw"><div class="s"><h4>Sem o sistema</h4><ul style="padding:0"><li>× Planilhas soltas</li><li>× Faltas sem aviso</li></ul></div><div class="c"><h4>Com o sistema</h4><ul style="padding:0"><li>✓ Agenda que confirma sozinha</li><li>✓ Prontuário em um clique</li></ul></div></div>`,
+  },
+  {
+    id: "guarantee-seal-ring",
+    name: "Selo de garantia com texto circular",
+    category: "proof",
+    intents: ["garantia", "selo", "7 dias", "risco zero"],
+    fits: ["qualquer oferta com garantia REAL"],
+    avoidWhen: "A fonte não informa garantia — nunca inventar.",
+    technique: "SVG com <textPath> em círculo (texto repetido) girando devagar; número grande no centro. Rotação desligada em reduced-motion.",
+    inspiration: "Referências: metodo-karol-digital, lo-dias, advogada (Behance) — reinterpretado.",
+    demo: `<style>.gs{display:flex;gap:24px;align-items:center;padding:36px;background:#fff;font:14px system-ui}.gs svg{width:150px;animation:sp 20s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.gs svg{animation:none}}</style>
+<div class="gs"><div style="position:relative;display:grid;place-items:center"><svg viewBox="0 0 200 200"><defs><path id="cg" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text font-size="15" letter-spacing="4" fill="#d11d6b"><textPath href="#cg">GARANTIA · 7 DIAS · GARANTIA · 7 DIAS ·</textPath></text></svg><b style="position:absolute;font-size:46px;color:#d11d6b">7</b></div><p style="max-width:28ch"><b>Teste por 7 dias.</b> Só exibir quando a garantia existe na oferta.</p></div>`,
+  },
+  {
+    id: "taped-photo-collage",
+    name: "Foto colada com fita (colagem)",
+    category: "composition",
+    intents: ["colagem", "polaroid", "fita adesiva", "autoral", "bio", "informal"],
+    fits: ["criadores de conteúdo", "marcas pessoais informais"],
+    avoidWhen: "Marcas corporativas/jurídicas.",
+    technique: "Foto com borda branca, rotação leve (-3..4deg), sombra curta; pedaços de fita = retângulos semitransparentes rotacionados nos cantos (::before/::after).",
+    inspiration: "Referência: pensae (Behance) — reinterpretado.",
+    demo: `<style>.tp{background:#111;padding:40px;display:flex;gap:30px;align-items:center;color:#eee;font:14px system-ui}.tp figure{margin:0;position:relative;background:#fff;padding:10px 10px 30px;transform:rotate(-3deg);box-shadow:0 10px 20px #0008}
+.tp figure i{display:block;width:180px;height:200px;background:linear-gradient(#e7b9d3,#7a4d68)}.tp figure:before,.tp figure:after{content:"";position:absolute;width:70px;height:22px;background:#f08cc4cc}.tp figure:before{top:-8px;left:-18px;transform:rotate(-30deg)}.tp figure:after{bottom:-6px;right:-20px;transform:rotate(-30deg)}</style>
+<div class="tp"><figure><i></i></figure><div><b style="font-size:22px;text-decoration:underline">Quem sou eu na fila do pão?</b><p>Bio em tom de conversa.</p></div></div>`,
+  },
+  {
+    id: "giant-word-faq",
+    name: "FAQ com palavra gigante",
+    category: "faq",
+    intents: ["faq", "palavra gigante", "tipografia monumental", "dúvidas"],
+    fits: ["marcas expressivas", "lançamentos"],
+    avoidWhen: "Páginas minimalistas sóbrias.",
+    technique: "Palavra 'FAQ' em condensada pesadíssima (clamp até 180px) com gradiente vertical para o fundo, ancorada à esquerda; acordeão <details> à direita com bordas finas.",
+    inspiration: "Referências: giullya-becker, start-magnetico (Behance) — reinterpretado.",
+    demo: `<style>.gf{background:#0c0c0a;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;padding:36px;color:#eee;font:13px system-ui}.gf b{font:900 clamp(70px,12vw,160px)/.8 Impact,'Anton',sans-serif;background:linear-gradient(#e8ff4a,#3a3d10);-webkit-background-clip:text;color:transparent}
+.gf details{border-bottom:1px solid #333;padding:10px 0;text-transform:uppercase;font-weight:700}@media(max-width:640px){.gf{grid-template-columns:1fr}}</style>
+<div class="gf"><b>FAQ</b><div><details open><summary>É ao vivo?</summary><p style="text-transform:none;font-weight:400">Resposta da fonte.</p></details><details><summary>Tem gravação?</summary></details><details><summary>Posso parcelar?</summary></details></div></div>`,
+  },
+  {
+    id: "bento-inverted-modules",
+    name: "Bento modular com blocos invertidos",
+    category: "cards",
+    intents: ["bento", "módulos", "recursos", "fintech", "saas", "grid"],
+    fits: ["SaaS", "fintech", "plataformas"],
+    avoidWhen: "Menos de 4 itens.",
+    technique: "Grid de 6 colunas com spans diferentes; maioria em tom escuro; 1 bloco na cor de marca e 1 claro quebram o ritmo; imagens/UI reais sangram para fora do padding.",
+    inspiration: "Referências: goldrex, usi-telecom, saas-ux-ui (Behance) — reinterpretado.",
+    demo: `<style>.bi{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:30px;background:#11141b;font:13px system-ui;color:#dfe3ea}.bi div{background:#1b2030;padding:16px;min-height:110px;border-radius:6px}
+.bi .a{grid-column:span 4}.bi .b{grid-column:span 2}.bi .g{grid-column:span 2;background:#d9b46a;color:#1b1406}.bi .c{grid-column:span 2}.bi .w{grid-column:span 2;background:#eceef2;color:#11141b}.bi h4{margin:0 0 6px;font-weight:500;font-size:17px}</style>
+<div class="bi"><div class="a"><h4>Contas digitais</h4>UI real aqui</div><div class="b"><h4>Cobrança</h4></div><div class="g"><h4>Divisão de recebíveis</h4></div><div class="c"><h4>PIX</h4></div><div class="w"><h4>API</h4></div></div>`,
+  },
+  {
+    id: "horizon-glow-arc",
+    name: "Arco de luz no horizonte",
+    category: "background",
+    intents: ["arco de luz", "glow", "tecnologia", "portfólio", "palco", "destaque"],
+    fits: ["tech", "portfólios", "lançamentos digitais"],
+    avoidWhen: "Fundos claros.",
+    technique: "Elipse grande (border-top com cor de marca) parcialmente visível na base do bloco + radial-gradient borrado acima; título centralizado sobre o arco. Funciona como 'palco' para um card ou CTA.",
+    inspiration: "Referências: webdesigner, desafio-forza (Behance) — reinterpretado.",
+    demo: `<style>.ha{height:320px;background:#05040b;position:relative;overflow:hidden;display:grid;place-items:center;color:#e9e4ff;font:300 26px system-ui;text-align:center}
+.ha:before{content:"";position:absolute;width:140%;height:420px;left:-20%;top:200px;border-radius:50%;border-top:3px solid #b9a2ff;box-shadow:0 -30px 80px #7b55ff,inset 0 30px 60px #7b55ff55}</style>
+<div class="ha"><span style="position:relative">O elemento mais importante<br><b style="color:#b9a2ff;font-weight:400">do seu funil</b></span></div>`,
+  },
 ];
 
 /** Simple intent search: scores patterns by token overlap with the query. */

@@ -8,5 +8,12 @@
   "publicCodeInspected": false,
   "componentsReconstructed": 0,
   "imageCount": 6,
-  "status": "ok"
+  "status": "ok",
+  "analysis": "done",
+  "patterns": [
+    "palavra gigante atrás do conteúdo",
+    "objeções em cards",
+    "oferta com timer",
+    "sistema de criativos coerente"
+  ]
 }
