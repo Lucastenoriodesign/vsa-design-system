@@ -407,3 +407,4 @@ body.is-home .where svg:first-child{width:18px;height:18px}
 .row .rbadge{min-width:22px;height:22px;padding:0 6px;border-radius:var(--r-pill);background:var(--coral-dark);color:var(--on-accent);font-size:13px;font-weight:800;line-height:22px;text-align:center}
 .row .rbadge[hidden]{display:none}
 .pcat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn.ghost.danger{background:transparent;color:var(--coral-dark);border:2px solid var(--coral-dark);margin-top:16px}

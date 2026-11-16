@@ -51,6 +51,13 @@ var API = (function () {
       return http('/auth/v1/token?grant_type=password', { method: 'POST', body: { email: email, password: password } })
         .then(function (r) { saveSession(normSession(r)); });
     },
+    deleteAccount: function () {
+      var path = session.user.id + '/avatar.jpg';
+      return fetch(URL + '/storage/v1/object/avatars/' + path, { method: 'DELETE', headers: { apikey: KEY, Authorization: 'Bearer ' + session.access_token } })
+        .catch(function () {})
+        .then(function () { return http('/rest/v1/rpc/delete_my_account', { method: 'POST', body: {} }); })
+        .then(function () { saveSession(null); });
+    },
     signOut: function () {
       var p = session ? http('/auth/v1/logout', { method: 'POST' }).catch(function () {}) : Promise.resolve();
       return p.then(function () { saveSession(null); });

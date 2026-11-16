@@ -87,6 +87,19 @@ document.addEventListener('click', function (e) {
     $('authGo').textContent = signup ? 'Criar conta' : 'Entrar';
     t.textContent = signup ? 'Já tenho conta' : 'Criar conta';
   }
+  if (t.dataset.delacct !== undefined) {
+    if (!confirm('Excluir sua conta para sempre? Seu perfil, foto, comentários, check-ins, pontos e favoritos serão apagados e não dá para desfazer.')) return;
+    t.disabled = true; t.textContent = 'Excluindo…';
+    API.deleteAccount().then(function () {
+      S2.admin = false; S2.points = 0; S2.name = null;
+      ['mesai-saved','mesai-profile','mesai-checkins','mesai-posts','mesai-amb'].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+      return syncComments();
+    }).then(function () { renderAll(); closeOverlays(); toast('Sua conta foi excluída'); })
+      .catch(function (err) {
+        t.disabled = false; t.textContent = 'Excluir minha conta';
+        toast(/owner_account/.test(String(err && (err.message || err))) ? 'Conta de dona(o) do app não pode ser excluída por aqui.' : 'Não consegui excluir agora. Tente de novo em instantes.');
+      });
+  }
   if (t.dataset.auth === 'out') {
     API.signOut().then(function () { S2.admin = false; S2.points = 0; S2.name = null; return syncComments(); }).then(function () { renderAll(); closeOverlays(); toast('Você saiu'); });
   }
