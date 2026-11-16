@@ -28,10 +28,14 @@ export async function ingestUrl(raw: string, shotsDir: string): Promise<Extracti
       const step = innerHeight * 0.8;
       for (let y = 0; y < document.documentElement.scrollHeight && y < 40000; y += step) {
         scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 180));
+        await new Promise((r) => setTimeout(r, 450));
       }
       scrollTo(0, 0);
     });
+    // Force-reveal content hidden by entrance animations (Elementor, AOS, GSAP-style inline opacity) so text and screenshots aren't blank.
+    await page.addStyleTag({ content: `.elementor-invisible,[data-aos],[class*="animate__"],[class*="reveal"],[class*="fade"]{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important}` });
+    await page.evaluate(() => document.querySelectorAll<HTMLElement>("[style*='opacity']").forEach((el) => { if (Number(getComputedStyle(el).opacity) < 0.1) { el.style.opacity = "1"; el.style.transform = "none"; } }));
+    await page.waitForTimeout(800);
     // Open collapsed content (FAQ accordions) so answers are extracted too.
     await page.evaluate(() => document.querySelectorAll("details").forEach((d) => ((d as HTMLDetailsElement).open = true)));
     for (const t of (await page.$$("[aria-expanded=false]")).slice(0, 40)) await t.click({ timeout: 800 }).catch(() => {});

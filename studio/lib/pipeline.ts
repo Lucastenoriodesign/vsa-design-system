@@ -8,6 +8,18 @@ import { drainUsage } from "./llm";
 import { weightedScore } from "./schemas";
 import { getSectionHtml, replaceSection } from "./html-ops";
 import type { Extraction } from "./ingest/types";
+import { pickRefs, refSheet } from "./library/references";
+
+function visualRefs(p: Project) {
+  const refs = pickRefs(`${p.report?.segment.value} ${p.report?.product.value} ${p.report?.nicheConventions}`, 3);
+  return { images: refs.map((r) => refSheet(r.slug)!), brief: refs.map((r) => `${r.slug} (${r.niche}: ${r.mood})`).join("; ") };
+}
+function brandHint(p: Project) {
+  const x = p.extraction;
+  if (!x || x.kind !== "url") return undefined;
+  const logo = x.images.find((i) => /logo/i.test(i.src + i.alt));
+  return `cores dominantes da página atual: ${x.colors.slice(0, 6).join(", ")}; fontes: ${x.fonts.slice(0, 3).join(", ")}${logo ? `; logo: ${logo.src}` : ""}; fotos reais disponíveis: ${x.images.filter((i) => i.w > 300).slice(0, 12).map((i) => i.src).join(" , ")}`;
+}
 
 const running = new Set<string>();
 
@@ -73,7 +85,7 @@ export async function analyze(id: string) {
 export async function direct(id: string) {
   const p = getProject(id)!;
   const prev = p.directions?.directions.map((d) => d.name) ?? [];
-  const dirs = await step(id, "direction", "Creative Director — 3 direções", () => creativeDirectorAgent(p.report!, p.strategy!, prev));
+  const dirs = await step(id, "direction", "Creative Director — 3 direções", () => creativeDirectorAgent(p.report!, p.strategy!, prev, visualRefs(p), brandHint(p), p.extraction?.screenshots.desktop ? projectPath(id, "shots", p.extraction.screenshots.desktop) : undefined));
   updateProject(id, (pp) => { pp.directions = dirs; pp.selectedDirectionId = dirs.recommendedId; pp.status = "directed"; });
 }
 
@@ -101,7 +113,7 @@ export async function build(id: string, directionId?: string) {
   if (!d) throw new Error("Direção não encontrada");
   const spec = await step(id, "spec", "Visual Designer — design system do projeto", () => visualDesignerAgent(p.report!, p.strategy!, d));
   updateProject(id, (pp) => { pp.spec = spec; });
-  const html = await step(id, "build", "Frontend Architect + Motion — construção", () => buildAgent(p.report!, p.strategy!, d, spec));
+  const html = await step(id, "build", "Frontend Architect + Motion — construção", () => buildAgent(p.report!, p.strategy!, d, spec, visualRefs(p), brandHint(p)));
   let n = writeVersion(id, html, `Primeira construção — direção "${d.name}"`);
   let { score, report } = await qaVersion(id, n, "Visual QA Director");
   const context = projectContext(getProject(id)!);

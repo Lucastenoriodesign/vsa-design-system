@@ -53,18 +53,28 @@ Relatório:\n${j(report)}`,
 }
 
 /** AGENT 3 — Creative Director: 3 genuinely distinct directions with real previews. */
-export async function creativeDirectorAgent(report: PageIntelligenceReport, strategy: ConversionStrategy, avoid: string[] = []) {
+export type VisualRefs = { images: string[]; brief: string };
+const REF_RULES = (r?: VisualRefs) => r && r.images.length ? `
+REFERÊNCIAS VISUAIS (imagens anexadas — páginas premium que o cliente aprova): ${r.brief}
+Estude nelas o NÍVEL de acabamento: profundidade, luz/glow, materiais, ícones e objetos 3D, fotografia recortada com tratamento, contraste, densidade de detalhes, ritmo escuro/claro. A página nova precisa estar NESSE nível ou acima. Não copie layouts, marcas ou textos delas: extraia a qualidade e reinterprete.` : "";
+const BRAND_RULES = (b?: string) => b ? `
+IDENTIDADE DA MARCA (preservar, salvo pedido explícito): ${b}
+"Versão nova" significa nova composição, nova experiência e novas tecnologias — NÃO uma nova identidade. Mantenha a paleta-base, o logotipo e as fotos reais da marca; você pode ampliar com cores de apoio, materiais e efeitos.` : "";
+
+export async function creativeDirectorAgent(report: PageIntelligenceReport, strategy: ConversionStrategy, avoid: string[] = [], refs?: VisualRefs, brand?: string, sourceShot?: string) {
   const lib = searchPatterns(`${report.segment.value} ${report.sophisticationLevel} ${report.emotionalTarget} ${report.product.value}`, 10);
   const hero = strategy.sectionPlan[0];
   return completeJson(CreativeDirections, {
     label: "creative-director",
     maxTokens: 48000,
+    images: [...(sourceShot ? [sourceShot] : []), ...(refs?.images ?? [])].map((path) => ({ path, mediaType: "image/jpeg" as const })),
     system: `${STUDIO_ETHOS}\nVocê é o CREATIVE DIRECTOR de uma agência de elite. Pensa como diretor de arte de revista, campanha e produto.\n${ANTI_GENERIC}`,
     prompt: `Proponha EXATAMENTE 3 direções visuais realmente distintas para esta marca (conceito, sensação, composição, tipografia e materiais diferentes — não a mesma página com outra paleta).
 Responda internamente antes: quem é a marca, o que vende, para quem, qual emoção, que percepção construir, como o nicho costuma se apresentar (${report.nicheConventions}) e como fugir disso (${report.differentiationOpportunity}).
 Use fontes do Google Fonts escolhidas pela personalidade (justifique). Dê scores 0-10 (originality, brandFit, legibility, conversion) com honestidade e escolha recommendedId por critério.
+${sourceShot ? "A primeira imagem é a página ATUAL do cliente (identidade a preservar); as demais são as referências." : ""}${BRAND_RULES(brand)}${REF_RULES(refs)}
 ${avoid.length ? `Evite repetir estas direções já usadas: ${avoid.join("; ")}` : ""}
-previewHtml: fragmento autocontido (<link> Google Fonts + <style> com classes prefixadas pelo id da direção + markup) mostrando o HERO real desta direção em 1200x720, com a headline "${hero?.copy?.headline ?? report.corePromise.value}" e o CTA "${hero?.copy?.cta ?? report.primaryCta.label}". Sem JS, sem imagens externas (use CSS/SVG para fotografia/objetos: blocos, gradientes, formas, tipografia). Cada preview precisa parecer de um projeto diferente.
+previewHtml: fragmento autocontido (<link> Google Fonts + <style> com classes prefixadas pelo id da direção + markup) mostrando o HERO real desta direção em 1200x720, com a headline "${hero?.copy?.headline ?? report.corePromise.value}" e o CTA "${hero?.copy?.cta ?? report.primaryCta.label}". Sem JS. Pode usar as URLs de imagens reais da marca listadas no relatório (fotos, logo); objetos e efeitos em CSS/SVG. Cada preview precisa parecer de um projeto diferente.
 Vocabulário técnico disponível na Creative Intelligence Library (ponto de partida, não limite; combine e transforme):
 ${patternBrief(lib.length ? lib : PATTERNS.slice(0, 8))}
 Campos de cada direção: id (kebab), name, concept, feeling, languageReferences[], palette[{name,hex #RRGGBB,role}] (3-7), typography{display,text,accent?,rationale}, photography, materials[], customComponents[], iconSystem, motion, heroComposition, sectionTreatment, differentiators[], risks[], scores{originality,brandFit,legibility,conversion}, previewHtml.
@@ -87,25 +97,27 @@ Direção escolhida:\n${j(dir)}\nPreview do hero aprovado (referência visual):\
 }
 
 const BUILD_RULES = `Requisitos de implementação (AGENTES 5 FRONTEND ARCHITECT + 6 MOTION DESIGNER):
-- Documento HTML ÚNICO, completo e autocontido: <!doctype html>, <html lang>, <head> com meta viewport, <title>, meta description, Google Fonts via <link>, todo CSS em <style>, todo JS vanilla em <script> no fim do body. Sem frameworks/CDNs de JS.
+- Documento HTML ÚNICO, completo e autocontido: <!doctype html>, <html lang>, <head> com meta viewport, <title>, meta description, Google Fonts via <link>, todo CSS em <style>, JS no fim do body. Bibliotecas permitidas (só quando agregam e sempre com fallback se não carregarem): GSAP 3.12.5 + ScrollTrigger via https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js e .../ScrollTrigger.min.js; Three.js r160 via https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js (import em <script type="module">). Use tecnologia moderna de verdade: WebGL/shader ou partículas no hero quando fizer sentido, scroll storytelling com ScrollTrigger, tilt 3D, glow e luz dinâmica, contadores, marquees; tudo leve (canvas pausa fora da tela, devicePixelRatio ≤ 2).
 - Design tokens como CSS custom properties em :root dentro de <style id="tokens"> (cores --c-*, fontes --f-*). O restante do CSS usa as variáveis.
 - Cada seção top-level é <section id="{id}" data-section="{id}" data-label="{nome}"> (header/nav e footer também com data-section). Ids = sectionPlan.
 - HTML semântico, um único <h1>, hierarquia correta, alt descritivo, foco visível, contraste AA, alvos de toque ≥ 44px.
 - Responsivo planejado: mobile-first com breakpoints próprios; nada de overflow horizontal em 360px; títulos com clamp(); reorganize composições no mobile (não só empilhar).
 - Imagens: use SOMENTE URLs de mídia listadas no relatório (são da própria marca) ou composições CSS/SVG originais. Nunca imagens de banco, nunca logos inventados. Toda <img> com width/height ou aspect-ratio e object-fit para evitar layout shift.
-- Motion: conteúdo visível por padrão; animações só após document.documentElement.classList.add('js'); IntersectionObserver para reveals; respeitar @media (prefers-reduced-motion: reduce); revelar tudo após 2.5s como fallback. Microinterações em hover/focus. Sem bibliotecas.
+- Motion: conteúdo visível por padrão; animações só após document.documentElement.classList.add('js'); reveals por IntersectionObserver ou ScrollTrigger; respeitar prefers-reduced-motion (sem WebGL animado, sem parallax); revelar tudo após 2.5s como fallback. Microinterações em hover/focus.
 - Links: CTAs usam os hrefs reais de checkout/WhatsApp do relatório; sem href="#" em CTA de conversão (se não houver link real, use âncora para a seção de oferta).
 - Não inclua scripts de rastreamento/pixels da página original.
 - Nenhum texto lorem ipsum, nenhum depoimento/número inventado.`;
 
 /** AGENTS 5+6 — Frontend Architect + Motion Designer: full page build. */
-export async function buildAgent(report: PageIntelligenceReport, strategy: ConversionStrategy, d: CreativeDirection, spec: DesignSpec) {
+export async function buildAgent(report: PageIntelligenceReport, strategy: ConversionStrategy, d: CreativeDirection, spec: DesignSpec, refs?: VisualRefs, brand?: string) {
   const { previewHtml, ...dir } = d;
   const text = await complete({
     label: "frontend-build",
     maxTokens: 64000,
+    images: (refs?.images ?? []).map((path) => ({ path, mediaType: "image/jpeg" as const })),
     system: `${STUDIO_ETHOS}\nVocê é ao mesmo tempo FRONTEND ARCHITECT sênior e MOTION DESIGNER. Constrói o site real, fiel à direção de arte, com acabamento de agência.\n${ANTI_GENERIC}`,
     prompt: `Construa a página COMPLETA. Atenção especial às seções intermediárias: cada uma deve ter composição própria e manter a identidade do hero — páginas de IA costumam ficar genéricas depois da primeira dobra; esta não pode.
+${BRAND_RULES(brand)}${REF_RULES(refs)}
 ${BUILD_RULES}
 Responda somente com o documento HTML dentro de um bloco \`\`\`html.
 Direção:\n${j(dir)}\nHero aprovado (preview que deve ser respeitado e elevado):\n${previewHtml}\nEspecificação de design:\n${j(spec)}\nEstratégia de seções e copy:\n${j(strategy)}\nFatos verificados:\n${j(report)}`,
