@@ -433,3 +433,6 @@ body:not(.is-home) .quick-row{display:none}
 .flabel{font-size:var(--fs-xs);font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
 .fclear{justify-self:start}
+
+/* Início: fotos das categorias preenchem o círculo, centralizadas; Todos usa o ícone */
+body.is-home .cat img{object-fit:cover;object-position:center}
