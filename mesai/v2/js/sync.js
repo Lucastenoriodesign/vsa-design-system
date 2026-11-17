@@ -115,6 +115,6 @@ document.addEventListener('click', function (e) {
     S2.on = true;
     LOADING = false;
     document.body.classList.add('srv-on'); // esconde avisos que só valem no modo local
-    return syncAll();
+    return syncAll().then(function () { try { checkNewPlaces(); renderAll(); } catch (e) {} });
   }).catch(function () { S2.on = false; document.body.classList.remove('srv-on'); if (LOADING) { LOADING = false; renderAll(); } });
 })();
