@@ -1,4 +1,4 @@
-var CATS=[['Tudo','Todos',null],['Restaurantes','Restaurante','assets/cat-regional.jpg'],['Hamburguerias','Hamburgueria','assets/cat-hamburguer.jpg'],['Pizzarias','Pizzaria','assets/cat-pizza.jpg'],['Lanchonetes','Lanchonete','assets/cat-lanches.jpg'],['Pastelarias','Pastelaria','assets/cat-lanches.jpg'],['Cafeterias e padarias','Cafeteria e padaria','assets/cat-cafe.jpg'],['Açaíterias','Açaíteria','assets/cat-acai.jpg']];
+var CATS=[['Tudo','Todos',null],['Restaurantes','Restaurante','assets/cat-regional.jpg'],['Hamburguerias','Hamburgueria','assets/cat-hamburguer.jpg'],['Pizzarias','Pizzaria','assets/cat-pizza.jpg'],['Lanchonetes','Lanchonete','assets/cat-lanches.jpg'],['Pastelarias','Pastelaria','assets/cat-pastel.jpg'],['Cafeterias e padarias','Cafeteria e padaria','assets/cat-cafe.jpg'],['Açaíterias','Açaíteria','assets/cat-acai.jpg']];
 var REGIONS=['Tudo','Graciliano Ramos','Cidade Universitária','Eustáquio Gomes','Shopping Pátio'];
 var EVID={indicado_em_listagens_e_avaliacoes:'Indicado em listagens e avaliações online',informado_no_site_oficial:'Informado no site oficial do estabelecimento',a_confirmar:'Ainda não confirmado'};
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
@@ -31,11 +31,17 @@ var bairro=load('mesai-bairro','Cidade Universitária');if(BAIRROS_ATIVOS.indexO
 function inBairro(p){return bairro==='Graciliano Ramos'?region(p)==='Graciliano Ramos':true}
 function pubPlaces(){return places.filter(visible).filter(inBairro)}
 function renderBairro(){var b=$('locationButton');if(b)b.textContent=bairro+', Maceió'}
+/* Horário: só vale se estiver confirmado, no formato [{d:[0..6],a:'HH:MM',f:'HH:MM'}] (d: 0=domingo). Sem isso, retorna null (desconhecido). */
+function openNow(p){var h=p.h;if(!Array.isArray(h)||!h.length)return null;
+ var f=new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Maceio'}).formatToParts(new Date()),g={};f.forEach(function(x){g[x.type]=x.value});
+ var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g.weekday),now=(parseInt(g.hour,10)%24)*60+parseInt(g.minute,10),ok=false;
+ h.forEach(function(s){if(!s||!Array.isArray(s.d)||s.d.indexOf(day)<0)return;var a=s.a.split(':'),b=s.f.split(':'),A=a[0]*60+ +a[1],B=b[0]*60+ +b[1];if(B>A?(now>=A&&now<B):(now>=A||now<B))ok=true});return ok}
 function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCase();
  if(S.q&&t.indexOf(S.q.toLowerCase())<0)return false;
  if(S.cat!=='Tudo'&&p.g!==S.cat)return false;
  if(S.region!=='Tudo'&&region(p)!==S.region)return false;
  if(S.flags.indexOf('tel')>-1&&!p.t)return false;
+ if(S.flags.indexOf('open')>-1&&openNow(p)!==true)return false;
  if(S.flags.indexOf('shop')>-1&&region(p)!=='Shopping Pátio')return false;
  if(S.flags.indexOf('amb')>-1&&!(amb[p.id]&&amb[p.id].length))return false;
  if(S.flags.indexOf('kid')>-1&&p.kid!==true)return false;
@@ -48,7 +54,7 @@ var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472
 function photo(p,cls){var u=pic(p),c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();
  return '<span class="'+cls+' cov" style="--c1:'+c[0]+';--c2:'+c[1]+'" aria-hidden="true"><b>'+esc(ini)+'</b><small>'+esc(p.g)+'</small>'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>'}
 function heartBtn(p){var on=saved.has(p.id);return '<button class="heart'+(on?' on':'')+'" data-heart="'+esc(p.id)+'" aria-pressed="'+on+'" aria-label="'+(on?'Remover ':'Salvar ')+esc(p.n)+(on?' dos salvos':'')+'">salvar</button>'}
-function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place" data-open="'+esc(p.id)+'">'+photo(p,'pimg')+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat">'+esc(p.g)+' · '+esc(region(p))+(NATIVE.distance(p)!=null?' · '+NATIVE.fmt(NATIVE.distance(p)):'')+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
+function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place" data-open="'+esc(p.id)+'">'+photo(p,'pimg')+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat">'+esc(p.g)+' · '+esc(region(p))+(NATIVE.distance(p)!=null?' · '+NATIVE.fmt(NATIVE.distance(p)):'')+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.kid===true?'<span class="qtag">Aceita crianças</span>':'')+(p.pet===true?'<span class="qtag">Aceita pets</span>':'')+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
 var LOADING=!!(typeof API!=='undefined'&&typeof MESAI_CONFIG!=='undefined'&&MESAI_CONFIG.supabaseUrl);
 function skel(n){var h='';for(var i=0;i<n;i++)h+='<div class="skel" aria-hidden="true"><i></i><span><b></b><em></em><em></em></span></div>';return h}
 function emptyBox(msg){return '<div class="empty">'+msg+'<br><button class="btn ghost" data-reset>Limpar filtros</button></div>'}
@@ -66,7 +72,7 @@ function renderHome(){
 }
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
- $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['open','Aberto agora'],['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
  var rows=sorted(pubPlaces().filter(match));
  $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':S.sort==='dist'?'perto de mim':'A–Z');
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
@@ -164,6 +170,11 @@ function route(){document.body.classList.toggle("is-home",(location.hash||"").re
 function go(v){if(location.hash==='#/'+v)route();else location.hash='#/'+v}
 function resetSearch(){S.cat='Tudo';S.region='Tudo';S.flags=[];S.q='';$('searchInput').value=''}
 document.addEventListener('click',function(e){var t=e.target.closest('button');if(!t)return;var D=t.dataset;if(D.apkHide!==undefined){store('mesai-apk-hide',true);androidStrip();return}if(D.share!==undefined){var sp=BASE.filter(function(x){return x.id===D.share})[0]||places.filter(function(x){return x.id===D.share})[0];if(sp){NATIVE.share({title:sp.n+' · Mesaí',text:sp.n+' — '+sp.g+' em '+region(sp)+'. Achei no Mesaí:',url:'https://lucastenoriodesign.github.io/vsa-design-system/'}).then(function(r){if(r==='copied')toast('Link copiado')}).catch(function(){})}return}
+ if(D.quick){var q=D.quick;resetSearch();if(q==='aberto'){S.mode='list';if(pubPlaces().some(function(p){return openNow(p)!==null})){S.flags=['open'];toast('Mostrando só quem está aberto agora')}else toast('Ainda não temos horários confirmados. Mostrando todos os lugares.');renderSearch();go('buscar')}
+  else if(q==='shopping'){S.flags=['shop'];S.mode='list';renderSearch();go('buscar')}
+  else if(q==='mapa'){S.mode='map';renderSearch();go('buscar')}
+  else if(q==='perto'){toast('Buscando sua localização…');NATIVE.locate().then(function(){S.sort='dist';S.mode='list';renderSearch();go('buscar');if(!pubPlaces().some(function(p){return NATIVE.distance(p)!=null}))toast('Ainda poucos lugares têm coordenada confirmada')}).catch(function(){toast('Não consegui sua localização. Ative o GPS e tente de novo.')})}
+  return}
  if(D.go){go(D.go);return}
  if(D.onboard!==undefined){closeOverlays();onbOpen();return}
  if(D.interest){var key=D.interest;if(interest.indexOf(key)<0)interest.push(key);store('mesai-interest',interest);renderPlan();toast('Anotado neste navegador. Ainda não há cobrança.');return}

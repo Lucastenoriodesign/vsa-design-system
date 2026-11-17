@@ -17,4 +17,10 @@
   /* espaços */
   --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;
   --focus:var(--coral-dark);
+  /* escala tipográfica (novos componentes usam só estes) */
+  --fs-xs:12px;--fs-sm:14px;--fs-md:16px;--fs-lg:18px;--fs-xl:22px;--fs-2xl:28px;
+  /* tamanhos de ícone: ação 20, navegação 24; área de toque mínima 44 */
+  --ico-sm:20px;--ico-md:24px;--touch:44px;
+  /* espaços maiores e movimento */
+  --sp-6:24px;--sp-8:32px;--sp-10:40px;--dur-fast:.12s;--dur:.18s;
 }
