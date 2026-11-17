@@ -36,11 +36,15 @@ function openNow(p){var h=p.h;if(!Array.isArray(h)||!h.length)return null;
  var f=new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Maceio'}).formatToParts(new Date()),g={};f.forEach(function(x){g[x.type]=x.value});
  var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g.weekday),now=(parseInt(g.hour,10)%24)*60+parseInt(g.minute,10),ok=false;
  h.forEach(function(s){if(!s||!Array.isArray(s.d)||s.d.indexOf(day)<0)return;var a=s.a.split(':'),b=s.f.split(':'),A=a[0]*60+ +a[1],B=b[0]*60+ +b[1];if(B>A?(now>=A&&now<B):(now>=A||now<B))ok=true});return ok}
+/* Momento da refeição: só vale com dado verificado (campo mo: ['cafe','almoco','janta','lanche']). Sem dado, o filtro nem aparece. */
+var MOMENTS=[['cafe','Café da manhã'],['almoco','Almoço'],['janta','Janta'],['lanche','Lanche']];
+function hasMoments(){return pubPlaces().some(function(p){return Array.isArray(p.mo)&&p.mo.length})}
 function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCase();
  if(S.q&&t.indexOf(S.q.toLowerCase())<0)return false;
  if(S.cat!=='Tudo'&&p.g!==S.cat)return false;
  if(S.region!=='Tudo'&&region(p)!==S.region)return false;
  if(S.flags.indexOf('tel')>-1&&!p.t)return false;
+ for(var i=0;i<S.flags.length;i++){if(S.flags[i].indexOf('mo:')===0&&!(Array.isArray(p.mo)&&p.mo.indexOf(S.flags[i].slice(3))>-1))return false}
  if(S.flags.indexOf('open')>-1&&openNow(p)!==true)return false;
  if(S.flags.indexOf('shop')>-1&&region(p)!=='Shopping Pátio')return false;
  if(S.flags.indexOf('amb')>-1&&!(amb[p.id]&&amb[p.id].length))return false;
@@ -73,7 +77,7 @@ function renderHome(){
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
  var regHtml=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('');
- var flagHtml=[['open','Aberto agora'],['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ var flagHtml=(hasMoments()?MOMENTS.map(function(m){return ['mo:'+m[0],m[1]]}):[]).concat([['open','Aberto agora'],['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']]).map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
  var anyOn=S.region!=='Tudo'||S.flags.length>0;
  $('filters').innerHTML='<div class="fgroup" role="group" aria-label="Região"><span class="flabel">Região</span><div class="fchips">'+regHtml+'</div></div><div class="fgroup" role="group" aria-label="Mostrar só"><span class="flabel">Mostrar só</span><div class="fchips">'+flagHtml+'</div></div>'+(anyOn?'<button class="link fclear" data-reset>Limpar filtros</button>':'');
  var rows=sorted(pubPlaces().filter(match));
