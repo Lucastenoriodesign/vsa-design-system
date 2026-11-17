@@ -72,7 +72,10 @@ function renderHome(){
 }
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
- $('filters').innerHTML=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('')+[['open','Aberto agora'],['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ var regHtml=REGIONS.map(function(f){var on=S.region===f;return '<button class="filter'+(on?' active':'')+'" data-region="'+esc(f)+'" aria-pressed="'+on+'">'+(f==='Tudo'?'Toda a região':f)+'</button>'}).join('');
+ var flagHtml=[['open','Aberto agora'],['tel','Tem telefone'],['shop','No shopping'],['amb','Ambiente que marquei'],['kid','Aceita criança'],['pet','Aceita pet']].map(function(f){var on=S.flags.indexOf(f[0])>-1;return '<button class="filter'+(on?' active':'')+'" data-flag="'+f[0]+'" aria-pressed="'+on+'">'+f[1]+'</button>'}).join('');
+ var anyOn=S.region!=='Tudo'||S.flags.length>0;
+ $('filters').innerHTML='<div class="fgroup" role="group" aria-label="Região"><span class="flabel">Região</span><div class="fchips">'+regHtml+'</div></div><div class="fgroup" role="group" aria-label="Mostrar só"><span class="flabel">Mostrar só</span><div class="fchips">'+flagHtml+'</div></div>'+(anyOn?'<button class="link fclear" data-reset>Limpar filtros</button>':'');
  var rows=sorted(pubPlaces().filter(match));
  $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':S.sort==='dist'?'perto de mim':'A–Z');
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');

@@ -425,3 +425,11 @@ body.is-home #view-inicio #homeSearch input{font-size:var(--fs-md)}
 .qk svg{width:var(--ico-sm);height:var(--ico-sm);color:var(--coral-dark)}.qk:active{transform:scale(.96)}
 body:not(.is-home) .quick-row{display:none}
 .qtag{display:inline-block;margin:6px 6px 0 0;padding:2px 8px;border-radius:var(--r-pill);background:var(--green-bg);color:var(--green);font-size:var(--fs-xs);font-weight:800}
+
+/* Filtros da busca: dois grupos rotulados, alinhados à margem da tela */
+#view-buscar #filters{display:grid;gap:14px;overflow:visible;margin:10px 0 8px;padding:0}
+#view-buscar #filters[hidden]{display:none}
+.fgroup{display:grid;gap:8px}
+.flabel{font-size:var(--fs-xs);font-weight:800;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.fchips{display:flex;flex-wrap:wrap;gap:8px}
+.fclear{justify-self:start}
