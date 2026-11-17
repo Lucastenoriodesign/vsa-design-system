@@ -20,7 +20,7 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
 - Papéis: só DONO (o Lucas, tabela `admins`) e USUÁRIO.
 
 ## Decisões já tomadas (não desfazer sem o Lucas pedir)
-- Lançamento **100% grátis**. A tela do Mesaí Plus, o banner do Mesaí+ e a página de planos estão **escondidos, não apagados** (seção `.onb-s.offer` com `hidden` em `index.html`). Voltam quando os recursos existirem.
+- **Mensalidade de volta** (decisão do Lucas em 16/11/2026): tela do Mesaí Plus no fim das boas-vindas, banner do Mesaí+ e "Planos" no Perfil estão ativos. Ainda **não há cobrança real** (o texto da tela diz isso). Antes de cobrar: os recursos prometidos (listas compartilháveis, alertas de lugar novo, pontos que viram vantagens) precisam existir, e no iPhone a cobrança tem que ser pela compra dentro do app da Apple.
 - Boas-vindas com 3 telas (Descobrir, Comunidade, Salve e vá), aprovadas pelo Lucas. Ilustrações ainda provisórias.
 - Hub da home: saudação pelo horário de Maceió + bairro + sino; categorias 4×2 no singular (Restaurante, Hamburgueria, Pizzaria, Lanchonete, Pastelaria, Cafeteria e padaria, Açaíteria); depois banners; depois o resto.
 - Notificações são montadas com dados reais (lugar do dia, lugares novos, pontos). Nada de exemplo inventado.

@@ -217,14 +217,14 @@ var onbI=0;
 function onbShow(i,dir){var ss=document.querySelectorAll('.onb-s');ss.forEach(function(x,k){x.classList.toggle('on',k===i);x.classList.toggle('out',k<i);x.setAttribute('aria-hidden',k!==i)});document.querySelectorAll('#onbDots i').forEach(function(d,k){d.classList.toggle('on',k===i)});$('onbNext').textContent=i===2?'Começar':'Continuar';$('onb').classList.toggle('offer',i===3);onbI=i}
 function onbOpen(){$('onb').hidden=false;onbShow(0);$('onbNext').focus()}
 function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
-$('onbNext').onclick=function(){if(onbI>=2)onbClose();else onbShow(onbI+1)};
+$('onbNext').onclick=function(){if(onbI>=3)onbClose();else onbShow(onbI+1)};
 var opSel='anual';
 document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
 $('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();toast('Seu teste de 14 dias começou')};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
-(function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<2)onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
-document.addEventListener('keydown',function(e){if($('onb').hidden)return;if(e.key==='ArrowRight'&&onbI<2)onbShow(onbI+1);if(e.key==='ArrowLeft'&&onbI>0)onbShow(onbI-1)});
+(function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<3)onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
+document.addEventListener('keydown',function(e){if($('onb').hidden)return;if(e.key==='ArrowRight'&&onbI<3)onbShow(onbI+1);if(e.key==='ArrowLeft'&&onbI>0)onbShow(onbI-1)});
 if(!load('mesai-onboarded',false))onbOpen();
 
 var interest=load('mesai-interest',[]);
