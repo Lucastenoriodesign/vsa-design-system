@@ -6,7 +6,7 @@
   --ink:#292a2b;--ink-2:#4f4a43;--ink-3:#5c564e;--muted:#6f685f;--icon-dim:#8a8379;
   --ink-warm:#3b1f2b;--ink-warm-2:#6d5a60;--on-accent:#ffffff;
   /* linhas */
-  --line:#e8e5e0;
+  --line:#e8e5e0;--line-strong:#d5cec3;
   /* marca */
   --coral:#e87558;--coral-dark:#a84a34;--coral-bg:#fbe4de;--coral-ink:#a3412c;
   --green:#3d765c;--green-bg:#e9f2eb;--amber:#f3a11a;--amber-bg:#fff0ce;
