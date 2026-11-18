@@ -527,3 +527,15 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 #fsheet .fchips{gap:6px}#fsheet .fgroup{margin-bottom:var(--sp-3)}
 #fsheet .fdias .filter{min-height:38px;padding:0}
 #fsheet .flabel{margin-bottom:6px}
+
+/* Filtro com a cor da marca: chips em coral suave, selecionado em coral cheio, títulos e linha de cor */
+#fsheet .filter{background:var(--coral-bg);border-color:#f3c9bf;color:var(--coral-ink)}
+#fsheet .filter.active{background:var(--coral);border-color:var(--coral);color:#fff;box-shadow:0 2px 8px #e8755840}
+#fsheet .filter.active i{opacity:.85}
+#fsheet .filter.off{background:transparent;border-color:var(--line);color:var(--muted)}
+#fsheet .flabel{color:var(--coral-dark);display:flex;align-items:center;gap:8px}
+#fsheet .flabel::before{content:"";width:4px;height:14px;border-radius:3px;background:var(--coral)}
+#fsheet .fgroup{padding-bottom:var(--sp-3);border-bottom:1px solid #f3e3dd}
+#fsheet .fbar .btn{background:var(--coral);box-shadow:0 6px 16px #e8755845}
+#fsheet .filter.active{background:var(--coral-dark);border-color:var(--coral-dark)}
+#fsheet .fbar .btn{background:var(--coral-dark)}
