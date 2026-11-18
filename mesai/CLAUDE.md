@@ -14,6 +14,10 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
   - Assinatura Android: `android/keystore.properties` + `mesai-release.jks` ficam **fora do Git** (o Lucas tem o zip com a chave e a senha). Sem eles não há como gerar atualização do APK.
   - iOS: o Mac do Lucas tem macOS antigo e o Xcode atual não instala; alternativa é build na nuvem. Distribuição no iPhone depende da conta Apple Developer (D-U-N-S pedido em 16/11/2026, aguardando).
 
+## Ver ao vivo (iPhone ao lado do terminal)
+- Quando o Lucas pedir "modo ao vivo": rode `./dev/ao-vivo.sh` em segundo plano (serve `v2/` em http://localhost:8124 com recarga automática via live-server e abre `dev/iphone.html`, um iPhone com o app dentro). Detalhes em `dev/README.md`.
+- `?primeiro-acesso=1` na URL mostra as boas-vindas de novo.
+
 ## Publicação
 - Site: https://lucastenoriodesign.github.io/vsa-design-system/ — publica sozinho pelo workflow `.github/workflows/mesai-pages.yml` a cada push na branch `claude/mesai-projeto-continuacao-xavx7b` (pasta `mesai/v2`).
 - Supabase: projeto `qheadmopevmckkmugugy`. Tabelas `places`, `profiles`, `comments`, `checkins`, `saved_places`, `ambience_marks`, `suggestions`, `admins`; bucket `avatars`. Tudo com RLS. Moderação **automática** por filtro de palavras (`private.banned_terms` + trigger `comments_moderate_trg`). Exclusão de conta pela função `public.delete_my_account()` (bloqueada para a conta dona).

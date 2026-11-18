@@ -1,3 +1,4 @@
+try{if(/[?&]primeiro-acesso=1/.test(location.search))localStorage.removeItem("mesai-onboarded")}catch(e){}
 var CATS=[['Tudo','Todos','assets/cat-todos.jpg'],['Restaurantes','Restaurante','assets/cat-regional.jpg'],['Hamburguerias','Hamburgueria','assets/cat-hamburguer.jpg'],['Pizzarias','Pizzaria','assets/cat-pizza.jpg'],['Lanchonetes','Lanchonete','assets/cat-lanches.jpg'],['Pastelarias','Pastelaria','assets/cat-pastel.jpg'],['Cafeterias e padarias','Cafeteria e padaria','assets/cat-cafe.jpg'],['Açaíterias','Açaíteria','assets/cat-acai.jpg']];
 var REGIONS=['Tudo','Graciliano Ramos','Cidade Universitária','Eustáquio Gomes','Shopping Pátio'];
 var EVID={indicado_em_listagens_e_avaliacoes:'Indicado em listagens e avaliações online',informado_no_site_oficial:'Informado no site oficial do estabelecimento',a_confirmar:'Ainda não confirmado'};
