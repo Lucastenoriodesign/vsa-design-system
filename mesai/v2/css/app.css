@@ -539,3 +539,12 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 #fsheet .fbar .btn{background:var(--coral);box-shadow:0 6px 16px #e8755845}
 #fsheet .filter.active{background:var(--coral-dark);border-color:var(--coral-dark)}
 #fsheet .fbar .btn{background:var(--coral-dark)}
+
+/* Filtro equilibrado: neutro por padrão; salmão só no que está selecionado e no botão principal */
+#fsheet .filter{background:var(--paper);border-color:var(--line);color:var(--ink-2)}
+#fsheet .filter.active{background:var(--coral);border-color:var(--coral);color:#2b120b;box-shadow:none}
+#fsheet .filter.off{background:transparent;border-color:var(--line);color:var(--muted)}
+#fsheet .flabel{color:var(--muted)}#fsheet .flabel::before{display:none}
+#fsheet .fgroup{border-bottom:0;padding-bottom:0}
+#fsheet .fbar .btn{background:var(--coral);color:#2b120b;box-shadow:none}
+#fsheet .fbar .link{color:var(--coral-dark)}
