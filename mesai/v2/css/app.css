@@ -507,3 +507,13 @@ body.is-home .cat-all-icon i{width:9px;height:9px}
 body.is-home .quick-row{display:flex;flex-wrap:wrap;justify-content:flex-start;overflow:visible;margin:var(--sp-3) 0 0;padding:0;gap:6px}
 body.is-home .quick-row .qk{min-height:34px;padding:0 10px;gap:5px;font-size:13px;font-weight:700}
 body.is-home .quick-row .qk svg{width:15px;height:15px}
+
+/* Buscar: categorias e botões visíveis na tela, menores e quebrando em linhas (sem rolagem lateral) */
+.chips,.sortbar{flex-wrap:wrap;overflow:visible;margin:var(--sp-2) 0 var(--sp-1);padding:0;gap:6px}
+.chip{flex:0 1 auto;min-height:32px;padding:0 10px;gap:5px;font-size:12.5px}
+.chip img{width:18px;height:18px}
+.sortbar .qk{min-height:34px;padding:0 10px;gap:5px;font-size:13px;font-weight:700}
+.sortbar .qk svg{width:15px;height:15px}
+#view-buscar .chips{flex-wrap:wrap;overflow:visible;margin:var(--sp-2) 0 var(--sp-1);padding:0;gap:6px}
+#view-buscar .chip{min-height:30px;padding:0 8px;gap:4px;font-size:12px}#view-buscar .chip img{width:16px;height:16px}
+#view-buscar .chips{gap:5px}
