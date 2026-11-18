@@ -448,3 +448,11 @@ body.is-home .cat img{object-fit:cover;object-position:center}
 .dinfo dt{font-size:var(--fs-xs);font-weight:750;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 2px}.dinfo dd{margin:0;font-size:var(--fs-md);color:var(--ink)}
 .dmiss{color:var(--muted);font-size:var(--fs-sm);margin:0 0 var(--sp-4)}
 .dact .btn{display:inline-flex;align-items:center;justify-content:center}
+
+/* Redesenho: cards sem rótulo repetido, categoria em destaque, perfil alinhado */
+.pcat b{color:var(--ink);font-weight:750}
+.pcard{margin-top:var(--sp-2)}
+
+/* Comunidade: seletores em coluna, sem texto cortado */
+.composer .row{display:grid;grid-template-columns:1fr;gap:var(--sp-2)}.composer .row select{width:100%;flex:none}
+.composer .row{padding:var(--sp-3) 0 0;margin:0}.composer .row select{margin:0}
