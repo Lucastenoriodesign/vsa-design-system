@@ -561,3 +561,19 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 .nav-logo .lbl{margin-top:0}
 .nav-logo.active .ico{background:var(--coral-dark);box-shadow:0 6px 14px #a84a3455}
 .nav-logo{padding-bottom:8px}
+/* Logo dentro da barra, no centro, sem subir */
+.nav-logo{justify-content:center;padding-bottom:0}
+.nav-logo .ico{position:static;transform:none;width:34px;height:34px;border:0;box-shadow:none;top:auto;left:auto}
+.nav-logo .ico img{width:20px}
+.nav-logo.active .ico{box-shadow:none}
+.dock{align-items:center}
+.nav-logo{padding-bottom:11px}
+.nav-logo .ico{flex:none;min-width:34px;min-height:34px}
+.nav-logo{padding-bottom:6px}
+.nav-logo{padding-bottom:12px}
+
+/* Barra: Início (casinha) em primeiro; sem botão elevado nem círculo; só a cor muda no ativo */
+.nav-logo{padding-bottom:0}
+/* Ícones e textos pretos; o item ativo só ganha uma barrinha salmão no topo (nada se mexe) */
+.nav,.nav.active,.nav .ico svg,.nav.active .ico svg{color:var(--ink)}
+.nav.active::before{content:"";position:absolute;top:-2px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:3px;background:var(--coral)}
