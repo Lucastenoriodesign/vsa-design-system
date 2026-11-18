@@ -517,3 +517,13 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 #view-buscar .chips{flex-wrap:wrap;overflow:visible;margin:var(--sp-2) 0 var(--sp-1);padding:0;gap:6px}
 #view-buscar .chip{min-height:30px;padding:0 8px;gap:4px;font-size:12px}#view-buscar .chip img{width:16px;height:16px}
 #view-buscar .chips{gap:5px}
+
+/* Filtro completo: contagens, opções sem dado em cinza, dias da semana em grade */
+#fsheet .filter i{font-style:normal;font-weight:700;opacity:.6;margin-left:4px;font-size:.85em}
+#fsheet .filter.off{opacity:.38;background:transparent;border-style:dashed;cursor:not-allowed}
+#fsheet .fnote{margin:var(--sp-2) 0 0;font-size:var(--fs-xs);color:var(--muted);line-height:1.4}
+#fsheet .fdias{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}#fsheet .fdias .filter{padding:8px 0;text-align:center;min-height:44px}
+#fsheet .filter{min-height:34px;padding:0 12px;font-size:13px}
+#fsheet .fchips{gap:6px}#fsheet .fgroup{margin-bottom:var(--sp-3)}
+#fsheet .fdias .filter{min-height:38px;padding:0}
+#fsheet .flabel{margin-bottom:6px}
