@@ -9,7 +9,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}:focus-visible{o
 .where{display:flex;align-items:center;gap:6px;margin-top:6px;color:var(--ink-3);font-size:var(--fs-sm);font-weight:700}.where svg{width:14px;height:14px;color:var(--coral-dark)}.where button{min-height:44px;display:inline-flex;align-items:center;border:0;background:transparent;padding:2px 4px;color:inherit;font-weight:700}
 .main{padding:0 20px}.view{display:none}.view.on{display:block;animation:fade .18s ease}@keyframes fade{from{opacity:.4}to{opacity:1}}
 .welcome{padding:22px 0 14px}.welcome small{color:var(--coral-dark);font-weight:800;letter-spacing:.02em;font-size:var(--fs-sm)}.welcome h1{font-size:29px;line-height:1.05;letter-spacing:-.055em;margin:6px 0 0}
-.page-title{font-size:26px;letter-spacing:-.05em;margin:22px 0 4px}.page-sub{color:var(--muted);font-size:var(--fs-sm);margin:0 0 14px}
+.page-title{font-size:26px;letter-spacing:-.05em;margin:14px 0 2px}.page-sub{color:var(--muted);font-size:var(--fs-sm);margin:0 0 14px}
 .search{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:12px 14px;box-shadow:0 3px 10px #2b211108}.search svg{width:19px;height:19px;flex:none;color:var(--icon-dim)}.search:focus-within{border-color:var(--focus);box-shadow:0 0 0 3px var(--coral-bg)}.search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font-size:var(--fs-md)}.search input::placeholder{color:var(--muted)}
 .quickcats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 6px;padding:14px 0 6px;align-items:start}.quickcats::-webkit-scrollbar{display:none}.quickcats .cat{min-width:0}
 .cat{border:0;background:transparent;color:var(--ink-2);padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:650;line-height:1.15;text-align:center}
@@ -101,7 +101,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}:focus-visible{o
 .cov>img{position:absolute!important;inset:0;width:100%!important;height:100%!important;border-radius:0!important;object-fit:cover!important;box-shadow:none!important;background:#eee}
 .pimg.cov b{font-size:44px}.pimg.cov small{font-size:var(--fs-xs)!important}.dph.cov b{font-size:72px}
 .hero{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}.hero-main{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left;color:inherit}.hphoto{height:180px;display:grid}.hbody{display:grid;gap:3px;padding:14px 16px 4px}.hbody b{font-size:20px;letter-spacing:-.035em}.hbody small{color:var(--muted);font-size:var(--fs-sm)}.hbody i{font-style:normal;color:var(--ink-2);font-size:var(--fs-sm);margin-top:4px}.hero-act{display:flex;gap:8px;padding:10px 16px 16px}.hero-act .btn{flex:1}
-.sortbar{display:flex;justify-content:space-between;align-items:center;margin:-2px 0 6px}
+.sortbar{display:flex;justify-content:flex-start;align-items:center;gap:var(--sp-2);overflow-x:auto;scrollbar-width:none;margin:2px -20px 8px;padding:2px 20px}.sortbar::-webkit-scrollbar{display:none}
 .sec-t{font-size:var(--fs-md);margin:18px 0 2px}.sec-s{font-size:var(--fs-sm);color:var(--muted);margin:0 0 10px}.ambs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}.amb{min-height:44px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:0 14px;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2)}.amb.on{background:var(--green-bg);border-color:var(--green);color:var(--green)}
 .pts{display:flex;align-items:baseline;gap:10px;margin:8px 0}.pts b{font-size:44px;letter-spacing:-.05em;color:var(--coral-dark)}.pts span{color:var(--muted)}
 .cw{animation:rise .35s both}.cw:nth-child(2){animation-delay:.04s}.cw:nth-child(3){animation-delay:.08s}.cw:nth-child(4){animation-delay:.12s}.cw:nth-child(n+5){animation-delay:.16s}
@@ -436,3 +436,7 @@ body:not(.is-home) .quick-row{display:none}
 
 /* Início: fotos das categorias preenchem o círculo, centralizadas; Todos usa o ícone */
 body.is-home .cat img{object-fit:cover;object-position:center}
+
+/* Identidade: controles da Buscar no mesmo padrão em pílula da home */
+.sortbar .qk[aria-expanded=true]{background:var(--ink);color:var(--on-accent);border-color:var(--ink)}
+.sortbar .qk{padding:0 var(--sp-3)}
