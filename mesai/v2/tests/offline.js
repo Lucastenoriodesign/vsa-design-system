@@ -9,7 +9,9 @@ const BASE = process.env.BASE || 'http://localhost:8124';
   await p.addInitScript(() => localStorage.setItem('mesai-onboarded', 'true'));
   await p.goto(BASE + '/');
   await p.evaluate(() => navigator.serviceWorker.ready);
-  await p.waitForTimeout(800);
+  // espera o service worker terminar de gravar o casco no cache (pode levar mais de 800 ms)
+  await p.waitForFunction(() => caches.keys().then(ks => ks.length > 0), null, { timeout: 10000 }).catch(() => {});
+  await p.waitForTimeout(1500);
   await ctx.setOffline(true);
   await p.reload();
   // o app mostra blocos de carregamento por até 2,5 s antes de cair no cadastro local
