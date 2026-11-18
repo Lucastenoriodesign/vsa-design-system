@@ -470,3 +470,18 @@ body.is-home .quickcats .cat{flex:0 0 86px;min-width:0;gap:var(--sp-1);font-size
 body.is-home .cat img,body.is-home .cat-all-icon{width:52px;height:52px;border-radius:var(--r-md);box-shadow:none}
 body.is-home .cat img{object-fit:cover}
 body.is-home .cat-all-icon i{width:9px;height:9px}
+
+/* Cartão de lugar com foco na imagem: faixa de até 3 fotos em cima, informações embaixo */
+.cw.p .place.vcard{display:block;grid-template-columns:none;min-height:0;width:100%}
+.cw.p .heart{left:auto;right:8px;top:8px}
+.vph{display:grid;gap:2px;height:176px;background:var(--fill);overflow:hidden}
+.vph img{width:100%;height:100%;object-fit:cover;display:block;background:var(--fill)}
+.vph.n2{grid-template-columns:1fr 1fr}
+.vph.n3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}.vph.n3 img:first-child{grid-row:1/3}
+.pimg.vnone{display:grid;min-height:120px;width:100%;place-items:center}
+.vcard .pinfo{display:block;padding:var(--sp-3) 14px 14px}
+.vcard .ptitle{font-size:var(--fs-lg)}
+
+.vph.empty{height:110px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c1),#fff)}
+.vph.empty::after{content:attr(data-i);font-size:44px;font-weight:850;letter-spacing:-.05em;color:var(--c2);opacity:.9}
+.section-head>div{min-width:0;flex:1}.section-head .link{flex:none;white-space:nowrap}

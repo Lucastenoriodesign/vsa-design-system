@@ -23,7 +23,7 @@ var places=BASE.concat(sugg);
 function visible(p){return p.pub||published.has(p.id)}
 var saved=new Set(load('mesai-saved',[]).filter(function(id){return places.some(function(p){return p.id===id})}));
 var posts=load('mesai-posts',[]).filter(function(x){return x&&x.id&&x.text});
-var S={cat:'Tudo',region:'Tudo',q:'',mode:'list',flags:[],sort:'az'};
+var S={cat:'Tudo',region:'Tudo',q:'',mode:'list',flags:[],sort:'comp'};
 function byId(id){return places.find(function(p){return p.id===id})}
 var BAIRROS_ATIVOS=['Cidade Universitária'];
 var BAIRROS_MCZ=['Ponta Verde','Jatiúca','Pajuçara','Jacintinho','Tabuleiro do Martins','Serraria','Centro','Farol','Santo Amaro','Mangabeiras','Antares','Barro Duro','Bebedouro','Benedito Bentes','Bom Parto','Canaã','Chã da Jaqueira','Chã de Bebedouro','Clima Bom','Cruz das Almas','Feitosa','Fernão Velho','Garça Torta','Gruta de Lourdes','Guaxuma','Ipioca','Jacarecica','Jaraguá','Jardim Petrópolis','Levada','Mutange','Ouro Preto','Pescaria','Petrópolis','Pinheiro','Pitanguinha','Ponta Grossa','Ponta da Terra','Pontal da Barra','Poço','Prado','Riacho Doce','Rio Novo','Santa Amélia','Santa Lúcia','Santos Dumont','São Jorge','Trapiche da Barra','Vergel do Lago'];
@@ -52,13 +52,17 @@ function match(p){var t=(p.n+' '+p.g+' '+p.c+' '+p.d+' '+p.e+' '+p.r).toLowerCas
  if(S.flags.indexOf('pet')>-1&&p.pet!==true)return false;
  return true}
 function yn(v){return v===true?'Aceita':v===false?'Não aceita':'Não informado'}
-function sorted(a){if(S.sort==='dist')return a.slice().sort(function(x,y){var dx=NATIVE.distance(x),dy=NATIVE.distance(y);if(dx==null&&dy==null)return x.n.localeCompare(y.n);if(dx==null)return 1;if(dy==null)return -1;return dx-dy});return a.slice().sort(function(x,y){return S.sort==='reg'?(region(x).localeCompare(region(y))||x.n.localeCompare(y.n)):x.n.localeCompare(y.n)})}
+function sorted(a){if(S.sort==='comp')return byComplete(a);if(S.sort==='dist')return a.slice().sort(function(x,y){var dx=NATIVE.distance(x),dy=NATIVE.distance(y);if(dx==null&&dy==null)return x.n.localeCompare(y.n);if(dx==null)return 1;if(dy==null)return -1;return dx-dy});return a.slice().sort(function(x,y){return S.sort==='reg'?(region(x).localeCompare(region(y))||x.n.localeCompare(y.n)):x.n.localeCompare(y.n)})}
 function pic(p){var a=photosOk[p.id];return a?a.u:p.foto}
+function photos(p){var l=(Array.isArray(p.fotos)?p.fotos:[]).filter(Boolean);if(!l.length&&pic(p))l=[pic(p)];return l.slice(0,3)}
+function complete(p){return(photos(p).length?3:0)+(p.t?1:0)+(p.h?1:0)+(typeof p.lat==='number'?1:0)}
+function byComplete(a){return a.slice().sort(function(x,y){return complete(y)-complete(x)||x.n.localeCompare(y.n)})}
 var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472a'],'Pizzarias':['#fff0c9','#8a5d00'],'Lanchonetes':['#fbe4e0','#a3412c'],'Pastelarias':['#ffe9d0','#8d4f10'],'Cafeterias e padarias':['#efe3d6','#6b4a33'],'Açaíterias':['#f1e4f3','#6d2f7a']};
 function photo(p,cls){var u=pic(p),c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();
  return '<span class="'+cls+' cov" style="--c1:'+c[0]+';--c2:'+c[1]+'" aria-hidden="true"><b>'+esc(ini)+'</b>'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>'}
 function heartBtn(p){var on=saved.has(p.id);return '<button class="heart'+(on?' on':'')+'" data-heart="'+esc(p.id)+'" aria-pressed="'+on+'" aria-label="'+(on?'Remover ':'Salvar ')+esc(p.n)+(on?' dos salvos':'')+'">salvar</button>'}
-function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place" data-open="'+esc(p.id)+'">'+photo(p,'pimg')+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat"><b>'+esc(p.g)+'</b> · '+esc(region(p))+(NATIVE.distance(p)!=null?' · '+NATIVE.fmt(NATIVE.distance(p)):'')+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.kid===true?'<span class="qtag">Aceita crianças</span>':'')+(p.pet===true?'<span class="qtag">Aceita pets</span>':'')+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
+function vmedia(p){var l=photos(p);if(!l.length)return photo(p,'pimg vnone');var c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();return '<span class="vph n'+l.length+'" style="--c1:'+c[0]+';--c2:'+c[1]+'" data-i="'+esc(ini)+'" aria-hidden="true">'+l.map(function(u){return '<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="var s=this.parentNode;this.remove();if(!s.querySelector(\'img\'))s.classList.add(\'empty\')">'}).join('')+'</span>'}
+function placeCard(p){return '<div class="cw p">'+heartBtn(p)+'<button class="place vcard" data-open="'+esc(p.id)+'">'+vmedia(p)+'<span class="pinfo"><div class="ptitle">'+esc(p.n)+'</div><div class="pcat"><b>'+esc(p.g)+'</b> · '+esc(region(p))+(NATIVE.distance(p)!=null?' · '+NATIVE.fmt(NATIVE.distance(p)):'')+'</div><div class="ptags">'+esc(shortAddr(p))+'</div>'+(p.kid===true?'<span class="qtag">Aceita crianças</span>':'')+(p.pet===true?'<span class="qtag">Aceita pets</span>':'')+(p.suggested?'<span class="presencial">Aguardando revisão</span>':'')+'</span></button></div>'}
 var LOADING=!!(typeof API!=='undefined'&&typeof MESAI_CONFIG!=='undefined'&&MESAI_CONFIG.supabaseUrl);
 function skel(n){var h='';for(var i=0;i<n;i++)h+='<div class="skel" aria-hidden="true"><i></i><span><b></b><em></em><em></em></span></div>';return h}
 function emptyBox(msg){return '<div class="empty">'+msg+'<br><button class="btn ghost" data-reset>Limpar filtros</button></div>'}
@@ -71,8 +75,8 @@ function renderHome(){
  var pp=pubPlaces();var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  $('hero').innerHTML=h?'<div class="hero"><button class="hero-main" data-open="'+esc(h.id)+'">'+photo(h,'hphoto')+'<span class="hbody"><b>'+esc(h.n)+'</b><small>'+esc(h.g)+' · '+esc(region(h))+'</small><i>'+esc(h.d)+'</i></span></button><div class="hero-act"><button class="btn" data-open="'+esc(h.id)+'">Ver detalhes</button><button class="btn ghost" data-surprise>Surpreenda-me</button></div></div>':'';
  if(LOADING){$('hero').innerHTML='<div class="skel big" aria-hidden="true"></div>';$('homeList').innerHTML=skel(3);$('homeList').setAttribute('aria-busy','true');$('homeCount').textContent='Ver todos';renderRecent();return}
- $('homeList').removeAttribute('aria-busy');$('homeList').innerHTML=pp.slice(0,6).map(placeCard).join('');renderRecent();
- $('homeCount').textContent='Ver todos os '+pp.length;
+ $('homeList').removeAttribute('aria-busy');$('homeList').innerHTML=byComplete(pp).slice(0,6).map(placeCard).join('');renderRecent();
+ $('homeCount').textContent='Ver todos ('+pp.length+')';
 }
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
@@ -81,7 +85,7 @@ function renderSearch(){
  var anyOn=S.region!=='Tudo'||S.flags.length>0;
  $('filters').innerHTML='<div class="fgroup" role="group" aria-label="Região"><span class="flabel">Região</span><div class="fchips">'+regHtml+'</div></div><div class="fgroup" role="group" aria-label="Mostrar só"><span class="flabel">Mostrar só</span><div class="fchips">'+flagHtml+'</div></div>'+(anyOn?'<button class="link fclear" data-reset>Limpar filtros</button>':'');
  var rows=sorted(pubPlaces().filter(match));
- $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':S.sort==='dist'?'perto de mim':'A–Z');
+ $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':S.sort==='dist'?'perto de mim':S.sort==='az'?'A–Z':'mais completos');
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
  (function(){var c=$('catChips'),a=c.querySelector('.active');if(a)c.scrollLeft=Math.max(0,a.offsetLeft-(c.clientWidth-a.offsetWidth)/2)})();
  if(LOADING){$('count').textContent='Carregando lugares…';$('list').innerHTML=skel(5);$('list').setAttribute('aria-busy','true');return}$('list').removeAttribute('aria-busy');
@@ -213,7 +217,7 @@ if(D.sheet){openSheet(D.sheet);return}
 document.querySelectorAll('.overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)closeOverlays()})});
 document.addEventListener('change',function(e){var t=e.target;if(t.dataset&&t.dataset.notif){notif[t.dataset.notif]=t.checked;store('mesai-notif',notif);toast('Preferência salva')}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeOverlays();if(e.key==='Tab'){var o=document.querySelector('.overlay.open')||(!$('onb').hidden&&$('onb'));if(!o)return;var f=o.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select,textarea');if(!f.length)return;var a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
-$('sortBtn').onclick=function(){NATIVE.haptic();if(S.sort==='az'){S.sort='reg';return renderSearch()}if(S.sort==='reg'){$('sortBtn').textContent='Buscando sua localização…';return NATIVE.locate().then(function(){S.sort='dist';renderSearch()}).catch(function(){S.sort='az';renderSearch();toast('Sem acesso à localização. Ative nas configurações para ver o que está perto.')})}S.sort='az';renderSearch()};
+$('sortBtn').onclick=function(){NATIVE.haptic();if(S.sort==='comp'){S.sort='az';return renderSearch()}if(S.sort==='az'){S.sort='reg';return renderSearch()}if(S.sort==='reg'){$('sortBtn').textContent='Buscando sua localização…';return NATIVE.locate().then(function(){S.sort='dist';renderSearch()}).catch(function(){S.sort='comp';renderSearch();toast('Sem acesso à localização. Ative nas configurações para ver o que está perto.')})}S.sort='comp';renderSearch()};
 $('modeList').onclick=function(){S.mode='list';renderSearch()};
 $('modeMap').onclick=function(){S.mode='map';renderSearch()};
 $('searchInput').oninput=function(e){S.q=e.target.value.trim();renderSearch()};
