@@ -443,7 +443,7 @@ body.is-home .cat img{object-fit:cover;object-position:center}
 
 /* Redesenho do detalhe: ações primeiro, dados em lista */
 .detail-title{margin:14px 0 2px}.detail-sub{margin:0 0 14px}
-.dact{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--sp-2);margin:var(--sp-2) 0 var(--sp-4)}.dact .btn{min-height:var(--touch);padding:0 var(--sp-2);font-size:var(--fs-sm);margin:0}
+.dact{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:var(--sp-2);margin:var(--sp-2) 0 var(--sp-4)}.dact .btn{min-height:var(--touch);padding:0 var(--sp-2);font-size:var(--fs-sm);margin:0}
 .dinfo{margin:0 0 var(--sp-3);border-top:1px solid var(--line)}.dinfo>div{padding:12px 0;border-bottom:1px solid var(--line)}
 .dinfo dt{font-size:var(--fs-xs);font-weight:750;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 2px}.dinfo dd{margin:0;font-size:var(--fs-md);color:var(--ink)}
 .dmiss{color:var(--muted);font-size:var(--fs-sm);margin:0 0 var(--sp-4)}
@@ -461,3 +461,4 @@ body.is-home .cat img{object-fit:cover;object-position:center}
 body.is-home .quickcats .cat span,body.is-home .quickcats .cat b,body.is-home .quickcats .cat small{text-wrap:balance}
 body.is-home .quickcats .cat{align-self:start}
 .section-head .link{font-weight:750;color:var(--coral-ink)}
+@media (max-width:374px){.dact .btn{font-size:13px;padding:0 4px}}
