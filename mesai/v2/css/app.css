@@ -456,3 +456,8 @@ body.is-home .cat img{object-fit:cover;object-position:center}
 /* Comunidade: seletores em coluna, sem texto cortado */
 .composer .row{display:grid;grid-template-columns:1fr;gap:var(--sp-2)}.composer .row select{width:100%;flex:none}
 .composer .row{padding:var(--sp-3) 0 0;margin:0}.composer .row select{margin:0}
+/* Home: fundo creme, topo combinando, rótulos de categoria alinhados */
+.top,body.is-home .top{background:#fbf8f2ee}
+body.is-home .quickcats .cat span,body.is-home .quickcats .cat b,body.is-home .quickcats .cat small{text-wrap:balance}
+body.is-home .quickcats .cat{align-self:start}
+.section-head .link{font-weight:750;color:var(--coral-ink)}
