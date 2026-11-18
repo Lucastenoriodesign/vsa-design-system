@@ -462,3 +462,11 @@ body.is-home .quickcats .cat span,body.is-home .quickcats .cat b,body.is-home .q
 body.is-home .quickcats .cat{align-self:start}
 .section-head .link{font-weight:750;color:var(--coral-ink)}
 @media (max-width:374px){.dact .btn{font-size:13px;padding:0 4px}}
+
+/* Home: categorias compactas no padrão iFood — uma fileira rolável, ladrilho de 52px, rótulo de 12px */
+body.is-home .quickcats{display:flex;grid-template-columns:none;gap:var(--sp-1);overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;margin:0 -20px;padding:var(--sp-3) 20px var(--sp-2)}
+body.is-home .quickcats::-webkit-scrollbar{display:none}
+body.is-home .quickcats .cat{flex:0 0 86px;min-width:0;gap:var(--sp-1);font-size:var(--fs-xs);font-weight:650;letter-spacing:-.01em;line-height:1.2;scroll-snap-align:start;align-self:flex-start}
+body.is-home .cat img,body.is-home .cat-all-icon{width:52px;height:52px;border-radius:var(--r-md);box-shadow:none}
+body.is-home .cat img{object-fit:cover}
+body.is-home .cat-all-icon i{width:9px;height:9px}
