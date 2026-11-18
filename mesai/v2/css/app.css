@@ -502,3 +502,8 @@ body.is-home .cat-all-icon i{width:9px;height:9px}
 .hrow{scroll-padding-left:20px}
 .hsec .section-head{align-items:center}
 .fbar{bottom:calc(-1 * (24px + env(safe-area-inset-bottom)));padding-bottom:calc(var(--sp-2) + 24px + env(safe-area-inset-bottom));margin-bottom:calc(-1 * (24px + env(safe-area-inset-bottom)))}
+
+/* Atalhos da home: alinhados à esquerda com a busca, compactos, todos visíveis (quebram em 2 linhas) */
+body.is-home .quick-row{display:flex;flex-wrap:wrap;justify-content:flex-start;overflow:visible;margin:var(--sp-3) 0 0;padding:0;gap:6px}
+body.is-home .quick-row .qk{min-height:34px;padding:0 10px;gap:5px;font-size:13px;font-weight:700}
+body.is-home .quick-row .qk svg{width:15px;height:15px}
