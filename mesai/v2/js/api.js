@@ -6,11 +6,17 @@ var API = (function () {
   var URL = MESAI_CONFIG.supabaseUrl, KEY = MESAI_CONFIG.supabaseKey;
   var session = null;
   try { session = JSON.parse(localStorage.getItem('mesai-session')); } catch (e) {}
+  // "Lembrar login" desmarcado: a sessão vale só até fechar o app (sessionStorage some ao fechar)
+  try {
+    if (localStorage.getItem('mesai-forget') && !sessionStorage.getItem('mesai-live')) { session = null; localStorage.removeItem('mesai-session'); }
+    sessionStorage.setItem('mesai-live', '1');
+  } catch (e) {}
 
   function saveSession(s) {
     session = s;
     try { if (s) localStorage.setItem('mesai-session', JSON.stringify(s)); else localStorage.removeItem('mesai-session'); } catch (e) {}
   }
+  function backUrl() { return location.origin + location.pathname; }
   function normSession(r) {
     if (!r || !r.access_token) return null;
     return { access_token: r.access_token, refresh_token: r.refresh_token, expires_at: Date.now() + (r.expires_in || 3600) * 1000, user: { id: r.user && r.user.id, email: r.user && r.user.email } };
@@ -51,6 +57,24 @@ var API = (function () {
       return http('/auth/v1/token?grant_type=password', { method: 'POST', body: { email: email, password: password } })
         .then(function (r) { saveSession(normSession(r)); });
     },
+    // Recuperar senha: manda o e-mail; o link volta ao app com #access_token=...&type=recovery
+    recover: function (email) {
+      return http('/auth/v1/recover?redirect_to=' + encodeURIComponent(backUrl()), { method: 'POST', body: { email: email } }).then(function () { return true; });
+    },
+    // Login com Google (só vale com o provedor ligado no Supabase)
+    googleUrl: function () { return URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(backUrl()); },
+    // Lê a volta de um link (recuperar senha ou Google): guarda a sessão e diz o tipo
+    fromHash: function (hash) {
+      var q = {}; String(hash || '').replace(/^#/, '').split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) q[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1).replace(/\+/g, ' ')); });
+      if (q.error_description || q.error) return Promise.reject(new Error(q.error_description || q.error));
+      if (!q.access_token) return Promise.reject(new Error('sem sessão'));
+      saveSession({ access_token: q.access_token, refresh_token: q.refresh_token, expires_at: Date.now() + (Number(q.expires_in) || 3600) * 1000, user: {} });
+      return http('/auth/v1/user').then(function (u) {
+        session.user = { id: u.id, email: u.email }; saveSession(session);
+        return { type: q.type === 'recovery' ? 'recovery' : 'login' };
+      }).catch(function (e) { saveSession(null); throw e; });
+    },
+    setPassword: function (password) { return http('/auth/v1/user', { method: 'PUT', body: { password: password } }); },
     deleteAccount: function () {
       var path = session.user.id + '/avatar.jpg';
       return fetch(URL + '/storage/v1/object/avatars/' + path, { method: 'DELETE', headers: { apikey: KEY, Authorization: 'Bearer ' + session.access_token } })

@@ -65,27 +65,78 @@ function syncAll() {
 }
 
 // Entrar, criar conta e sair
+function authMode(box, mode) {
+  if (mode === true) mode = 'up'; else if (mode === false) mode = 'in';
+  var up = mode === 'up', rec = mode === 'rec';
+  box.dataset.mode = mode;
+  box.querySelector('.af-name').hidden = !up;
+  box.querySelector('.af-confirm').hidden = !up;
+  box.querySelector('.af-terms').hidden = !up;
+  box.querySelector('.af-row').hidden = up || rec;
+  box.querySelector('[name=password]').closest('.af').hidden = rec;
+  box.querySelector('.auth-or').hidden = rec; $('authGoogle').hidden = rec;
+  $('authFoot').hidden = !up;
+  box.querySelector('[name=password]').autocomplete = up ? 'new-password' : 'current-password';
+  $('authTitle').textContent = up ? 'Criar sua conta' : rec ? 'Recuperar senha' : 'Entrar na conta';
+  $('authSub').textContent = up ? 'Leva menos de um minuto. Você já sai com seus favoritos e comentários guardados na nuvem.' : rec ? 'Digite seu e-mail e enviamos um link para você criar uma nova senha.' : 'Entre para comentar, ganhar pontos e guardar seus favoritos na nuvem.';
+  $('authGo').textContent = up ? 'Criar conta' : rec ? 'Enviar link' : 'Entrar';
+  $('authGoogleTxt').textContent = up ? 'Inscrever-se no Google' : 'Fazer login com o Google';
+  $('authSwitch').parentNode.firstChild.nodeValue = up ? 'Já tem uma conta? ' : rec ? 'Lembrou a senha? ' : 'Ainda não tem conta? ';
+  $('authSwitch').textContent = up || rec ? 'Faça login' : 'Crie uma!';
+  $('authMsg').textContent = ''; $('authMsg').classList.remove('ok');
+}
+function authDone(box, on) {
+  ['.auth-card', '.auth-switch', '.auth-help', '.auth-foot'].forEach(function (q) { var el = box.querySelector(q); if (el) el.hidden = on || (q === '.auth-foot' && box.dataset.mode !== 'up'); });
+  box.querySelector('.auth-done').hidden = !on;
+}
 document.addEventListener('submit', function (e) {
   if (e.target.id !== 'authForm') return;
   e.preventDefault();
+  var box = e.target.closest('.auth'), signup = box.dataset.mode === 'up', msg = $('authMsg');
   var f = new FormData(e.target), email = String(f.get('email') || '').trim(), pass = String(f.get('password') || ''), name = String(f.get('name') || '').trim();
-  var signup = !$('nameRow').hidden, msg = $('authMsg');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Confira o e-mail: parece incompleto.'; return; }
+  if (box.dataset.mode === 'rec') {
+    var g = $('authGo'); g.disabled = true; g.classList.add('busy'); msg.classList.remove('ok'); msg.textContent = 'Aguarde...';
+    API.recover(email).then(function () {
+      msg.classList.add('ok'); msg.textContent = 'Se este e-mail tiver conta, enviamos um link para criar a nova senha. Confira também a caixa de spam.';
+    }).catch(function (err) {
+      msg.textContent = /rate|limit|seconds|too many/i.test(err.message) ? 'Muitos pedidos seguidos. Tente de novo em alguns minutos.' : 'Não foi possível agora: ' + err.message;
+    }).then(function () { g.disabled = false; g.classList.remove('busy'); });
+    return;
+  }
+  if (pass.length < 6) { msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; return; }
+  if (signup) {
+    if (pass !== String(f.get('password2') || '')) { msg.textContent = 'As senhas não são iguais.'; return; }
+    if (!f.get('terms')) { msg.textContent = 'Marque que leu e aceita os Termos e a Política de Privacidade.'; return; }
+  }
+  var go = $('authGo'); go.disabled = true; go.classList.add('busy');
   msg.textContent = 'Aguarde...';
   var p = signup ? API.signUp(email, pass, name) : API.signIn(email, pass).then(function () { return { session: true }; });
   p.then(function (r) {
-    if (!r.session) { msg.textContent = 'Conta criada. Confirme o e-mail que enviamos e depois entre.'; return; }
-    return syncAll().then(function () { closeOverlays(); toast('Conectado'); });
+    if (!r.session) {
+      $('authSent').textContent = email;
+      authDone(box, true);
+      return;
+    }
+    if (!signup) { try { if (f.get('remember')) localStorage.removeItem('mesai-forget'); else localStorage.setItem('mesai-forget', '1'); } catch (x) {} }
+    return syncAll().then(function () { closeOverlays(); if (typeof authScreenClose === 'function') authScreenClose(); toast('Conectado'); });
   }).catch(function (err) {
-    msg.textContent = /Invalid login/i.test(err.message) ? 'E-mail ou senha incorretos.' : /registered|already/i.test(err.message) ? 'Este e-mail já tem conta. Toque em Entrar.' : 'Não foi possível agora: ' + err.message;
-  });
+    msg.textContent = /Invalid login/i.test(err.message) ? 'E-mail ou senha incorretos.' : /registered|already/i.test(err.message) ? 'Este e-mail já tem conta. Toque em Faça login.' : 'Não foi possível agora: ' + err.message;
+  }).then(function () { go.disabled = false; go.classList.remove('busy'); });
 });
 document.addEventListener('click', function (e) {
   var t = e.target.closest('button'); if (!t) return;
-  if (t.id === 'authSwitch') {
-    var nr = $('nameRow'), signup = nr.hidden;
-    nr.hidden = !signup;
-    $('authGo').textContent = signup ? 'Criar conta' : 'Entrar';
-    t.textContent = signup ? 'Já tenho conta' : 'Criar conta';
+  if (t.id === 'authGoogle') { if (MESAI_CONFIG.googleLogin) location.href = API.googleUrl(); else toast('Login com o Google chega em breve'); return; }
+  if (t.id === 'authForgot') { authMode(t.closest('.auth'), 'rec'); var em = $('authForm').querySelector('[name=email]'); if (em) em.focus(); return; }
+  if (t.id === 'authSwitch') { var bx = t.closest('.auth'); authMode(bx, bx.dataset.mode === 'in' ? 'up' : 'in'); }
+  if (t.id === 'authBack') {
+    var b2 = t.closest('.auth'); authMode(b2, false); authDone(b2, false);
+  }
+  if (t.dataset.eye !== undefined) {
+    var inp = t.parentNode.querySelector('input'), show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    t.setAttribute('aria-pressed', show); t.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+    t.classList.toggle('on', show);
   }
   if (t.dataset.delacct !== undefined) {
     if (!confirm('Excluir sua conta para sempre? Seu perfil, foto, comentários, check-ins, pontos e favoritos serão apagados e não dá para desfazer.')) return;
@@ -117,4 +168,40 @@ document.addEventListener('click', function (e) {
     document.body.classList.add('srv-on'); // esconde avisos que só valem no modo local
     return syncAll().then(function () { try { checkNewPlaces(); renderAll(); } catch (e) {} });
   }).catch(function () { S2.on = false; document.body.classList.remove('srv-on'); if (LOADING) { LOADING = false; renderAll(); } });
+})();
+
+
+// Volta de um link do e-mail (recuperar senha) ou do Google: #access_token=...
+function passScreenOpen() {
+  var el = $('passScreen'); if (!el) { el = document.createElement('div'); el.id = 'passScreen'; el.className = 'authscreen pass'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Criar nova senha'); document.body.appendChild(el); }
+  el.innerHTML = '<div class="as-top"><img src="assets/mesai-logo.png" alt="Mesaí"></div><div class="auth"><div class="auth-card"><h2 class="auth-title">Criar nova senha</h2><p class="auth-sub">Escolha uma senha nova para a sua conta.</p><form class="form authform" id="passForm" novalidate>'
+    + authField('p1', 'Nova senha', 'lock', 'password', 'minlength="6" autocomplete="new-password" placeholder="mínimo 6 caracteres"', true)
+    + authField('p2', 'Confirme a nova senha', 'lock', 'password', 'autocomplete="new-password" placeholder="Digite a senha de novo"', true)
+    + '<p class="af-msg" id="passMsg" role="status" aria-live="polite"></p><button class="btn block authgo" type="submit" id="passGo">Salvar nova senha</button></form></div></div>';
+  el.hidden = false; el.scrollTop = 0;
+}
+document.addEventListener('submit', function (e) {
+  if (e.target.id !== 'passForm') return;
+  e.preventDefault();
+  var f = new FormData(e.target), a = String(f.get('p1') || ''), b = String(f.get('p2') || ''), msg = $('passMsg'), go = $('passGo');
+  if (a.length < 6) { msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; return; }
+  if (a !== b) { msg.textContent = 'As senhas não são iguais.'; return; }
+  go.disabled = true; go.classList.add('busy'); msg.textContent = 'Aguarde...';
+  API.setPassword(a).then(function () {
+    var el = $('passScreen'); el.hidden = true; el.innerHTML = '';
+    return syncAll().then(function () { closeOverlays(); toast('Senha alterada. Você está conectado.'); });
+  }).catch(function (err) {
+    msg.textContent = /same|different/i.test(err.message) ? 'Escolha uma senha diferente da anterior.' : 'Não foi possível agora: ' + err.message;
+    go.disabled = false; go.classList.remove('busy');
+  });
+});
+(function () {
+  var h = location.hash;
+  if (typeof API === 'undefined' || !/(^#|&)(access_token|error_description|error)=/.test(h)) return;
+  var clean = function () { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} };
+  API.fromHash(h).then(function (r) {
+    clean();
+    if (r.type === 'recovery') { $('authScreen').hidden = true; $('authScreen').innerHTML = ''; passScreenOpen(); }
+    else syncAll().then(function () { toast('Conectado'); if (typeof authScreenClose === 'function') authScreenClose(); });
+  }).catch(function () { clean(); toast('Link inválido ou expirado. Peça um novo.'); });
 })();

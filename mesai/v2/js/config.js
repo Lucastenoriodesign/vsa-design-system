@@ -2,5 +2,7 @@
 // quem protege os dados são as regras de acesso (RLS) no banco. Nunca coloque aqui a chave "service_role".
 var MESAI_CONFIG = {
   supabaseUrl: 'https://qheadmopevmckkmugugy.supabase.co',
-  supabaseKey: 'sb_publishable_3dxPT5hvfLnuijNpglaQKg_jTzMJIL8'
+  supabaseKey: 'sb_publishable_3dxPT5hvfLnuijNpglaQKg_jTzMJIL8',
+  // Ligue (true) só depois de ativar o provedor Google no Supabase (Authentication > Providers) e cadastrar o redirect do site.
+  googleLogin: false
 };
