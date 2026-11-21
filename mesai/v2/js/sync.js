@@ -7,7 +7,7 @@ function mapPlace(r) {
   var num = function (a, b) { return typeof a === 'number' ? a : (typeof b === 'number' ? b : null); };
   var p = { id: r.id, n: r.name, g: r.category, c: r.category_source || r.category, r: r.region, e: r.address, d: r.description || '',
     t: r.phone, ev: r.evidence, pub: !!r.published, f: r.source_url, m: r.maps_url, lat: num(r.lat, local.lat), lng: num(r.lng, local.lng),
-    foto: r.photo_url || local.foto || null, fs: r.photo_source || local.fs || null, h: r.hours, mo: local.mo || r.moments || null, dif: local.dif || r.differentials || null, fc: local.fc || [], obs: local.obs || '' };
+    foto: r.photo_url || local.foto || null, fs: r.photo_source || local.fs || null, h: r.hours || local.h || null, mo: local.mo || r.moments || null, dif: local.dif || r.differentials || null, fc: local.fc || [], fotos: local.fotos || null, obs: local.obs || '' };
   ['kid', 'pet'].forEach(function (k) {
     var v = typeof r[k] === 'boolean' ? r[k] : local[k];
     if (typeof v === 'boolean') p[k] = v;
