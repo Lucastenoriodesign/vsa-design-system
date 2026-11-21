@@ -32,6 +32,7 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
 
 ## Regras de trabalho
 - Nunca inventar lugar, avaliação, foto, horário, preço ou telefone. Só publicar lugar verificado.
+- Fotos de cada lugar (`fotos` em `v2/js/data.js`): capa = ambiente presencial (salão, mesas, fachada); fotos de prato só depois. Sem foto do ambiente, avisar o Lucas em vez de usar prato como capa sem avisar. Formato 4:3, ~1200x900, JPEG otimizado em `v2/assets/places/`; foto de terceiro leva crédito (`fs`).
 - Pedir confirmação antes de: criar contas, mexer em cobrança, apagar dados, enviar algo às lojas, mudar a identidade visual.
 - Testar antes de commitar (sintaxe JS, Playwright em tamanho de celular) e dizer com honestidade o que não foi testado.
 - Commits em português, claros.
