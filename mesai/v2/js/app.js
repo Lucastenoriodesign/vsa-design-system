@@ -296,7 +296,7 @@ function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
 $('onbNext').onclick=function(){if(onbI>=3)onbClose();else onbShow(onbI+1)};
 var opSel='anual';
 document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
-$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();toast('Seu teste de 14 dias começou')};
+$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 14 dias começou','Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.','trial')},700)};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
 (function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<3)onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
@@ -336,6 +336,7 @@ function buildNotifs(){
  var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  if(h)out.push({id:'dia-'+d.toISOString().slice(0,10),k:'dia',t:'Lugar do dia: '+h.n,p:h.g+' em '+region(h)+'. Toque para ver endereço e rota.',d:'Hoje',open:h.id});
  if(notif.novos!==false&&hasPlus())newAlerts().forEach(function(a){var x=byId(a.id);if(x&&visible(x)&&inBairro(x))out.push({id:'novo-'+x.id,k:'lugar',t:'Lugar novo em '+bairro,p:x.n+' ('+x.g+') entrou no Mesaí em '+region(x)+'.',d:'Novidades',open:x.id})});
+ if(interest.some(function(k){return /^consumidor:/.test(k)}))out.push({id:'trial-start',k:'trial',t:'Seu teste grátis de 14 dias começou',p:'Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.',d:'Novidades'});
  var pts=points();if(pts>0)out.push({id:'pts-'+pts,k:'pontos',t:'Você tem '+pts+' pontos',p:'Cada check-in em um lugar soma 10 pontos.',d:'Novidades'});
  out.forEach(function(n){n.u=read.indexOf(n.id)<0});
  NOTIFS=out;return out}
@@ -402,3 +403,15 @@ document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.matches&&t
 document.addEventListener('pointerdown',function(e){if(e.target.closest&&e.target.closest('[data-galtrack]'))GAL.last=Date.now()},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-galopen]');if(!b)return;var t=b.parentNode;var s=[].map.call(t.querySelectorAll('img'),function(x){return x.getAttribute('src')});lbOpen(s,[].indexOf.call(t.children,b))});
 try{new MutationObserver(function(){galStart()}).observe(document.getElementById('detail'),{childList:true})}catch(e){}
+
+/* Notificação dentro do app (aparece no topo, como um push) */
+function trialEndText(){var d=new Date(trialStart+14*86400000);return d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)}
+var PN={t:null};
+function pushNotify(title,body,kind){var old=document.querySelector('.pushn');if(old)old.remove();clearTimeout(PN.t);
+ var n=document.createElement('button');n.type='button';n.className='pushn';n.setAttribute('role','status');
+ n.innerHTML='<span class="pn-ico"><img src="img/logo-app.png" alt=""></span><span class="pn-b"><span class="pn-h"><b>Mesaí</b><small>agora</small></span><strong>'+esc(title)+'</strong><span class="pn-t">'+esc(body)+'</span></span>';
+ document.body.appendChild(n);requestAnimationFrame(function(){requestAnimationFrame(function(){n.classList.add('in')})});
+ function bye(){n.classList.remove('in');setTimeout(function(){n.remove()},350)}
+ n.addEventListener('click',function(){bye();try{store('mesai-notif-read',(load('mesai-notif-read',[])).concat([kind==='trial'?'trial-start':kind]));}catch(e){}openSheet('notif');updateNotifBadge()});
+ var y0=null;n.addEventListener('touchstart',function(e){y0=e.touches[0].clientY},{passive:true});n.addEventListener('touchmove',function(e){if(y0!==null&&e.touches[0].clientY-y0<-24){y0=null;bye()}},{passive:true});
+ PN.t=setTimeout(bye,6000)}
