@@ -296,7 +296,7 @@ function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
 $('onbNext').onclick=function(){if(onbI>=3)onbClose();else onbShow(onbI+1)};
 var opSel='anual';
 document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
-$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 14 dias começou','Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.','trial')},700)};
+$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 14 dias começou','Mesaí+ liberado até '+trialEndText()+'. Aproveite!','trial')},700)};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
 (function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<3)onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();

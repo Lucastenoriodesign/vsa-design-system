@@ -705,7 +705,7 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 .lb-n{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:#fff;font-weight:700;font-size:14px;pointer-events:none}
 
 /* Notificação no topo (estilo push) */
-.pushn{position:fixed;z-index:90;left:50%;top:max(10px,env(safe-area-inset-top));width:min(560px,calc(100vw - 20px));transform:translate(-50%,-140%);opacity:0;display:flex;gap:9px;align-items:center;text-align:left;padding:7px 11px;border:1px solid var(--line);border-radius:16px;background:#ffffffee;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 8px 24px #00000026;color:var(--ink);cursor:pointer;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .25s}
+.pushn{position:fixed;z-index:90;left:50%;top:max(10px,env(safe-area-inset-top));width:min(600px,calc(100vw - 10px));transform:translate(-50%,-140%);opacity:0;display:flex;gap:9px;align-items:center;text-align:left;padding:7px 11px;border:1px solid var(--line);border-radius:16px;background:#ffffffee;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 8px 24px #00000026;color:var(--ink);cursor:pointer;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .25s}
 .pushn.in{transform:translate(-50%,0);opacity:1}
 .pushn:active{transform:translate(-50%,0) scale(.98)}
 .pn-ico{flex:none;width:28px;height:28px;border-radius:8px;background:var(--cream);display:grid;place-items:center;overflow:hidden}
