@@ -107,9 +107,8 @@ function renderHome(){
  renderSections();var fc=(S.cat!=='Tudo'?1:0)+(S.region!=='Tudo'?1:0)+S.flags.length;$('homeFilt').querySelector('span').textContent='Filtros'+(fc?' ('+fc+')':'');
  var pp=pubPlaces();var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  $('hero').innerHTML=h?'<div class="hero"><button class="hero-main" data-open="'+esc(h.id)+'">'+photo(h,'hphoto')+'<span class="hbody"><b>'+esc(h.n)+'</b><small>'+esc(h.g)+' · '+esc(region(h))+'</small><i>'+esc(h.d)+'</i></span></button><div class="hero-act"><button class="btn" data-open="'+esc(h.id)+'">Ver detalhes</button><button class="btn ghost" data-surprise>Surpreenda-me</button></div></div>':'';
- if(LOADING){$('hero').innerHTML='<div class="skel big" aria-hidden="true"></div>';$('homeList').innerHTML=skel(3);$('homeList').setAttribute('aria-busy','true');$('homeCount').textContent='Ver todos';renderRecent();return}
- $('homeList').removeAttribute('aria-busy');$('homeList').innerHTML=byComplete(pp).slice(0,6).map(placeCard).join('');renderRecent();
- $('homeCount').textContent='Ver todos ('+pp.length+')';
+ if(LOADING){$('hero').innerHTML='<div class="skel big" aria-hidden="true"></div>';renderRecent();return}
+ renderRecent();
 }
 function renderSearch(){
  $('catChips').innerHTML=CATS.map(function(c){return '<button class="chip'+(S.cat===c[0]?' active':'')+'" data-cat="'+esc(c[0])+'" aria-pressed="'+(S.cat===c[0])+'">'+(c[2]?'<img src="'+c[2]+'" alt="">':'')+c[1]+'</button>'}).join('');
