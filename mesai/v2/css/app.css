@@ -731,3 +731,18 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 .dact .btn.act.saved{background:var(--coral-bg);border-color:#e8b3a6;color:var(--coral-ink)}
 .dact .btn.act.saved .i{color:var(--coral-dark)}
 @media (max-width:374px){.dact .btn.act{font-size:11px}}
+
+/* Botões: sistema único (v159) */
+.btn,a.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:15px;font-weight:800;letter-spacing:-.005em;background:linear-gradient(135deg,color-mix(in srgb,var(--coral-dark) 80%,#fff) 0%,var(--coral-dark) 60%,color-mix(in srgb,var(--coral-dark) 82%,#000) 100%);box-shadow:0 8px 18px #a84a3530,inset 0 1px 0 #ffffff2e;text-decoration:none}
+.btn .i{width:19px;height:19px;vertical-align:0;flex:none}
+.btn.block,a.btn.block{display:flex;min-height:54px;border-radius:16px;font-size:var(--fs-md);padding:0 18px}
+.btn.ghost{background:var(--fill);color:var(--ink);border:1px solid var(--line);box-shadow:0 2px 6px #38291b0a}
+.btn.ghost .i{color:var(--coral-dark)}
+.btn.saved{background:var(--green);box-shadow:0 8px 18px #3d765c30}
+.btn.ghost.danger{background:transparent;color:var(--coral-dark);border:2px solid var(--coral-dark);box-shadow:none}
+.btn.ghost.danger .i{color:currentColor}
+.btn.block.go{min-height:60px;padding:8px 16px 8px 10px;border-radius:18px}
+.dact .btn.act{min-height:68px;padding:10px 4px;border-radius:16px;background:var(--cream);border:1px solid var(--line);color:var(--ink-2);box-shadow:0 2px 6px #38291b0a}
+.dact .btn.act.saved{background:var(--coral-bg);border-color:#e8b3a6;color:var(--coral-ink);box-shadow:0 2px 6px #38291b0a}
+.dact .btn.act .i{width:22px;height:22px}
+.btn.busy{box-shadow:none}
