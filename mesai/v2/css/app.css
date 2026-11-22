@@ -717,3 +717,17 @@ body.is-home .quick-row .qk svg{width:15px;height:15px}
 .pn-t{font-size:12px;line-height:1.3;color:var(--muted,#5c564e);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (prefers-reduced-motion:reduce){.pushn{transition:opacity .2s}}
 .nitem.k-trial .nico{background:var(--amber-bg)}
+
+/* Detalhe do lugar: botão principal e ações (v158) */
+.btn.block.go{display:flex;align-items:center;gap:12px;text-align:left;min-height:60px;padding:8px 16px 8px 10px;margin:10px 0 0;border-radius:18px;background:linear-gradient(135deg,#c2573e 0%,var(--coral-dark) 55%,#8f3b28 100%);box-shadow:0 10px 22px #a84a3538,inset 0 1px 0 #ffffff2e;text-decoration:none;color:var(--on-accent)}
+.btn.block.go .go-ico{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#ffffff26}
+.btn.block.go .go-ico .i{width:22px;height:22px;vertical-align:0}
+.btn.block.go .go-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.btn.block.go .go-t b{font-size:var(--fs-md);font-weight:800;letter-spacing:-.01em}
+.btn.block.go .go-t small{font-size:var(--fs-xs);font-weight:600;opacity:.85}
+.btn.block.go>.i{flex:none;width:20px;height:20px;opacity:.9;vertical-align:0}
+.dact .btn.act{flex-direction:column;gap:5px;min-height:68px;padding:10px 4px;border-radius:16px;background:var(--cream);border:1px solid var(--line);font-size:var(--fs-xs);font-weight:750;color:var(--ink-2);box-shadow:0 2px 6px #38291b0a;text-decoration:none}
+.dact .btn.act .i,#saveBtn.act .i{width:22px;height:22px;margin:0;vertical-align:0;color:var(--coral-dark)}
+.dact .btn.act.saved{background:var(--coral-bg);border-color:#e8b3a6;color:var(--coral-ink)}
+.dact .btn.act.saved .i{color:var(--coral-dark)}
+@media (max-width:374px){.dact .btn.act{font-size:11px}}
