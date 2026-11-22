@@ -30,6 +30,9 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
 - Notificações são montadas com dados reais (lugar do dia, lugares novos, pontos). Nada de exemplo inventado.
 - Crianças/pets (`kid`, `pet`) e coordenadas (`lat`, `lng`) só com fonte verificável; sem fonte, fica "Não informado".
 
+## Agência (um agente por setor)
+- Os agentes ficam em `.claude/agents/` e o mapa está em `AGENCIA.md` (dados, fotos, dev, QA, design, backend, comunidade, marketing, legal, nativo/lojas). A sessão principal coordena; antes de publicar, o `qa-testes` reporta.
+
 ## Regras de trabalho
 - Nunca inventar lugar, avaliação, foto, horário, preço ou telefone. Só publicar lugar verificado.
 - Fotos de cada lugar (`fotos` em `v2/js/data.js`): capa = ambiente presencial (salão, mesas, fachada); fotos de prato só depois. Sem foto do ambiente, avisar o Lucas em vez de usar prato como capa sem avisar. Formato 4:3, ~1200x900, JPEG otimizado em `v2/assets/places/`; foto de terceiro leva crédito (`fs`).

@@ -1,0 +1,51 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agência Mesaí</title>
+<style>
+:root{--bg:#fbf8f2;--ink:#292a2b;--muted:#6f685f;--line:#e8e5e0;--coral:#e87558;--coral-dark:#a84a34;--ok:#2f7d4f;--bad:#b3261e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,system-ui,Segoe UI,Roboto,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+h1{font-size:20px;margin:0}h1 small{color:var(--muted);font-weight:500;margin-left:8px}
+.sum{display:flex;gap:8px;flex-wrap:wrap}.sum b{padding:6px 12px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px}
+.sum .t{color:var(--coral-dark);border-color:#f3c9bf;background:#fbe4de}.sum .c{color:var(--ok)}
+main{padding:20px 24px 40px;max-width:1280px;margin:0 auto}
+.plan{display:grid;grid-template-columns:repeat(12,1fr);gap:22px 14px;padding:26px 22px 22px;border-radius:20px;background:#fff;border:2px solid var(--ink);
+ background-image:linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px);background-size:28px 28px}
+.zone{position:relative;border:2px dashed #d5cec3;border-radius:16px;padding:28px 12px 12px;display:grid;gap:12px;align-content:start;background:#fffdf9cc}
+.zl{position:absolute;top:-11px;left:14px;background:var(--bg);padding:1px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line)}
+.z-co{grid-column:5/9;grid-row:1}.z-dados{grid-column:1/5;grid-row:1/3}.z-prod{grid-column:5/13;grid-row:2}.z-res{grid-column:1/13;grid-row:3}
+.z-dados{grid-template-columns:1fr}.z-prod{grid-template-columns:repeat(3,1fr)}.z-res{grid-template-columns:repeat(5,1fr)}
+.desk{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px;display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:start;box-shadow:0 2px 0 #0000000d;transition:.3s}
+.desk.trabalhando{border-color:var(--coral);box-shadow:0 0 0 3px #e8755833}.desk.concluido{border-color:#9fd0b2;background:#f6fbf8}.desk.bloqueado{border-color:#e7a29c;background:#fff6f5}
+.av{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px;position:relative}
+.desk.trabalhando .av{animation:bob .8s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-5px)}}
+.desk.aguardando .av{filter:grayscale(.85);opacity:.7}
+.dots{position:absolute;right:-6px;top:-8px;display:none;gap:2px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:3px 5px}
+.desk.trabalhando .dots{display:flex}.dots i{width:4px;height:4px;border-radius:50%;background:var(--coral);animation:bl 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}@keyframes bl{50%{opacity:.2}}
+.ck{position:absolute;right:-4px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;display:none;place-items:center;font-size:12px;font-weight:900;border:2px solid #fff}.desk.concluido .ck{display:grid}
+.nm{font-weight:800;font-size:13px}.sec{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.st{display:inline-block;margin:4px 0;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:800;background:#eee;color:var(--muted)}
+.trabalhando .st{background:#fbe4de;color:var(--coral-dark)}.concluido .st{background:#dff3e6;color:var(--ok)}.bloqueado .st{background:#fde3e0;color:var(--bad)}
+.tk{font-size:12.5px;min-height:34px;overflow-wrap:anywhere}.bar{height:6px;border-radius:9px;background:#f0ebe3;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--coral);transition:width .6s}.concluido .bar i{background:var(--ok)}
+.meta{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted)}.meta a{color:var(--coral-dark);font-weight:700;text-decoration:none}
+.desk>div:last-child{min-width:0}.co .av{background:#292a2b}.legend{margin-top:14px;color:var(--muted);font-size:12px}
+@media(max-width:900px){.plan{display:block}.zone{margin-bottom:22px}.z-prod,.z-res,.z-dados{grid-template-columns:1fr 1fr}}@media(max-width:560px){.z-prod,.z-res,.z-dados{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Agência Mesaí <small>escritório ao vivo</small></h1><div class="sum" id="sum"></div></header>
+<main><div class="plan" id="plan"></div><p class="legend">Atualiza a cada 2 segundos a partir de <code>agencia/status/*.json</code>. Os relatórios finais ficam em <code>agencia/relatorios/</code>.</p></main>
+<script>
+var AG=[['dados-lugares','Dados','Curadoria de lugares','#e87558','dados'],['fotos-ambiente','Fotos','Capas de ambiente','#d98a3d','dados'],
+['dev-app','Código','Engenharia do app','#3b6ea8','prod'],['qa-testes','QA','Testes e qualidade','#2f7d4f','prod'],['design-marca','Design','Identidade e telas','#a8559a','prod'],
+['backend-supabase','Backend','Supabase e dados online','#4a4f8a','res'],['comunidade-moderacao','Comunidade','Posts e moderação','#c2603c','res'],['marketing-conteudo','Marketing','Conteúdo e crescimento','#c4496b','res'],['legal-financeiro','Legal','Termos, LGPD, Mesaí+','#6b6358','res'],['lojas-nativo','Nativo','Capacitor e lojas','#2a7f8f','res']];
+var Z={dados:'Dados e fotos',prod:'Produto',res:'Operação e crescimento'};
+var h='<section class="zone z-co"><span class="zl">Coordenação</span><div class="desk co trabalhando"><div class="av">CL<span class="dots"><i></i><i></i><i></i></span></div><div><div class="nm">Claude (coordenação)</div><div class="sec">Orquestra os setores</div><span class="st">Coordenando</span><div class="tk">Distribui tarefas, junta os relatórios e pede suas decisões.</div></div></div></section>';
+['dados','prod','res'].forEach(function(z){h+='<section class="zone z-'+z+'"><span class="zl">'+Z[z]+'</span>'+AG.filter(function(a){return a[4]===z}).map(function(a){return '<div class="desk aguardando" id="d-'+a[0]+'"><div class="av" style="background:'+a[3]+'">'+a[1].slice(0,2).toUpperCase()+'<span class="dots"><i></i><i></i><i></i></span><span class="ck">✓</span></div><div><div class="nm">'+a[1]+'</div><div class="sec">'+a[2]+'</div><span class="st">Aguardando</span><div class="tk">—</div><div class="bar"><i style="width:0"></i></div><div class="meta"><span class="pc">0%</span><span class="up"></span></div></div></div>'}).join('')+'</section>'});
+document.getElementById('plan').innerHTML=h;
+var LBL={aguardando:'Aguardando',trabalhando:'Trabalhando',concluido:'Concluído',bloqueado:'Precisa de você'};
+function hora(s){try{return new Date(s).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){return ''}}
+function tick(){var cnt={aguardando:0,trabalhando:0,concluido:0,bloqueado:0};
+Promise.all(AG.map(function(a){return fetch('/agencia/status/'+a[0]+'.json?'+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).catch(function(){return null}).then(function(s){return [a,s]})})).then(function(rs){
+rs.forEach(function(x){var a=x[0],s=x[1];if(!s)return;var d=document.getElementById('d-'+a[0]);d.className='desk '+s.estado;cnt[s.estado]=(cnt[s.estado]||0)+1;
+d.querySelector('.st').textContent=LBL[s.estado]||s.estado;d.querySelector('.tk').textContent=s.tarefa;d.querySelector('.bar i').style.width=s.progresso+'%';d.querySelector('.pc').textContent=s.progresso+'%';
+d.querySelector('.up').innerHTML=hora(s.atualizado)+(s.estado==='concluido'?' · <a href="/agencia/relatorios/'+a[0]+'.md" target="_blank">relatório</a>':'')});
+document.getElementById('sum').innerHTML='<b class="t">'+cnt.trabalhando+' trabalhando</b><b class="c">'+cnt.concluido+' concluídos</b><b>'+cnt.aguardando+' aguardando</b>'+(cnt.bloqueado?'<b style="color:var(--bad)">'+cnt.bloqueado+' precisam de você</b>':'')})}
+tick();setInterval(tick,2000);
+</script></body></html>
