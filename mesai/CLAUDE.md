@@ -30,6 +30,10 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
 - Notificações são montadas com dados reais (lugar do dia, lugares novos, pontos). Nada de exemplo inventado.
 - Crianças/pets (`kid`, `pet`) e coordenadas (`lat`, `lng`) só com fonte verificável; sem fonte, fica "Não informado".
 
+## Segurança
+- `v2/js/seguranca.js` aplica CSP e anti-clickjacking fora de localhost (`?csp=1` testa). Sem JS inline (`onerror` etc.): use `data-oe` ou ouvintes. Todo texto de usuário passa por `esc()`.
+- Travas do servidor estão em `agencia/sql/` (01 e 03) e ainda **não foram aplicadas**; veja `agencia/relatorios/seguranca.md`.
+
 ## Agência (um agente por setor)
 - Os agentes ficam em `.claude/agents/` e o mapa está em `AGENCIA.md` (dados, fotos, dev, QA, design, backend, comunidade, marketing, legal, nativo/lojas). A sessão principal coordena; antes de publicar, o `qa-testes` reporta.
 

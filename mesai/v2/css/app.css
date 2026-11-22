@@ -735,3 +735,6 @@ body.is-home .quick-row .qk,.chip,#view-buscar .chip,#fsheet .filter{position:re
 body.is-home .quick-row .qk::after,.chip::after,#view-buscar .chip::after,#fsheet .filter::after,.sortbar .qk::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:44px;transform:translateY(-50%)}
 .sortbar .qk{position:relative}
 .form input,.form textarea,.composer textarea{border-color:#8d867b}
+
+/* campo-isca anti-robô (invisível para pessoas) */
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
