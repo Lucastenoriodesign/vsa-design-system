@@ -1,4 +1,4 @@
--- Mesaí · Supabase (projeto qheadmopevmckkmugugy) · 22/11/2026
+-- Mesaí · Supabase (projeto qheadmopevmckkmugugy) · 22/11/2026 · APLICADO em 22/11/2026
 -- 1) Usuário comum não pode alterar os próprios pontos (hoje a política profiles_update_own deixa).
 --    O ganho de pontos por check-in continua: add_checkin_points atualiza o perfil em trigger aninhado (pg_trigger_depth() >= 2).
 -- 2) Fixa o search_path de comments_moderate (alerta de segurança). O corpo usa nomes qualificados.

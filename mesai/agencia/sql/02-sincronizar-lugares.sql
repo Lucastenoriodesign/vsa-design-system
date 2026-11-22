@@ -1,4 +1,4 @@
--- Mesaí · sincroniza places (servidor) com v2/js/data.js · gerado em 22/11/2026
+-- Mesaí · sincroniza places (servidor) com v2/js/data.js · gerado em 22/11/2026 · APLICADO em 22/11/2026
 -- Só preenche campos que o servidor NÃO tem (coalesce/nullif) e que existem no cadastro local; nunca apaga nem sobrescreve valor existente.
 -- Revise antes de rodar. hours é texto: guarda o JSON de horários ({d:[dias 0=dom],a:'HH:MM',f:'HH:MM'}). Obs.: o app já usa o horário local do data.js; isto serve a outros clientes.
 begin;
