@@ -1,3 +1,5 @@
+var PLANOS=!(typeof MESAI_CONFIG!=='undefined'&&MESAI_CONFIG.planos===false);
+if(!PLANOS){document.body.classList.add('sem-planos');(function(){var b=document.querySelector('#btrack .bslide[data-go="planos"]');if(b){b.remove();var ds=document.querySelectorAll('#bdots i');if(ds.length)ds[ds.length-1].remove()}var r=document.querySelector('#view-perfil .row[data-go="planos"]');if(r){var g=r.closest('.group');if(g){var h=g.previousElementSibling;if(h&&h.classList.contains('grp'))h.remove();g.remove()}}var o=document.querySelector('.onb-s.offer');if(o)o.hidden=true})()}
 try{if(/[?&]primeiro-acesso=1/.test(location.search))localStorage.removeItem("mesai-onboarded")}catch(e){}
 var ICP={"download": "<path d=\"M12 3v12m0 0-4-4m4 4 4-4M5 21h14\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>", "send": "<path d=\"M21 3 10 14M21 3l-7 18-4-7-7-4z\"/>", "login": "<path d=\"M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 8l-4 4m0 0 4 4m-4-4h11\"/>", "logout": "<path d=\"M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M14 8l4 4m0 0-4 4m4-4H8\"/>", "trash": "<path d=\"M4 7h16M10 11v6m4-6v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3\"/>", "refresh": "<path d=\"M20 11a8 8 0 0 0-14.5-4M4 4v4h4M4 13a8 8 0 0 0 14.5 4M20 20v-4h-4\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/>", "image": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><circle cx=\"9\" cy=\"10\" r=\"1.5\"/><path d=\"m21 16-5-5-8 8\"/>", "route": "<path d=\"M3 11 21 3l-8 18-2.2-7.8z\"/>", "phone": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "share": "<path d=\"M12 15V3m0 0L8 7m4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7\"/>", "x": "<path d=\"M6 6l12 12M18 6 6 18\"/>", "back": "<path d=\"M19 12H5m6-6-6 6 6 6\"/>", "next": "<path d=\"M5 12h14m-6-6 6 6-6 6\"/>", "check": "<path d=\"m5 12.5 4.5 4.5L19 7.5\"/>", "heart": "<path d=\"M12 20.5S4.5 15.9 3 11.2C2 8 4 5 7.2 5c1.8 0 3.2.9 4.8 2.7C13.6 5.9 15 5 16.8 5 20 5 22 8 21 11.2c-1.5 4.7-9 9.3-9 9.3Z\"/>", "star": "<path d=\"m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9L12 3.5Z\"/>", "spark": "<path d=\"M12 2c.7 5.3 4.7 9.3 10 10-5.3.7-9.3 4.7-10 10-.7-5.3-4.7-9.3-10-10 5.3-.7 9.3-4.7 10-10Z\"/>", "pin": "<path d=\"M12 21s7-6.1 7-11.5a7 7 0 0 0-14 0C5 14.9 12 21 12 21Z\"/><circle cx=\"12\" cy=\"9.5\" r=\"2.5\"/>"};
 function ico(n,fill){return '<svg class="i" viewBox="0 0 24 24" fill="'+(fill?'currentColor':'none')+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICP[n]+'</svg>'}
@@ -210,7 +212,8 @@ function renderMod(){var pend=S2.on?S2.pend:posts.filter(function(x){return x.st
 function initialAvatar(name){var l=(name||'?').trim().charAt(0).toUpperCase()||'?';var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#e8e2d6"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="sans-serif" font-size="46" fill="#5c564e">'+l+'</text></svg>';return 'data:image/svg+xml,'+encodeURIComponent(svg)}
 function setMyAvatar(){var nm=(S2.on&&API.user()&&(S2.name||''))||prof.name||'';var src=(S2.on&&API.user()&&S2.avatar)||initialAvatar(nm);document.querySelectorAll('.myav').forEach(function(i){i.src=src})}
 var avFile=$('avFile');if(avFile)avFile.onchange=function(){var f=avFile.files&&avFile.files[0];if(!f)return;if(!(S2.on&&API.user())){toast('Entre na conta para trocar a foto');avFile.value='';return}API.uploadAvatar(f).then(function(url){S2.avatar=url;setMyAvatar();toast('Foto atualizada')}).catch(function(){toast('Não foi possível trocar a foto')}).then(function(){avFile.value=''})};
-function renderAll(){renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet();updateNotifBadge();androidStrip()}
+function renderSalvos(){var el=$('savedView');if(!el)return;var sv=pubPlaces().filter(function(p){return saved.has(p.id)});el.innerHTML=sv.length?sv.map(placeCard).join(''):'<div class="empty">Você ainda não salvou nenhum lugar. Toque no coração de um lugar para guardar aqui.<br><button class="btn ghost" data-go="buscar">Ver lugares</button></div>'}
+function renderAll(){renderSalvos();renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet();updateNotifBadge();androidStrip()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
 function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(id);lastFocus=document.activeElement;var s=saved.has(id);
@@ -223,9 +226,9 @@ function toggleSave(id){setTimeout(refreshSheet,0);var was=saved.has(id);if(was)
  if(S2.on&&API.user()){(was?API.unsave(id):API.save(id)).catch(function(){})}store('mesai-saved',Array.from(saved));renderAll()}
 function closeOverlays(){document.querySelectorAll('.overlay.open').forEach(function(o){o.classList.remove('open')});if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(function(){t.classList.remove('show')},2200)}
-var VIEWS=['inicio','buscar','comunidade','em-alta','perfil','admin','planos'];
-var TITLES={inicio:'Mesaí — descubra onde comer',buscar:'Buscar · Mesaí',comunidade:'Comunidade · Mesaí','em-alta':'Em alta · Mesaí',perfil:'Perfil · Mesaí',admin:'Pendentes · Mesaí',planos:'Planos · Mesaí'};
-function route(){document.body.classList.toggle("is-home",(location.hash||"").replace(/^#\/?/,"")===""||(location.hash||"").indexOf("inicio")>-1);updateGreet();var v=(location.hash||'').replace(/^#\/?/,'');if(VIEWS.indexOf(v)<0)v='inicio';
+var VIEWS=['inicio','buscar','comunidade','salvos','em-alta','perfil','admin','planos'];
+var TITLES={inicio:'Mesaí — descubra onde comer',buscar:'Buscar · Mesaí',comunidade:'Comunidade · Mesaí','em-alta':'Em alta · Mesaí',salvos:'Salvos · Mesaí',perfil:'Perfil · Mesaí',admin:'Pendentes · Mesaí',planos:'Planos · Mesaí'};
+function route(){document.body.classList.toggle("is-home",(location.hash||"").replace(/^#\/?/,"")===""||(location.hash||"").indexOf("inicio")>-1);updateGreet();var v=(location.hash||'').replace(/^#\/?/,'');if(VIEWS.indexOf(v)<0||(!PLANOS&&v==='planos'))v='inicio';
  VIEWS.forEach(function(x){$('view-'+x).classList.toggle('on',x===v)});
  document.querySelectorAll('.nav').forEach(function(n){var on=n.dataset.go===v||((v==='admin'||v==='planos')&&n.dataset.go==='perfil');n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current')});
  closeOverlays();window.scrollTo(0,0);document.title=TITLES[v]}
@@ -291,14 +294,14 @@ var onbI=0;
 function onbShow(i,dir){var ss=document.querySelectorAll('.onb-s');ss.forEach(function(x,k){x.classList.toggle('on',k===i);x.classList.toggle('out',k<i);x.setAttribute('aria-hidden',k!==i)});document.querySelectorAll('#onbDots i').forEach(function(d,k){d.classList.toggle('on',k===i)});$('onbNext').textContent=i===2?'Começar':'Continuar';$('onb').classList.toggle('offer',i===3);onbI=i}
 function onbOpen(){$('onb').hidden=false;onbShow(0);$('onbNext').focus()}
 function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
-$('onbNext').onclick=function(){if(onbI>=3)onbClose();else onbShow(onbI+1)};
+$('onbNext').onclick=function(){if(onbI>=3||(!PLANOS&&onbI>=2))onbClose();else onbShow(onbI+1)};
 var opSel='anual';
 document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
 $('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 14 dias começou','Mesaí+ liberado até '+trialEndText()+'. Aproveite!','trial')},700)};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
-(function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<3)onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
-document.addEventListener('keydown',function(e){if($('onb').hidden)return;if(e.key==='ArrowRight'&&onbI<3)onbShow(onbI+1);if(e.key==='ArrowLeft'&&onbI>0)onbShow(onbI-1)});
+(function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<(PLANOS?3:2))onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
+document.addEventListener('keydown',function(e){if($('onb').hidden)return;if(e.key==='ArrowRight'&&onbI<(PLANOS?3:2))onbShow(onbI+1);if(e.key==='ArrowLeft'&&onbI>0)onbShow(onbI-1)});
 function authScreenOpen(){var s=$('authScreen');s.innerHTML='<div class="as-top"><img src="assets/mesai-logo.png" alt="Mesaí"><p>O seu guia para comer no local em Maceió</p></div>'+authHtml()+'<button class="as-skip" id="authSkip" type="button">Agora não, continuar sem conta</button>';s.hidden=false;s.scrollTop=0}
 function authScreenClose(){var s=$('authScreen');if(s.hidden)return;s.hidden=true;s.innerHTML='';if(!load('mesai-onboarded',false))onbOpen()}
 document.addEventListener('click',function(e){if(e.target.closest('#authSkip'))authScreenClose()});
@@ -309,7 +312,7 @@ var interest=load('mesai-interest',[]);
 var trialStart=load('mesai-trial',null);if(!trialStart){trialStart=Date.now();store('mesai-trial',trialStart)}
 function trialLeft(){return Math.max(0,14-Math.floor((Date.now()-trialStart)/86400000))}
 /* Mesaí+: liberado durante o teste de 14 dias. Assinatura real ainda não existe (mesai-plus fica falso até a cobrança entrar). */
-function hasPlus(){return trialLeft()>0||load('mesai-plus',false)===true}
+function hasPlus(){if(!PLANOS)return true;return trialLeft()>0||load('mesai-plus',false)===true}
 function planWho(c){$('plansC').hidden=!c;$('plansE').hidden=c;$('planC').classList.toggle('on',c);$('planE').classList.toggle('on',!c);$('planC').setAttribute('aria-pressed',c);$('planE').setAttribute('aria-pressed',!c)}
 $('planC').onclick=function(){planWho(true)};$('planE').onclick=function(){planWho(false)};
 function renderPlan(){var d=trialLeft();if($('rvPlan'))$('rvPlan').textContent=d>0?'Teste · '+d+(d===1?' dia':' dias'):'Teste encerrado';var t=$('trialStatus');if(t)t.textContent=d>0?'Restam '+d+(d===1?' dia':' dias')+' do seu teste (contado neste aparelho).':'Seu teste de 14 dias terminou. Os alertas de lugar novo agora são do Mesaí+; o resto do app segue liberado.'}
@@ -334,7 +337,7 @@ function buildNotifs(){
  var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  if(h)out.push({id:'dia-'+d.toISOString().slice(0,10),k:'dia',t:'Lugar do dia: '+h.n,p:h.g+' em '+region(h)+'. Toque para ver endereço e rota.',d:'Hoje',open:h.id});
  if(notif.novos!==false&&hasPlus())newAlerts().forEach(function(a){var x=byId(a.id);if(x&&visible(x)&&inBairro(x))out.push({id:'novo-'+x.id,k:'lugar',t:'Lugar novo em '+bairro,p:x.n+' ('+x.g+') entrou no Mesaí em '+region(x)+'.',d:'Novidades',open:x.id})});
- if(interest.some(function(k){return /^consumidor:/.test(k)}))out.push({id:'trial-start',k:'trial',t:'Seu teste grátis de 14 dias começou',p:'Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.',d:'Novidades'});
+ if(PLANOS&&interest.some(function(k){return /^consumidor:/.test(k)}))out.push({id:'trial-start',k:'trial',t:'Seu teste grátis de 14 dias começou',p:'Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.',d:'Novidades'});
  var pts=points();if(pts>0)out.push({id:'pts-'+pts,k:'pontos',t:'Você tem '+pts+' pontos',p:'Cada check-in em um lugar soma 10 pontos.',d:'Novidades'});
  out.forEach(function(n){n.u=read.indexOf(n.id)<0});
  NOTIFS=out;return out}

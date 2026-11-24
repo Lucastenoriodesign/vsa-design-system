@@ -1,7 +1,7 @@
 // Barra inferior: 5 botões e posições idênticas depois de tocar em cada um, em 320/360/390/430 px.
 // Uso: PW=... CHANNEL=chrome BASE=http://localhost:8127 node tests/barra-inferior.js
 const { abrir, relator, BASE, LARGURAS } = require('./_lib');
-const ORDEM = ['inicio', 'buscar', 'em-alta', 'comunidade', 'perfil'];
+const ORDEM = ['inicio', 'buscar', 'salvos', 'comunidade', 'perfil'];
 
 (async () => {
   const ok = relator('barra inferior');
@@ -16,7 +16,7 @@ const ORDEM = ['inicio', 'buscar', 'em-alta', 'comunidade', 'perfil'];
     });
     const base = await medir();
     ok(base.nav.length === 5, '5 botões @' + w, String(base.nav.length));
-    ok(JSON.stringify(base.nav.map(n => n.k)) === JSON.stringify(ORDEM), 'ordem Início/Buscar/Em alta/Comunidade/Perfil @' + w, base.nav.map(n => n.k).join(','));
+    ok(JSON.stringify(base.nav.map(n => n.k)) === JSON.stringify(ORDEM), 'ordem Início/Buscar/Salvos/Comunidade/Perfil @' + w, base.nav.map(n => n.k).join(','));
     ok(base.nav.every(n => n.r[0] >= 0 && n.r[0] + n.r[2] <= w + 0.5), 'botões dentro da largura @' + w);
     ok(base.nav.every(n => n.r[2] >= 44 && n.r[3] >= 44) || base.nav.every(n => n.r[2] >= 40 && n.r[3] >= 40), 'alvo de toque >= 40 px @' + w, base.nav.map(n => n.r[2] + 'x' + n.r[3]).join(' '));
     const pos = [];

@@ -39,7 +39,9 @@ const cors = { 'access-control-allow-origin': '*', 'access-control-allow-headers
   e = await estado(); ok(e.n === 0, 'com preferência desligada o sino não mostra lugar novo');
   // Teste de 14 dias encerrado: alerta fica travado (Mesaí+)
   await p.evaluate(() => { notif.novos = true; trialStart = Date.now() - 20 * 86400000; buildNotifs(); });
-  e = await estado(); ok(e.n === 0, 'depois do teste o alerta deve ficar travado');
+  // Com os planos desligados (MESAI_CONFIG.planos === false) não há o que assinar, então o alerta segue liberado para todos.
+  const planos = await p.evaluate(() => PLANOS);
+  e = await estado(); ok(planos ? e.n === 0 : e.n > 0, planos ? 'depois do teste o alerta deve ficar travado' : 'sem planos, o alerta segue liberado depois do teste');
   await p.evaluate(() => { trialStart = Date.now(); buildNotifs(); });
   e = await estado(); ok(e.n === 1, 'durante o teste o alerta deve aparecer');
   console.log(err.length ? err.join('\n') : 'OK: alertas de lugar novo');

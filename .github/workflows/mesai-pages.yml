@@ -13,14 +13,12 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  publicar:
+  # 1) monta o pacote do site
+  montar:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
@@ -29,5 +27,14 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: mesai/v2
+
+  # 2) publica num passo separado (formato recomendado pelo GitHub; evita o erro "Found 0 artifact(s)")
+  publicar:
+    needs: montar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v4
