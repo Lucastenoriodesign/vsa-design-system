@@ -792,3 +792,25 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .btn.out,a.btn.out{padding:0 12px;gap:6px}
 .dcontact{grid-template-columns:minmax(0,1fr) auto}.dcontact:has(>:only-child){grid-template-columns:minmax(0,1fr)}
 .dcontact a[href^="tel:"] span{overflow:visible;text-overflow:clip}
+
+/* Selo Aberto agora (24/11/2026) */
+.openb{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:3px 10px;border-radius:var(--r-pill);background:var(--green-bg);border:1px solid #cfe5d6;color:var(--green);font-size:12px;font-weight:800;line-height:1.4;width:max-content}
+.openb[hidden]{display:none}
+.openb i{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px #3d765c22}
+.hcard .openb{margin-top:4px;font-size:11px;padding:2px 8px}
+#detail .openb{margin:2px 0 6px}
+/* Mapa real (Leaflet + OpenStreetMap) */
+#map{background:none;height:auto;overflow:visible}
+.lmap{height:min(60dvh,460px);border-radius:18px;overflow:hidden;border:1px solid var(--line);z-index:0}
+.map-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 4px;font-size:13px;color:var(--muted)}
+.map-bar .qk{min-height:36px;font-size:13px}.map-bar .qk svg{width:15px;height:15px}
+.mpin span{display:block;width:26px;height:26px;margin:2px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--coral-dark);border:3px solid #fff;box-shadow:0 2px 6px #0000004d}
+.mpin.aberto span{background:var(--green)}
+.mpop{display:grid;gap:4px;font-family:inherit}.mpop b{font-size:15px}.mpop small{color:var(--muted);font-size:12px}.mpop .btn{margin-top:6px;min-height:38px;font-size:13px}
+.leaflet-popup-content{margin:12px 14px}
+/* Detalhe do lugar em tela cheia (24/11/2026) */
+#detailOverlay{align-items:stretch;background:var(--bg)}
+#detailOverlay .sheet{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;padding-top:calc(env(safe-area-inset-top) + 8px);animation:fade .2s ease}
+#detailOverlay .grab{display:none}
+#detailOverlay .sheet-head{position:sticky;top:calc(-1 * (env(safe-area-inset-top) + 8px));z-index:5;background:var(--paper);margin:0 -19px 8px;padding:10px 19px}
+@media(min-width:520px){#detailOverlay .sheet{width:430px}#detailOverlay{justify-content:center;background:#211d1ab0}}

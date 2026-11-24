@@ -1,10 +1,10 @@
 // Mesaí · service worker: abre o app mesmo com sinal fraco ou sem internet.
 // Estratégia: o "casco" do app (HTML, CSS, JS, imagens) vem do cache primeiro e é atualizado em segundo plano.
 // Mapas e fotos de terceiros não são guardados.
-const VERSAO = 'mesai-rede-primeiro-168';
+const VERSAO = 'mesai-rede-primeiro-169';
 const CASCO = [
   './', 'index.html', 'manifest.webmanifest',
-  'css/tokens.css', 'css/app.css', 'js/data.js', 'js/config.js', 'js/api.js', 'js/app.js', 'js/sync.js', 'js/seguranca.js',
+  'css/tokens.css', 'css/app.css', 'js/data.js', 'js/config.js', 'js/api.js', 'js/app.js', 'js/sync.js', 'js/seguranca.js', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
   'assets/mesai-logo.png', 'assets/avatar.jpg', 'assets/icon-192.png', 'assets/icon-512.png',
   'assets/cat-regional.jpg', 'assets/cat-hamburguer.jpg', 'assets/cat-cafe.jpg', 'assets/cat-pizza.jpg',
   'assets/cat-lanches.jpg', 'assets/cat-pastel.jpg', 'assets/cat-todos.jpg', 'assets/cat-sushi.jpg', 'assets/cat-acai.jpg', 'assets/cat-doces.jpg'

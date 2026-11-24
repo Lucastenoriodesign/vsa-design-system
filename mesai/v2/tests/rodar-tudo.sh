@@ -15,7 +15,7 @@ trap 'kill $SERV 2>/dev/null' EXIT
 for i in 1 2 3 4 5 6 7 8 9 10; do curl -fs "$BASE/" >/dev/null && break; sleep 0.5; done
 
 TOTAL=0; FALHAS=0; RESUMO=""
-for t in smoke alertas-lugar-novo fora-da-tela filtros barra-inferior offline-rota seguranca; do
+for t in smoke alertas-lugar-novo fora-da-tela filtros barra-inferior offline-rota seguranca mapa-e-detalhe; do
   echo "=== $t ==="
   (cd "$V2" && node "tests/$t.js"); COD=$?
   TOTAL=$((TOTAL+1))
