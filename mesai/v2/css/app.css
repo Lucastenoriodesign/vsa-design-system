@@ -878,3 +878,6 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .nav.active,.nav.active .ico svg{color:var(--coral-dark)}
 .nav.active .ico svg .f{fill:currentColor}
 .nav.active .ico svg .d{stroke:var(--paper)}
+
+/* Menu: sem o traço em cima da aba ativa; ícones retos, sem cara de fofo (24/11/2026) */
+.nav.active::before{display:none}
