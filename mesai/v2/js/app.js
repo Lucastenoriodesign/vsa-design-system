@@ -167,7 +167,7 @@ function authField(name,label,icon,type,extra,pw){return '<label class="af">'+la
 function authHtml(){
  var G='<svg class="g-ico" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.100 0 24s.9 7.600 2.600 10.800l7.900-6.100z"/><path fill="#34A853" d="M24 48c6.500 0 11.900-2.100 15.900-5.800l-7.500-5.800c-2.100 1.400-4.800 2.300-8.400 2.300-6.300 0-11.600-4.100-13.500-9.800l-7.900 6.100C6.500 42.600 14.600 48 24 48z"/></svg>';
  var HS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="2"/><rect x="17" y="14" width="4" height="6" rx="2"/><path d="M19 20c0 1.100-1.300 2-3 2h-2"/></svg>';
- return '<div class="auth" data-mode="in"><div class="auth-card"><h2 class="auth-title" id="authTitle">Entrar na conta</h2><p class="auth-sub" id="authSub">Entre para comentar, ganhar pontos e guardar seus favoritos na nuvem.</p>'
+ return '<div class="auth" data-mode="in"><div class="auth-card"><h2 class="auth-title" id="authTitle">Entrar na conta</h2><p class="auth-sub" id="authSub">Entre para comentar, ganhar pontos e guardar seus favoritos na nuvem.</p><button type="button" class="biob" id="authBio" hidden><span class="biob-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 4.6A8.5 8.5 0 0 1 20.5 12v1.5"/><path d="M3.5 15.5V12a8.4 8.4 0 0 1 1.3-4.5"/><path d="M7 19.5c.6-1.8 1-3.7 1-5.5v-2a4 4 0 0 1 8 0v1"/><path d="M12 12v2c0 2.8-.7 5.4-2 7.5"/><path d="M16 16.5c-.2 1.7-.7 3.3-1.4 4.8"/><path d="M19.8 17.2c-.2 1-.5 2-.8 2.8"/></svg></span><span>Entrar com biometria</span></button>'
  +'<form class="form authform" id="authForm" novalidate>'
  +'<div class="af-name" hidden>'+authField('name','Nome','user','text','maxlength="40" autocomplete="name" placeholder="Como quer ser chamada(o)?"')+'</div>'
  +authField('email','E-mail','mail','email','required autocomplete="email" placeholder="seunome@email.com"')
@@ -232,16 +232,46 @@ function renderSalvos(){var el=$('savedView');if(!el)return;var sv=pubPlaces().f
 function renderAll(){renderSalvos();renderBairro();renderPlan();renderMod();renderFeed();renderHome();renderSearch();renderProfile();renderAdmin();setMyAvatar();updateGreet();updateNotifBadge();androidStrip()}
 var lastFocus=null;
 function telHref(t){var d=String(t).replace(/\D/g,'');return d.length>=10?'+55'+d:d}
+ICP.clock='<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>';
+ICP.food='<path d="M7 3v7M5 3v5a2 2 0 0 0 4 0V3M7 10v11M17 21V3c-2 1-3.5 3.5-3.5 7v3H17"/>';
+ICP.kid='<circle cx="12" cy="6.5" r="3"/><path d="M6.5 21v-4.5a5.5 5.5 0 0 1 11 0V21"/>';
+ICP.paw='<circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="5.8" r="1.8"/><circle cx="14" cy="5.8" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><path d="M8 17.5c0-3 1.9-5.5 4-5.5s4 2.5 4 5.5c0 2-1.8 2.8-4 2-2.2.8-4 0-4-2z"/>';
+ICP.expand='<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>';
+var DIAS=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+function agoraMcz(){var f=new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Maceio'}).formatToParts(new Date()),g={};f.forEach(function(x){g[x.type]=x.value});return{d:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g.weekday),m:(parseInt(g.hour,10)%24)*60+parseInt(g.minute,10)}}
+function slotsDia(p,d){return(Array.isArray(p.h)?p.h:[]).filter(function(s){return s&&Array.isArray(s.d)&&s.d.indexOf(d)>-1}).map(function(s){return s.a+'–'+s.f})}
+function hojeTxt(p){var o=openNow(p);if(o===null)return '';var a=agoraMcz(),r='';(p.h||[]).forEach(function(s){if(!s||!Array.isArray(s.d)||s.d.indexOf(a.d)<0)return;var A=+s.a.split(':')[0]*60+ +s.a.split(':')[1],B=+s.f.split(':')[0]*60+ +s.f.split(':')[1];if(o&&!r&&(B>A?(a.m>=A&&a.m<B):(a.m>=A||a.m<B)))r='até '+s.f;if(!o&&!r&&A>a.m)r='abre '+s.a});return r||'agora'}
+var DMAP=null;
 function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(id);lastFocus=document.activeElement;var s=saved.has(id);
- var dest=encodeURIComponent(p.n+', '+p.e);
- $('detail').innerHTML='<div class="dphoto">'+galHtml(p)+seloHtml(p)+'</div>'+'<div class="dtrow"><h2 class="detail-title">'+esc(p.n)+'</h2><span class="dacts"><button class="dshare'+(s?' saved':'')+'" id="saveBtn" data-ico="1" aria-pressed="'+s+'" aria-label="'+(s?'Remover dos salvos':'Salvar lugar')+'">'+ico('heart',!!s)+'</button><button class="dshare" data-share="'+esc(p.id)+'" data-ico="1" aria-label="Compartilhar">'+ico('share')+'</button></span></div><p class="detail-sub">'+esc(p.g)+' · '+esc(region(p))+'</p>'+openBadge(p)+(p.d?'<p class="ddesc">'+esc(p.d)+'</p>':'')
- +((p.t||p.ig)?'<h3 class="sec-t">Contato</h3><div class="dcontact">'+(p.ig?'<a class="btn ghost out" data-ico="1" href="https://www.instagram.com/'+esc(p.ig)+'/" target="_blank" rel="noopener noreferrer">'+ico('insta')+'<span>@'+esc(p.ig)+'</span></a>':'')+(p.t?'<a class="btn ghost out" data-ico="1" href="tel:'+telHref(p.t)+'">'+ico('phone')+'<span>'+esc(p.t)+'</span></a>':'')+'</div>':'')
- +'<h3 class="sec-t">Localização</h3><div class="dloc"><div class="dloc-top"><span class="dloc-ico">'+ico('pin')+'</span><div><b>'+esc(shortAddr(p))+'</b><small>'+esc(region(p))+' • Maceió, AL</small></div></div><a class="btn ghost out" data-ico="1" href="https://www.google.com/maps/dir/?api=1&destination='+dest+'" target="_blank" rel="noopener noreferrer">'+ico('route')+'<span>Como chegar</span></a></div>'
- +'<dl class="dinfo">'+(p.kid===true||p.kid===false?'<div><dt>Crianças</dt><dd>'+yn(p.kid)+'</dd></div>':'')+(p.pet===true||p.pet===false?'<div><dt>Pets</dt><dd>'+yn(p.pet)+'</dd></div>':'')+'</dl>'+(function(){var f=[];if(!p.h)f.push('horários');return f.length?'<p class="dmiss">Ainda não informado: '+f.join(', ')+'.</p>':''})()
- +'<h3 class="sec-t">Ambiente</h3><p class="sec-s">Esteve aqui? Marque o que viu e ajude quem vai depois.</p><div class="ambs">'+AMB.map(function(a){var on=(amb[p.id]||[]).indexOf(a)>-1;var n=(S2.amb[p.id]&&S2.amb[p.id][a])||0;return '<button class="amb'+(on?' on':'')+'" data-amb="'+esc(p.id)+'|'+esc(a)+'" aria-pressed="'+on+'">'+(on?ico('check')+' ':'')+esc(a)+(n?' · '+n:'')+'</button>'}).join('')+'</div><button class="btn ghost block" data-checkin="'+esc(p.id)+'">'+ico('pin')+' Estive aqui · +10 pontos</button>'+
-  '';
+ var dest='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(p.n+', '+p.e),fl=allPhotos(p).length,o=openNow(p),hoje=agoraMcz().d;
+ if(DMAP){DMAP.remove();DMAP=null}
+ var col=[];
+ if(o!==null)col.push('<div class="'+(o?'on':'off')+'"><b>'+(o?'Aberto':'Fechado')+'</b><small>'+esc(hojeTxt(p))+'</small></div>');
+ col.push(p.selo?'<div class="dselo"><b>'+ico('star',true)+'</b><small>'+esc(p.selo)+'</small></div>':'<div><b>'+ico('food')+'</b><small>'+esc(p.g)+'</small></div>');
+ if(fl)col.push('<div><b>'+fl+'</b><small>'+(fl===1?'foto':'fotos')+'</small></div>');
+ var of=['<li>'+ico('food')+'<span>Para comer no local</span></li>'];
+ if(p.h){var sl=slotsDia(p,hoje);of.push('<li>'+ico('clock')+'<span>'+(sl.length?'Hoje: '+esc(sl.join(' e ')):'Fechado hoje')+'</span></li>')}
+ if(p.t)of.push('<li>'+ico('phone')+'<a href="tel:'+telHref(p.t)+'">'+esc(p.t)+'</a></li>');
+ if(p.ig)of.push('<li>'+ico('insta')+'<a href="https://www.instagram.com/'+esc(p.ig)+'/" target="_blank" rel="noopener noreferrer">@'+esc(p.ig)+'</a></li>');
+ if(p.kid===true||p.kid===false)of.push('<li class="'+(p.kid?'':'no')+'">'+ico('kid')+'<span>'+(p.kid?'Aceita crianças':'Crianças')+'</span></li>');
+ if(p.pet===true||p.pet===false)of.push('<li class="'+(p.pet?'':'no')+'">'+ico('paw')+'<span>'+(p.pet?'Aceita pets':'Pets')+'</span></li>');
+ var longo=p.d&&p.d.length>170;
+ $('detail').innerHTML='<div class="dhero">'+galHtml(p)
+  +'<button class="dfab dback" data-close aria-label="Voltar">'+ico('back')+'</button>'
+  +'<span class="dfabs"><button class="dfab" data-share="'+esc(p.id)+'" aria-label="Compartilhar">'+ico('share')+'</button><button class="dfab'+(s?' saved':'')+'" id="saveBtn" aria-pressed="'+s+'" aria-label="'+(s?'Remover dos salvos':'Salvar lugar')+'">'+ico('heart',!!s)+'</button></span>'
+  +(fl>1?'<span class="dcount" data-galcount>1 / '+fl+'</span>':'')+'</div>'
+  +'<div class="dcard"><h2 class="detail-title dt-c">'+esc(p.n)+'</h2><p class="dsub-c">'+esc(p.c||p.g)+' em '+esc(region(p))+', Maceió</p><p class="dsub-a">'+esc(shortAddr(p))+'</p>'
+  +'<div class="dstats">'+col.join('')+'</div>'
+  +(p.d?'<section class="dsec"><p class="ddesc'+(longo?' clamp':'')+'">'+esc(p.d)+'</p>'+(longo?'<button class="btn ghost block dmore" type="button" data-dmore>Mostrar mais</button>':'')+'</section>':'')
+  +'<section class="dsec"><h3>O que esse lugar oferece</h3><ul class="dofer">'+of.join('')+'</ul></section>'
+  +'<section class="dsec"><h3>Horários</h3>'+(p.h?'<dl class="dhours">'+[1,2,3,4,5,6,0].map(function(d){var sl=slotsDia(p,d);return '<div'+(d===hoje?' class="hoje"':'')+'><dt>'+DIAS[d]+(d===hoje?' · hoje':'')+'</dt><dd>'+(sl.length?esc(sl.join(' e ')):'Fechado')+'</dd></div>'}).join('')+'</dl>':'<p class="sec-s">Ainda não informado.</p>')+'</section>'
+  +'<section class="dsec"><h3>Onde você vai estar</h3><p class="sec-s">'+esc(shortAddr(p))+'</p>'+(valid(p)?'<div class="dmap"><div id="dmap" role="img" aria-label="Mapa com a localização de '+esc(p.n)+'"></div><a class="dfab dmap-go" href="'+dest+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir no mapa">'+ico('expand')+'</a></div>':'')+'</section>'
+  +'<section class="dsec"><h3>Quem esteve aqui menciona</h3><p class="sec-s">Esteve aqui? Marque o que viu e ajude quem vai depois.</p><div class="ambs">'+AMB.map(function(a){var on=(amb[p.id]||[]).indexOf(a)>-1;var n=(S2.amb[p.id]&&S2.amb[p.id][a])||0;return '<button class="amb'+(on?' on':'')+'" data-amb="'+esc(p.id)+'|'+esc(a)+'" aria-pressed="'+on+'">'+(on?ico('check')+' ':'')+esc(a)+(n?' · '+n:'')+'</button>'}).join('')+'</div><button class="btn ghost block" data-checkin="'+esc(p.id)+'">'+ico('pin')+' Estive aqui · +10 pontos</button></section></div>'
+  +'<div class="dbar"><div class="dbar-t"><b>'+esc(p.n)+'</b>'+openBadge(p)+'</div><a class="btn dgo" href="'+dest+'" target="_blank" rel="noopener noreferrer">Como chegar</a></div>';
  $('saveBtn').onclick=function(){toggleSave(id);openDetail(id)};
- var ov=$('detailOverlay'),reab=ov.classList.contains('open');ov.classList.add('open');if(!reab){ov.querySelector('.sheet').scrollTop=0;ov.querySelector('.close').focus({preventScroll:true})}}
+ if(valid(p))loadLeaflet().then(function(){if(!document.getElementById('dmap'))return;DMAP=L.map('dmap',{zoomControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false,boxZoom:false,keyboard:false,tap:false,attributionControl:true}).setView([p.lat,p.lng],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(DMAP);L.marker([p.lat,p.lng],{interactive:false,icon:L.divIcon({className:'mpin'+(o?' aberto':''),html:'<span></span>',iconSize:[30,30],iconAnchor:[15,30]})}).addTo(DMAP);setTimeout(function(){if(DMAP)DMAP.invalidateSize()},80)}).catch(function(){});
+ var ov=$('detailOverlay'),reab=ov.classList.contains('open');ov.classList.add('open');if(!reab){ov.querySelector('.sheet').scrollTop=0;ov.querySelector('.dback').focus({preventScroll:true})}}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-dmore]');if(!b)return;var d=b.previousElementSibling,ab=d.classList.toggle('clamp');b.textContent=ab?'Mostrar mais':'Mostrar menos'});
 function toggleSave(id){setTimeout(refreshSheet,0);var was=saved.has(id);if(was){saved.delete(id);toast('Removido dos salvos')}else{saved.add(id);toast('Lugar salvo');NATIVE.haptic('ok')}
  if(S2.on&&API.user()){(was?API.unsave(id):API.save(id)).catch(function(){})}store('mesai-saved',Array.from(saved));renderAll()}
 function closeOverlays(){document.querySelectorAll('.overlay.open').forEach(function(o){o.classList.remove('open')});if(lastFocus&&lastFocus.focus)lastFocus.focus()}
@@ -411,7 +441,7 @@ function galHtml(p){var l=allPhotos(p);if(!l.length)return photo(p,'dph');var c=
 function galStart(){clearInterval(GAL.t);var t=document.querySelector('[data-galtrack]');if(!t||t.children.length<2)return;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  GAL.t=setInterval(function(){var t=document.querySelector('[data-galtrack]');if(!t||!t.offsetParent||document.querySelector('.lb')){if(!t)clearInterval(GAL.t);return}
   if(Date.now()-GAL.last<7000)return;var w=t.clientWidth,i=Math.round(t.scrollLeft/w),n=t.children.length;t.scrollTo({left:((i+1)%n)*w,behavior:'smooth'})},3500)}
-function galDots(t){var i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth)),d=t.parentNode.querySelectorAll('.gal-dots i');d.forEach(function(x,k){x.classList.toggle('on',k===i)})}
+function galDots(t){var i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth)),d=t.parentNode.querySelectorAll('.gal-dots i'),hc=t.closest('.dhero'),cn=hc&&hc.querySelector('[data-galcount]');if(cn)cn.textContent=(i+1)+' / '+t.children.length;d.forEach(function(x,k){x.classList.toggle('on',k===i)})}
 function lbOpen(srcs,i){var o=document.createElement('div');o.className='lb';o.setAttribute('role','dialog');o.setAttribute('aria-label','Fotos do lugar');
  o.innerHTML='<button type="button" class="lb-x" data-lbx aria-label="Fechar fotos"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="lb-track">'+srcs.map(function(u){return '<div class="lb-s"><img src="'+esc(u)+'" alt="" referrerpolicy="no-referrer"></div>'}).join('')+'</div><div class="lb-n"></div>';
  document.body.appendChild(o);var t=o.querySelector('.lb-track'),n=o.querySelector('.lb-n');

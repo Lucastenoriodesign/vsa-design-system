@@ -82,7 +82,10 @@ var API = (function () {
         .then(function () { return http('/rest/v1/rpc/delete_my_account', { method: 'POST', body: {} }); })
         .then(function () { saveSession(null); });
     },
-    signOut: function () {
+    // Biometria: ao sair, a sessão fica guardada e só volta depois da digital/Face ID
+    resume: function (s) { saveSession(s); return refresh(); },
+    signOut: function (keep) {
+      if (keep && session) { try { localStorage.setItem('mesai-bio-sess', JSON.stringify(session)); } catch (e) {} saveSession(null); return Promise.resolve(); }
       var p = session ? http('/auth/v1/logout', { method: 'POST' }).catch(function () {}) : Promise.resolve();
       return p.then(function () { saveSession(null); });
     },

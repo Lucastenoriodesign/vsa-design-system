@@ -76,6 +76,7 @@ function authMode(box, mode) {
   box.querySelector('[name=password]').closest('.af').hidden = rec;
   var semG = rec || !MESAI_CONFIG.googleLogin; box.querySelector('.auth-or').hidden = semG; $('authGoogle').hidden = semG;
   $('authFoot').hidden = !up;
+  bioShow(box);
   box.querySelector('[name=password]').autocomplete = up ? 'new-password' : 'current-password';
   $('authTitle').textContent = up ? 'Criar sua conta' : rec ? 'Recuperar senha' : 'Entrar na conta';
   $('authSub').textContent = up ? 'Leva menos de um minuto. Você já sai com seus favoritos e comentários guardados na nuvem.' : rec ? 'Digite seu e-mail e enviamos um link para você criar uma nova senha.' : 'Entre para comentar, ganhar pontos e guardar seus favoritos na nuvem.';
@@ -118,7 +119,7 @@ document.addEventListener('submit', function (e) {
       authDone(box, true);
       return;
     }
-    if (!signup) { try { if (f.get('remember')) localStorage.removeItem('mesai-forget'); else localStorage.setItem('mesai-forget', '1'); } catch (x) {} }
+    if (!signup) { bioAfterLogin(email); try { if (f.get('remember')) localStorage.removeItem('mesai-forget'); else localStorage.setItem('mesai-forget', '1'); } catch (x) {} }
     return syncAll().then(function () { closeOverlays(); if (typeof authScreenClose === 'function') authScreenClose(); toast('Conectado'); });
   }).catch(function (err) {
     msg.textContent = /Invalid login/i.test(err.message) ? 'E-mail ou senha incorretos.' : /registered|already/i.test(err.message) ? 'Este e-mail já tem conta. Toque em Faça login.' : 'Não foi possível agora: ' + err.message;
@@ -152,7 +153,7 @@ document.addEventListener('click', function (e) {
       });
   }
   if (t.dataset.auth === 'out') {
-    API.signOut().then(function () { S2.admin = false; S2.points = 0; S2.name = null; return syncComments(); }).then(function () { renderAll(); closeOverlays(); toast('Você saiu'); });
+    var bs = bioSaved(), uu = API.user(); API.signOut(!!(bs && uu && bs.email === uu.email)).then(function () { S2.admin = false; S2.points = 0; S2.name = null; return syncComments(); }).then(function () { renderAll(); closeOverlays(); toast('Você saiu'); });
   }
 });
 
@@ -205,3 +206,50 @@ document.addEventListener('submit', function (e) {
     else syncAll().then(function () { toast('Conectado'); if (typeof authScreenClose === 'function') authScreenClose(); });
   }).catch(function () { clean(); toast('Link inválido ou expirado. Peça um novo.'); });
 })();
+
+// Entrar com biometria (digital ou Face ID do próprio aparelho, via WebAuthn).
+// Liga depois de um login com e-mail e senha; ao sair, a sessão fica guardada e só volta com a biometria.
+function bioSaved() { try { return JSON.parse(localStorage.getItem('mesai-bio')); } catch (e) { return null; } }
+function bioApi() { return !!(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable && navigator.credentials); }
+function bioRnd(n) { var a = new Uint8Array(n); crypto.getRandomValues(a); return a; }
+function bioB64(buf) { return btoa(String.fromCharCode.apply(null, new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function bioUn64(t) { t = t.replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; var b = atob(t), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+function bioShow(box) {
+  var b = box.querySelector('#authBio'); if (!b) return; b.hidden = true;
+  if (box.dataset.mode !== 'in' || !bioApi()) return;
+  PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function (y) { if (y && box.dataset.mode === 'in') b.hidden = false; }).catch(function () {});
+}
+function bioAfterLogin(email) {
+  var cur = bioSaved();
+  if (cur && cur.email !== email) { try { localStorage.removeItem('mesai-bio'); localStorage.removeItem('mesai-bio-sess'); } catch (e) {} cur = null; }
+  var want = false; try { want = !!localStorage.getItem('mesai-bio-want'); } catch (e) {}
+  if (cur || !want || !bioApi()) return;
+  try { localStorage.removeItem('mesai-bio-want'); } catch (e) {}
+  navigator.credentials.create({ publicKey: {
+    challenge: bioRnd(32), rp: { name: 'Mesaí' }, user: { id: bioRnd(16), name: email, displayName: email },
+    pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+    authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'discouraged' }, timeout: 60000
+  } }).then(function (c) {
+    localStorage.setItem('mesai-bio', JSON.stringify({ id: bioB64(c.rawId), email: email }));
+    toast('Pronto: da próxima vez, entre com a biometria');
+  }).catch(function () {});
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('#authBio')) return;
+  var saved = bioSaved(), keep = null; try { keep = JSON.parse(localStorage.getItem('mesai-bio-sess')); } catch (x) {}
+  if (!saved || !keep || !keep.refresh_token) {
+    try { localStorage.setItem('mesai-bio-want', '1'); } catch (x) {}
+    toast('Entre com e-mail e senha uma vez. Depois a biometria fica ligada.');
+    var em = $('authForm') && $('authForm').querySelector('[name=email]'); if (em) em.focus();
+    return;
+  }
+  navigator.credentials.get({ publicKey: { challenge: bioRnd(32), allowCredentials: [{ type: 'public-key', id: bioUn64(saved.id) }], userVerification: 'required', timeout: 60000 } })
+    .then(function () { return API.resume(keep); })
+    .then(function () { try { localStorage.removeItem('mesai-bio-sess'); } catch (x) {} return syncAll(); })
+    .then(function () { closeOverlays(); if (typeof authScreenClose === 'function') authScreenClose(); toast('Conectado'); })
+    .catch(function (err) {
+      if (err && err.name === 'NotAllowedError') return;
+      try { localStorage.removeItem('mesai-bio-sess'); localStorage.setItem('mesai-bio-want', '1'); } catch (x) {}
+      toast('A sessão expirou. Entre com e-mail e senha para ligar a biometria de novo.');
+    });
+});
