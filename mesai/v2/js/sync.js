@@ -74,7 +74,7 @@ function authMode(box, mode) {
   box.querySelector('.af-terms').hidden = !up;
   box.querySelector('.af-row').hidden = up || rec;
   box.querySelector('[name=password]').closest('.af').hidden = rec;
-  box.querySelector('.auth-or').hidden = rec; $('authGoogle').hidden = rec;
+  var semG = rec || !MESAI_CONFIG.googleLogin; box.querySelector('.auth-or').hidden = semG; $('authGoogle').hidden = semG;
   $('authFoot').hidden = !up;
   box.querySelector('[name=password]').autocomplete = up ? 'new-password' : 'current-password';
   $('authTitle').textContent = up ? 'Criar sua conta' : rec ? 'Recuperar senha' : 'Entrar na conta';

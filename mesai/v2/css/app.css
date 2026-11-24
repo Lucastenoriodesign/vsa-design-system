@@ -747,3 +747,6 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .btn:disabled .i,.btn[disabled] .i{color:var(--muted)}
 .flabel-v{display:block;margin:0 0 8px;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2)}
 .empty .btn{display:inline-flex;margin-top:12px}
+
+/* cartão de login não passa da largura da tela */
+.authscreen>*,.auth,.auth>*,.auth-card>*,.af,.af>*{min-width:0}.auth-card{max-width:100%}.af-row{flex-wrap:wrap;row-gap:0}

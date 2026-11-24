@@ -26,6 +26,9 @@ App de Lucas Tenório (MESAÍ APP LTDA, CNPJ 45.165.617/0001-03, Maceió/AL). Gu
 ## Decisões já tomadas (não desfazer sem o Lucas pedir)
 - **Mensalidade de volta** (decisão do Lucas em 16/11/2026): tela do Mesaí Plus no fim das boas-vindas, banner do Mesaí+ e "Planos" no Perfil estão ativos. Ainda **não há cobrança real** (o texto da tela diz isso). Antes de cobrar: os recursos prometidos (listas compartilháveis, alertas de lugar novo, pontos que viram vantagens) precisam existir, e no iPhone a cobrança tem que ser pela compra dentro do app da Apple.
 - Boas-vindas com 3 telas (Descobrir, Comunidade, Salve e vá), aprovadas pelo Lucas. Ilustrações ainda provisórias.
+- Primeiro acesso abre direto as boas-vindas, **sem tela de login obrigatória** (decisão do Lucas em 24/11/2026). A conta é pedida só quando a pessoa tenta comentar, salvar na nuvem ou fazer check-in. O botão do Google só aparece com `googleLogin: true`.
+- Sem texto de bastidor para o usuário ("servidor", "neste aparelho", "preços sugeridos"): fale do benefício, não da técnica.
+- Redes de hambúrguer do shopping (Burger King, Bob's, McDonald's) ficam em Hamburguerias; KFC em Restaurantes.
 - Hub da home: saudação pelo horário de Maceió + bairro + sino; categorias 4×2 no singular (Restaurante, Hamburgueria, Pizzaria, Lanchonete, Pastelaria, Cafeteria e padaria, Açaíteria); depois banners; depois o resto.
 - Notificações são montadas com dados reais (lugar do dia, lugares novos, pontos). Nada de exemplo inventado.
 - Crianças/pets (`kid`, `pet`) e coordenadas (`lat`, `lng`) só com fonte verificável; sem fonte, fica "Não informado".
