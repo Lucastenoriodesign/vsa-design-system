@@ -17,15 +17,15 @@ const D = require('os').tmpdir() + '/mesai-';
 
   // 1) selo Aberto agora bate com o horário
   const ab = await p.evaluate(() => {
-    const vis = [...document.querySelectorAll('#list .openb')].filter(e => !e.hidden).length;
+    const vis = [...document.querySelectorAll('#list .openb.on')].filter(e => !e.hidden).length;
     const esp = pubPlaces().filter(match).filter(x => openNow(x) === true).length;
-    return { vis, esp, semHorarioComSelo: [...document.querySelectorAll('#list .openb')].filter(e => !e.hidden && !byId(e.dataset.ob).h).length };
+    return { vis, esp, semHorarioComSelo: [...document.querySelectorAll('#list .openb')].filter(e => !e.hidden && !byId(e.dataset.ob).h).length, fechados: [...document.querySelectorAll('#list .openb.off')].filter(e => !e.hidden).length };
   });
   ok(ab.vis === ab.esp, 'selo "Aberto agora" em ' + ab.vis + ' lugares (esperado ' + ab.esp + ' pelo horário de agora)');
   ok(ab.semHorarioComSelo === 0, 'nenhum lugar sem horário mostra o selo');
   // muda o relógio de mentira: fecha todos e atualiza sozinho
   await p.evaluate(() => { window.__on = openNow; openNow = () => false; refreshOpen(); });
-  ok((await p.$$eval('#list .openb', a => a.filter(e => !e.hidden).length)) === 0, 'atualização automática esconde o selo quando fecha');
+  ok((await p.$$eval('#list .openb.on', a => a.filter(e => !e.hidden).length)) === 0 && (await p.$$eval('#list .openb.off', a => a.filter(e => !e.hidden).length)) > 0, 'atualização automática troca para "Fechado" quando fecha');
   await p.evaluate(() => { openNow = window.__on; refreshOpen(); });
   await p.screenshot({ path: D + 'm-lista.png' });
 
