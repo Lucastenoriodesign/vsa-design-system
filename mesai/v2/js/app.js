@@ -118,7 +118,7 @@ function renderSearch(){
  var anyOn=S.region!=='Tudo'||S.flags.length>0;
  $('filters').innerHTML='<div class="fgroup" role="group" aria-label="Região"><span class="flabel">Região</span><div class="fchips">'+regHtml+'</div></div><div class="fgroup" role="group" aria-label="Mostrar só"><span class="flabel">Mostrar só</span><div class="fchips">'+flagHtml+'</div></div>'+(anyOn?'<button class="link fclear" data-reset>Limpar filtros</button>':'');
  var rows=sorted(pubPlaces().filter(match));
- $('sortBtn').textContent='Ordenar: '+(S.sort==='reg'?'por região':S.sort==='dist'?'perto de mim':S.sort==='az'?'A–Z':'completos');
+ var so=S.sort==='reg'?'Por região':S.sort==='dist'?'Perto de mim':S.sort==='az'?'A–Z':'Completos';$('sortBtn').innerHTML='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4v16m0 0-3-3m3 3 3-3M17 20V4m0 0-3 3m3-3 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'+so;$('sortBtn').setAttribute('aria-label','Ordenar: '+so);
  $('filtBtn').textContent='Filtros'+((S.region!=='Tudo'?1:0)+S.flags.length?' ('+((S.region!=='Tudo'?1:0)+S.flags.length)+')':'');
  (function(){var c=$('catChips'),a=c.querySelector('.active');if(a)c.scrollLeft=Math.max(0,a.offsetLeft-(c.clientWidth-a.offsetWidth)/2)})();
  if(LOADING){$('count').textContent='Carregando lugares…';$('list').innerHTML=skel(5);$('list').setAttribute('aria-busy','true');return}$('list').removeAttribute('aria-busy');
