@@ -870,3 +870,11 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .dbar-t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dbar-t .openb{margin-top:3px}
 .dgo{flex:0 0 auto;min-height:50px;padding:0 26px;border-radius:var(--r-pill);font-size:16px}
+
+/* Ícones do menu inferior: um só desenho (grade 24, traço 2 arredondado); ativo preenchido em coral (24/11/2026) */
+.nav .ico svg{width:24px;height:24px}
+.nav,.nav .ico svg{color:var(--muted)}
+.nav .ico svg .f{fill:none;transition:fill .18s}
+.nav.active,.nav.active .ico svg{color:var(--coral-dark)}
+.nav.active .ico svg .f{fill:currentColor}
+.nav.active .ico svg .d{stroke:var(--paper)}
