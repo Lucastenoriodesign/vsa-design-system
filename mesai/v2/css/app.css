@@ -766,3 +766,19 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .selo{position:absolute;z-index:2;top:8px;left:8px;display:inline-flex;align-items:center;gap:4px;max-width:calc(100% - 72px);padding:4px 10px 4px 8px;border-radius:var(--r-pill);background:linear-gradient(135deg,#ffe9a8 0%,#f3b83a 100%);color:#5a3c00;font-size:var(--fs-xs);font-weight:800;line-height:1.2;box-shadow:0 4px 10px #5a3c0033,inset 0 1px 0 #ffffff80;pointer-events:none}
 .selo svg{flex:none}.selo span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dphoto .selo{top:12px;left:12px;max-width:calc(100% - 24px)}
+
+/* Detalhe do lugar (v174): título, Contato e Localização em seções, botões vazados lado a lado. */
+.dtrow{display:flex;align-items:flex-start;gap:var(--sp-3)}.dtrow .detail-title{flex:1;min-width:0;margin:0}
+.dshare{flex:none;width:var(--touch);height:var(--touch);display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:50%;background:var(--surface);color:var(--coral-dark)}
+.dshare .i{width:20px;height:20px}
+.ddesc{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--fs-md);line-height:1.5}
+.sheet .sec-t{margin:var(--sp-6) 0 var(--sp-3);font-size:var(--fs-lg)}
+.dcontact{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3)}.dcontact:has(>:only-child){grid-template-columns:1fr}
+.btn.out,a.btn.out{background:var(--surface);color:var(--ink);border:1.5px solid var(--line-strong);box-shadow:none;min-height:52px;border-radius:var(--r-lg);font-size:var(--fs-sm);width:100%;white-space:nowrap}
+.btn.out .i{color:var(--coral-dark);width:20px;height:20px}
+.btn.out.saved{background:var(--green-bg);color:var(--green);border-color:var(--green)}.btn.out.saved .i{color:var(--green)}
+.dloc{border:1.5px solid var(--line-strong);border-radius:var(--r-lg);padding:var(--sp-4);display:grid;gap:var(--sp-4)}
+.dloc-top{display:flex;gap:var(--sp-3);align-items:flex-start}
+.dloc-ico{flex:none;width:44px;height:44px;border-radius:var(--r-md);display:grid;place-items:center;background:var(--coral-bg);color:var(--coral-dark)}.dloc-ico .i{width:22px;height:22px}
+.dloc-top b{display:block;font-size:var(--fs-md);line-height:1.3}.dloc-top small{display:block;margin-top:2px;color:var(--muted);font-size:var(--fs-sm)}
+.dinfo:empty{display:none}
