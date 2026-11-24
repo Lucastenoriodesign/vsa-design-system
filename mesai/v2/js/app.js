@@ -211,8 +211,32 @@ function renderAdmin(){renderPhotos();
 var SEED=[];
 function ago(t){var m=Math.floor((Date.now()-t)/60000);return m<1?'agora':m<60?'há '+m+' min':m<1440?'há '+Math.floor(m/60)+' h':'há '+Math.floor(m/1440)+' d'}
 function feedItems(){return S2.on?S2.feed:posts.filter(function(x){return x.status==='aprovado'||x.status==='pendente'||x.status==='rejeitado'}).concat(SEED)}
-function renderFeed(){var sel=$('postPlace');sel.innerHTML='<option value="">Sem lugar específico</option>'+pubPlaces().map(function(p){return '<option value="'+esc(p.id)+'">'+esc(p.n)+'</option>'}).join('');
- $('feed').innerHTML=feedItems().map(function(x){var sv=!!x.sv,mine=sv?x.mine:x.id>0,p=x.place&&byId(x.place);return '<article class="post"><div class="post-h">'+(mine?'<img class="myav" src="" alt="">':'<span class="ini" aria-hidden="true">'+esc((x.who||'M')[0])+'</span>')+'<div><b>'+(mine?'Você':esc(x.who||'Membro')+(sv?'':' <em class="tst">teste</em>'))+'</b><small>'+ago(sv?x.t:(mine?x.id:x.t))+(p?' · '+esc(p.n):'')+'</small></div><span class="kind k-'+esc(x.kind)+'">'+esc(x.kind)+'</span></div><p>'+esc(x.text)+'</p>'+(mine&&x.status==='pendente'?'<span class="badge">Aguardando aprovação · só você vê</span>':mine&&x.status==='rejeitado'?'<span class="badge no">Não aprovado</span>':'')+'<div class="post-f">'+(sv?'':'<button data-like="'+x.id+'" class="'+(x.liked?'on':'')+'" aria-pressed="'+!!x.liked+'">'+ico('heart',!!x.liked)+' Curtir</button>')+(mine?'<button data-delpost="'+x.id+'">Excluir</button>':'')+'</div></article>'}).join('')||'<div class="empty" style="margin-top:12px">Ninguém comentou ainda. Seja o primeiro: conte como foi, deixe uma dica ou um elogio.</div>'}
+var CMF='';
+function cmStories(){var cnt={};feedItems().forEach(function(x){if(x.place)cnt[x.place]=(cnt[x.place]||0)+1});
+ var l=pubPlaces().filter(function(p){return allPhotos(p).length}).sort(function(a,b){return (cnt[b.id]||0)-(cnt[a.id]||0)||(b.id>a.id?1:-1)}).slice(0,12);
+ return l.map(function(p){var n=cnt[p.id]||0;return '<button type="button" class="cm-st'+(n?' on':'')+'" data-cmplace="'+esc(p.id)+'" aria-label="Comentar sobre '+esc(p.n)+(n?' ('+n+' posts)':'')+'"><span class="cm-ring"><img src="'+esc(allPhotos(p)[0])+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-oe="parent"></span><small>'+esc(p.n.split(/ [-|] /)[0])+'</small></button>'}).join('')}
+function cmPost(x){var sv=!!x.sv,mine=sv?x.mine:x.id>0,p=x.place&&byId(x.place),nm=mine?'Você':(x.who||'Membro'),ph=p&&allPhotos(p)[0];
+ return '<article class="cm-post"><div class="cm-pav">'+(mine?'<img class="myav" src="" alt="">':'<span class="ini" aria-hidden="true">'+esc(nm[0])+'</span>')+'</div><div class="cm-pb">'
+  +'<div class="cm-ph"><b>'+esc(nm)+(sv||mine?'':' <em class="tst">teste</em>')+'</b><span class="cm-time">· '+ago(sv?x.t:(mine?x.id:x.t))+'</span><span class="kind k-'+esc(x.kind)+'">'+esc(x.kind)+'</span></div>'
+  +'<p class="cm-tx">'+esc(x.text)+'</p>'
+  +(p?'<button type="button" class="cm-pl" data-open="'+esc(p.id)+'">'+(ph?'<img src="'+esc(ph)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-oe="parent">':'<span class="cm-pl-i">'+ico('pin')+'</span>')+'<span><b>'+esc(p.n)+'</b><small>'+esc(p.g)+' · '+esc(region(p))+'</small></span>'+ico('next')+'</button>':'')
+  +(mine&&x.status==='pendente'?'<span class="badge">Aguardando aprovação · só você vê</span>':mine&&x.status==='rejeitado'?'<span class="badge no">Não aprovado</span>':'')
+  +'<div class="post-f cm-acts">'+(sv?'':'<button data-like="'+x.id+'" class="'+(x.liked?'on':'')+'" aria-pressed="'+!!x.liked+'">'+ico('heart',!!x.liked)+' Curtir</button>')+(p?'<button data-share="'+esc(p.id)+'">'+ico('share')+' Compartilhar</button>':'')+(mine?'<button data-delpost="'+x.id+'">'+ico('trash')+' Excluir</button>':'')+'</div></div></article>'}
+function renderFeed(){var sel=$('postPlace'),cur=sel.value;sel.innerHTML='<option value="">Marcar um lugar</option>'+pubPlaces().slice().sort(function(a,b){return a.n.localeCompare(b.n)}).map(function(p){return '<option value="'+esc(p.id)+'">'+esc(p.n)+'</option>'}).join('');sel.value=cur;cmPlaceOn();
+ $('cmStories').innerHTML=cmStories();
+ var all=feedItems(),it=all.filter(function(x){return !CMF||x.kind===CMF});
+ $('feed').innerHTML=it.map(cmPost).join('')||(all.length?'<div class="cm-empty"><p>Nenhum post de '+esc(CMF==='Dica'?'dicas':CMF==='Elogio'?'elogios':'reclamações')+' ainda.</p></div>':'<div class="cm-empty"><span class="cm-empty-i">'+ico('spark')+'</span><b>A conversa começa com você</b><p>Conte como foi, deixe uma dica ou um elogio. Quem vai depois agradece.</p><button class="btn" type="button" data-cmwrite>Escrever o primeiro post</button></div>');
+ setMyAvatar()}
+function cmPlaceOn(){var s=$('postPlace');s.parentNode.classList.toggle('on',!!s.value)}
+function cmOpen(){$('postForm').classList.add('open')}
+document.addEventListener('focusin',function(e){if(e.target.id==='postText')cmOpen()});
+document.addEventListener('input',function(e){if(e.target.id==='postText'){var t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,220)+'px';$('cmCount').textContent=t.value.length+'/280'}});
+document.addEventListener('change',function(e){if(e.target.id==='postPlace')cmPlaceOn()});
+document.addEventListener('click',function(e){var b=e.target.closest('[data-cmkind],[data-cmf],[data-cmplace],[data-cmwrite]');if(!b)return;
+ if(b.dataset.cmkind){$('postKind').value=b.dataset.cmkind;b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});return}
+ if(b.dataset.cmf!==undefined){CMF=b.dataset.cmf;b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-selected',x===b)});renderFeed();return}
+ if(b.dataset.cmplace){$('postPlace').value=b.dataset.cmplace;cmPlaceOn()}
+ cmOpen();var t=$('postText');t.focus({preventScroll:true});$('postForm').scrollIntoView({behavior:'smooth',block:'center'})});
 function screen(t){var m=[],x=t.toLowerCase();
  if(/(\bidiota\b|\bburro\b|\blixo\b|\bvagabund|\bfilho da p|\bputa\b|\bmerda\b|\bporra\b|\bcaralho\b|\bcorno\b|\bnojento\b|\bdesgraça)/.test(x))m.push('possível xingamento');
  if(/(vou (te |lhe )?(matar|bater|pegar)|vamos (pegar|bater)|ameaç|mato (ele|ela|vocês))/.test(x))m.push('possível ameaça');
@@ -337,8 +361,8 @@ $('suggestForm').onsubmit=function(e){e.preventDefault();var f=new FormData(e.ta
  var p={id:'sug-'+Date.now(),n:name,g:cat,c:cat,r:'Cidade Universitária',e:about||'Endereço a confirmar',d:'Sugestão da comunidade, aguardando revisão.',t:null,ev:'a_confirmar',pub:true,f:null,m:null,lat:null,lng:null,foto:null,h:null,suggested:true};
  sugg.unshift(p);store('mesai-suggestions',sugg);places=BASE.concat(sugg);e.target.reset();closeOverlays();resetSearch();renderAll();go('buscar');toast('Sugestão adicionada neste navegador')};
 $('postForm').onsubmit=function(e){e.preventDefault();var tx=$('postText').value.trim();if(!tx)return;if(e.target.website&&e.target.website.value)return;if(!spamOk('post',tx))return;
- if(S2.on){if(!API.user()){toast('Entre na sua conta para comentar');openSheet('security');return}API.addComment({place_id:$('postPlace').value||null,kind:$('postKind').value,body:tx,flags:screen(tx)}).then(function(){$('postText').value='';toast('Comentário publicado');return syncComments()}).catch(function(){toast('Seu comentário não foi publicado. Revise as palavras e tente de novo.')});return}
-posts.unshift({id:Date.now(),text:tx,kind:$('postKind').value,place:$('postPlace').value||null,status:'aprovado',flags:screen(tx)});store('mesai-posts',posts);$('postText').value='';renderAll();toast('Comentário publicado')};
+ if(S2.on){if(!API.user()){toast('Entre na sua conta para comentar');openSheet('security');return}API.addComment({place_id:$('postPlace').value||null,kind:$('postKind').value,body:tx,flags:screen(tx)}).then(function(){$('postText').value='';$('postText').style.height='';$('cmCount').textContent='0/280';$('postForm').classList.remove('open');toast('Comentário publicado');return syncComments()}).catch(function(){toast('Seu comentário não foi publicado. Revise as palavras e tente de novo.')});return}
+posts.unshift({id:Date.now(),text:tx,kind:$('postKind').value,place:$('postPlace').value||null,status:'aprovado',flags:screen(tx)});store('mesai-posts',posts);$('postText').value='';$('postText').style.height='';$('cmCount').textContent='0/280';$('postForm').classList.remove('open');renderAll();toast('Comentário publicado')};
 
 var onbI=0;
 function onbShow(i,dir){var ss=document.querySelectorAll('.onb-s');ss.forEach(function(x,k){x.classList.toggle('on',k===i);x.classList.toggle('out',k<i);x.setAttribute('aria-hidden',k!==i)});document.querySelectorAll('#onbDots i').forEach(function(d,k){d.classList.toggle('on',k===i)});$('onbNext').textContent=i===2?'Começar':'Continuar';$('onb').classList.toggle('offer',i===3);onbI=i}
