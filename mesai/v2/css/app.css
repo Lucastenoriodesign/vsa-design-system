@@ -884,5 +884,4 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 
 /* Menu: traço grosso e arredondado, peso de app de entrega; nome em peso normal, ativo em negrito (24/11/2026) */
 .nav .ico svg{width:26px;height:26px}
-.nav .lbl,.nav.active .lbl{font-weight:500}
-.nav.active .lbl{font-weight:800}
+.nav .lbl,.nav.active .lbl{font-weight:600}
