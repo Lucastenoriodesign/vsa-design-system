@@ -814,3 +814,6 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 #detailOverlay .grab{display:none}
 #detailOverlay .sheet-head{position:sticky;top:calc(-1 * (env(safe-area-inset-top) + 8px));z-index:5;background:var(--paper);margin:0 -19px 8px;padding:10px 19px}
 @media(min-width:520px){#detailOverlay .sheet{width:430px}#detailOverlay{justify-content:center;background:#211d1ab0}}
+
+/* Fechado (24/11/2026) */
+.openb.off{background:#f1eeea;border-color:var(--line);color:#7a736a}.openb.off i{box-shadow:none}

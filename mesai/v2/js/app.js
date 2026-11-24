@@ -68,9 +68,10 @@ var COV={'Restaurantes':['#e4efe3','#2f6a4f'],'Hamburguerias':['#fde1d3','#b4472
 function photo(p,cls){var u=pic(p),c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();
  return '<span class="'+cls+' cov" style="--c1:'+c[0]+';--c2:'+c[1]+'" aria-hidden="true"><b>'+esc(ini)+'</b>'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-oe="rm">':'')+'</span>'}
 function heartBtn(p){var on=saved.has(p.id);return '<button class="heart'+(on?' on':'')+'" data-heart="'+esc(p.id)+'" aria-pressed="'+on+'" aria-label="'+(on?'Remover ':'Salvar ')+esc(p.n)+(on?' dos salvos':'')+'">salvar</button>'}
-function openBadge(p){return '<span class="openb" data-ob="'+esc(p.id)+'"'+(openNow(p)===true?'':' hidden')+'><i aria-hidden="true"></i>Aberto agora</span>'}
+function obState(p){var o=openNow(p);return o===true?['on','Aberto agora']:o===false?['off','Fechado']:null}
+function openBadge(p){var st=obState(p);return '<span class="openb'+(st?' '+st[0]:'')+'" data-ob="'+esc(p.id)+'"'+(st?'':' hidden')+'><i aria-hidden="true"></i><span>'+(st?st[1]:'')+'</span></span>'}
 /* Atualiza os selos sozinho: a cada minuto e quando o app volta para a tela */
-function refreshOpen(){document.querySelectorAll('[data-ob]').forEach(function(e){var p=byId(e.getAttribute('data-ob'));e.hidden=!(p&&openNow(p)===true)})}
+function refreshOpen(){document.querySelectorAll('[data-ob]').forEach(function(e){var p=byId(e.getAttribute('data-ob')),st=p&&obState(p);e.hidden=!st;e.classList.toggle('on',!!st&&st[0]==='on');e.classList.toggle('off',!!st&&st[0]==='off');e.lastChild.textContent=st?st[1]:''})}
 setInterval(refreshOpen,60000);document.addEventListener('visibilitychange',function(){if(!document.hidden){refreshOpen();if(S.flags&&S.flags.indexOf('open')>-1)renderSearch()}});
 function vmedia(p){var l=photos(p);if(!l.length)return photo(p,'pimg vnone');var c=COV[p.g]||['#efe9df','#5c564e'],ini=(p.n.replace(/[^A-Za-zÀ-ÿ0-9]/g,' ').trim()[0]||'M').toUpperCase();return '<span class="vph n'+l.length+'" style="--c1:'+c[0]+';--c2:'+c[1]+'" data-i="'+esc(ini)+'" aria-hidden="true">'+l.map(function(u){return '<img src="'+esc(u)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-oe="vph">'}).join('')+'</span>'}
 function seloHtml(p){return p&&p.selo?'<span class="selo"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span>'+esc(p.selo)+'</span></span>':''}
