@@ -284,7 +284,7 @@ function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(
   +'<button class="dfab dback" data-close aria-label="Voltar">'+ico('back')+'</button>'
   +'<span class="dfabs"><button class="dfab" data-share="'+esc(p.id)+'" aria-label="Compartilhar">'+ico('share')+'</button><button class="dfab'+(s?' saved':'')+'" id="saveBtn" aria-pressed="'+s+'" aria-label="'+(s?'Remover dos salvos':'Salvar lugar')+'">'+ico('heart',!!s)+'</button></span>'
   +(fl>1?'<span class="dcount" data-galcount>1 / '+fl+'</span>':'')+'</div>'
-  +'<div class="dcard"><h2 class="detail-title dt-c">'+esc(p.n)+'</h2><p class="dsub-c">'+esc(p.c||p.g)+' em '+esc(region(p))+', Maceió</p><p class="dsub-a">'+esc(shortAddr(p))+'</p>'
+  +'<div class="dcard'+(p.logo?' haslogo':'')+'">'+(p.logo?'<img class="dlogo" src="'+esc(p.logo)+'" alt="Logo de '+esc(p.n)+'" referrerpolicy="no-referrer" data-oe="rm">':'')+'<h2 class="detail-title dt-c">'+esc(p.n)+'</h2><p class="dsub-c">'+esc(p.c||p.g)+' em '+esc(region(p))+', Maceió</p><p class="dsub-a">'+esc(shortAddr(p))+'</p>'
   +'<div class="dstats">'+col.join('')+'</div>'
   +(p.d?'<section class="dsec"><p class="ddesc'+(longo?' clamp':'')+'">'+esc(p.d)+'</p>'+(longo?'<button class="btn ghost block dmore" type="button" data-dmore>Mostrar mais</button>':'')+'</section>':'')
   +'<section class="dsec"><h3>O que esse lugar oferece</h3><ul class="dofer">'+of.join('')+'</ul></section>'

@@ -946,3 +946,6 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .cm-comp .cm-send .btn{width:auto;flex:0 0 auto}
 .cm-comp .cm-send .btn .i,.cm-comp .cm-send .btn svg{display:none}
 .cm-comp.open .cm-more{grid-template-columns:minmax(0,1fr)}.cm-more>*{min-width:0}.cm-place select{text-overflow:ellipsis}
+
+/* selo com a logo oficial do lugar, sobre a borda do cartão */
+.dcard.haslogo{padding-top:52px}.dlogo{position:absolute;left:50%;top:-44px;transform:translateX(-50%);width:88px;height:88px;border-radius:50%;object-fit:cover;background:var(--surface);border:4px solid var(--paper);box-shadow:0 4px 14px #38291b2e}
