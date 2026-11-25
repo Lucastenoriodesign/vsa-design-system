@@ -954,3 +954,8 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .dnav{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px 0 0;color:var(--muted);font-size:13px;font-weight:700}.dnav button{width:36px;height:36px;border:0;background:transparent;color:var(--ink);font-size:24px;line-height:1;border-radius:50%}.dnav button:disabled{opacity:.25}
 .nav-in-r{animation:navR .22s ease-out}.nav-in-l{animation:navL .22s ease-out}@keyframes navR{from{transform:translateX(40px);opacity:.3}}@keyframes navL{from{transform:translateX(-40px);opacity:.3}}
 @media (prefers-reduced-motion:reduce){.nav-in-r,.nav-in-l{animation:none}}
+/* Topo do detalhe com a mesma altura em todos os lugares, com ou sem foto (25/11/2026) */
+#detail .dhero{--dh:min(92vw,400px)}
+#detail .dhero .gal,#detail .dhero .gal-track{height:var(--dh)}
+#detail .dhero .gal-s{height:var(--dh);max-height:none;aspect-ratio:auto}
+#detail .dhero>.dph,#detail .dhero>.ph{height:var(--dh);min-height:0;max-height:none}
