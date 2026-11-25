@@ -370,8 +370,11 @@ function onbShow(i,dir){var ss=document.querySelectorAll('.onb-s');ss.forEach(fu
 function onbOpen(){$('onb').hidden=false;onbShow(0);$('onbNext').focus()}
 function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
 $('onbNext').onclick=function(){if(onbI>=3||(!PLANOS&&onbI>=2))onbClose();else onbShow(onbI+1)};
-var opSel='mensal';
-document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
+var opSel='anual',ofeSel='destaque';
+function ofTab(c){$('ofTabC').classList.toggle('on',c);$('ofTabE').classList.toggle('on',!c);$('ofTabC').setAttribute('aria-selected',c);$('ofTabE').setAttribute('aria-selected',!c);$('ofPaneC').hidden=!c;$('ofPaneE').hidden=c}
+$('ofTabC').onclick=function(){ofTab(true)};$('ofTabE').onclick=function(){ofTab(false)};
+document.querySelectorAll('.of3-opt').forEach(function(b){b.onclick=function(){var g=b.parentNode;g.querySelectorAll('.of3-opt').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-checked',x===b)});if(b.dataset.ofc){opSel=b.dataset.ofc;$('ofFineC').textContent='7 dias grátis, depois '+(opSel==='anual'?'R$ 199,90 por ano':'R$ 29,90 por mês')+'. Cancele quando quiser. Nesta versão ainda não há cobrança; avisamos antes de começar.'}else{ofeSel=b.dataset.ofe;$('onbOfferE').textContent='Quero o plano '+(ofeSel==='premium'?'Premium':'Destaque')}}});
+$('onbOfferE').onclick=function(){if(interest.indexOf(ofeSel)<0)interest.push(ofeSel);store('mesai-interest',interest);onbClose();toast('Anotado! Avisamos quando a assinatura para estabelecimentos abrir.')};
 $('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 7 dias começou','Mesaí+ liberado até '+trialEndText()+'. Aproveite!','trial')},700)};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
