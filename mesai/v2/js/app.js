@@ -188,7 +188,7 @@ function openSheet(k){lastFocus=document.activeElement;var T='',B='';
  else if(k==='bairro'){T='Escolher bairro';B='<p class="sheet-copy">Por enquanto o Mesaí cobre só este bairro. Os outros chegam aos poucos.</p>'+BAIRROS_ATIVOS.map(function(n){return bairroRow(n)}).join('')+'<h3 class="sec-t">Em breve</h3>'+BAIRROS_MCZ.filter(function(n){return BAIRROS_ATIVOS.indexOf(n)<0}).map(function(n){return '<div class="opt brr off"><span>'+esc(n)+'</span><em>em breve</em></div>'}).join('')}
  else if(k==='edit'){T='Gerenciar perfil';B='<form class="form" id="profForm"><label>Seu nome<input name="name" maxlength="40" value="'+esc(prof.name||'')+'" required></label><button class="btn block" type="submit">Salvar</button></form><div class="note only-local">O nome fica salvo só neste aparelho. Ainda não há conta nem e-mail.</div>'}
  else if(k==='security'){T='Conta e segurança';B=accountHtml()}
- else if(k==='notif'){T='Notificações';B=notifsHtml()+'<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Os avisos de lugar novo aparecem aqui dentro do app, no sininho. Aviso com o app fechado (push) vem numa próxima versão.'+(hasPlus()?'':' Depois do teste de 14 dias, os alertas de lugar novo são um recurso do Mesaí+.')+'</div>'}
+ else if(k==='notif'){T='Notificações';B=notifsHtml()+'<label class="opt">Novos lugares na região<input type="checkbox" data-notif="novos"'+(notif.novos?' checked':'')+'></label><label class="opt">Respostas e aprovação dos meus comentários<input type="checkbox" data-notif="comunidade"'+(notif.comunidade?' checked':'')+'></label><div class="note">Os avisos de lugar novo aparecem aqui dentro do app, no sininho. Aviso com o app fechado (push) vem numa próxima versão.'+(hasPlus()?'':' Depois do teste de 7 dias, os alertas de lugar novo são um recurso do Mesaí+.')+'</div>'}
  else if(k==='lang'){T='Idioma';B='<label class="opt">Português (Brasil)<input type="radio" name="lg" checked></label><label class="opt"><span>English <small>em breve</small></span><input type="radio" name="lg" disabled></label><label class="opt"><span>Español <small>em breve</small></span><input type="radio" name="lg" disabled></label>'}
  else if(k==='theme'){T='Tema';B='<label class="opt">Claro<input type="radio" name="th" checked></label><label class="opt"><span>Escuro <small>em breve</small></span><input type="radio" name="th" disabled></label><label class="opt"><span>Automático <small>em breve</small></span><input type="radio" name="th" disabled></label>'}
  else if(k==='points'){T='Meus pontos';var hist=checkins.slice().reverse().map(function(c){var p=byId(c.id);return '<div class="mini"><span>'+esc(p?p.n:'Lugar')+'<small>'+esc(c.d)+'</small></span><b>+10</b></div>'}).join('');B='<div class="pts"><b>'+points()+'</b><span>pontos neste aparelho</span></div><p class="sheet-copy">Ganhe 10 pontos por marcar “Estive aqui” em um lugar (1 vez por lugar por dia). Em breve: pontos por avaliações aprovadas e fotos.</p><div class="note only-local">Os pontos ainda são locais. Viram pontos de verdade, com níveis e recompensas, quando existir conta e servidor.</div>'+(hist||'<div class="empty">Sem check-ins ainda.</div>')}
@@ -370,9 +370,9 @@ function onbShow(i,dir){var ss=document.querySelectorAll('.onb-s');ss.forEach(fu
 function onbOpen(){$('onb').hidden=false;onbShow(0);$('onbNext').focus()}
 function onbClose(){$('onb').hidden=true;store('mesai-onboarded',true)}
 $('onbNext').onclick=function(){if(onbI>=3||(!PLANOS&&onbI>=2))onbClose();else onbShow(onbI+1)};
-var opSel='anual';
+var opSel='mensal';
 document.querySelectorAll('.op').forEach(function(b){b.onclick=function(){opSel=b.dataset.op;document.querySelectorAll('.op').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});void 0}});
-$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 14 dias começou','Mesaí+ liberado até '+trialEndText()+'. Aproveite!','trial')},700)};
+$('onbOffer').onclick=function(){var k='consumidor:'+opSel;if(interest.indexOf(k)<0)interest.push(k);store('mesai-interest',interest);renderPlan();onbClose();updateNotifBadge();setTimeout(function(){pushNotify('Seu teste grátis de 7 dias começou','Mesaí+ liberado até '+trialEndText()+'. Aproveite!','trial')},700)};
 $('onbFree').onclick=onbClose;$('onbX').onclick=onbClose;
 $('onbSkip').onclick=onbClose;$('onbRestore').addEventListener('click',function(){toast('Ainda não há compras nesta versão.')});
 (function(){var x0=null,t=$('onb');t.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});t.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(dx<-50&&onbI<(PLANOS?3:2))onbShow(onbI+1);else if(dx>50&&onbI>0)onbShow(onbI-1)},{passive:true})})();
@@ -385,12 +385,12 @@ if(!load('mesai-onboarded',false))onbOpen()})();
 
 var interest=load('mesai-interest',[]);
 var trialStart=load('mesai-trial',null);if(!trialStart){trialStart=Date.now();store('mesai-trial',trialStart)}
-function trialLeft(){return Math.max(0,14-Math.floor((Date.now()-trialStart)/86400000))}
-/* Mesaí+: liberado durante o teste de 14 dias. Assinatura real ainda não existe (mesai-plus fica falso até a cobrança entrar). */
+function trialLeft(){return Math.max(0,7-Math.floor((Date.now()-trialStart)/86400000))}
+/* Mesaí+: liberado durante o teste de 7 dias. Assinatura real ainda não existe (mesai-plus fica falso até a cobrança entrar). */
 function hasPlus(){if(!PLANOS)return true;return trialLeft()>0||load('mesai-plus',false)===true}
 function planWho(c){$('plansC').hidden=!c;$('plansE').hidden=c;$('planC').classList.toggle('on',c);$('planE').classList.toggle('on',!c);$('planC').setAttribute('aria-pressed',c);$('planE').setAttribute('aria-pressed',!c)}
 $('planC').onclick=function(){planWho(true)};$('planE').onclick=function(){planWho(false)};
-function renderPlan(){var d=trialLeft();if($('rvPlan'))$('rvPlan').textContent=d>0?'Teste · '+d+(d===1?' dia':' dias'):'Teste encerrado';var t=$('trialStatus');if(t)t.textContent=d>0?'Restam '+d+(d===1?' dia':' dias')+' do seu teste (contado neste aparelho).':'Seu teste de 14 dias terminou. Os alertas de lugar novo agora são do Mesaí+; o resto do app segue liberado.'}
+function renderPlan(){var d=trialLeft();if($('rvPlan'))$('rvPlan').textContent=d>0?'Teste · '+d+(d===1?' dia':' dias'):'Teste encerrado';var t=$('trialStatus');if(t)t.textContent=d>0?'Restam '+d+(d===1?' dia':' dias')+' do seu teste (contado neste aparelho).':'Seu teste de 7 dias terminou. Os alertas de lugar novo agora são do Mesaí+; o resto do app segue liberado.'}
 window.addEventListener('hashchange',route);
 renderAll();route();
 
@@ -412,7 +412,7 @@ function buildNotifs(){
  var d=new Date(),k=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%Math.max(pp.length,1),h=pp[k];
  if(h)out.push({id:'dia-'+d.toISOString().slice(0,10),k:'dia',t:'Lugar do dia: '+h.n,p:h.g+' em '+region(h)+'. Toque para ver endereço e rota.',d:'Hoje',open:h.id});
  if(notif.novos!==false&&hasPlus())newAlerts().forEach(function(a){var x=byId(a.id);if(x&&visible(x)&&inBairro(x))out.push({id:'novo-'+x.id,k:'lugar',t:'Lugar novo em '+bairro,p:x.n+' ('+x.g+') entrou no Mesaí em '+region(x)+'.',d:'Novidades',open:x.id})});
- if(PLANOS&&interest.some(function(k){return /^consumidor:/.test(k)}))out.push({id:'trial-start',k:'trial',t:'Seu teste grátis de 14 dias começou',p:'Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.',d:'Novidades'});
+ if(PLANOS&&interest.some(function(k){return /^consumidor:/.test(k)}))out.push({id:'trial-start',k:'trial',t:'Seu teste grátis de 7 dias começou',p:'Mesaí+ liberado até '+trialEndText()+'. Salve lugares, ganhe pontos e receba alertas de lugar novo.',d:'Novidades'});
  var pts=points();if(pts>0)out.push({id:'pts-'+pts,k:'pontos',t:'Você tem '+pts+' pontos',p:'Cada check-in em um lugar soma 10 pontos.',d:'Novidades'});
  out.forEach(function(n){n.u=read.indexOf(n.id)<0});
  NOTIFS=out;return out}
@@ -481,7 +481,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 try{new MutationObserver(function(){galStart()}).observe(document.getElementById('detail'),{childList:true})}catch(e){}
 
 /* Notificação dentro do app (aparece no topo, como um push) */
-function trialEndText(){var d=new Date(trialStart+14*86400000);return d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)}
+function trialEndText(){var d=new Date(trialStart+7*86400000);return d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)}
 var PN={t:null};
 function pushNotify(title,body,kind){var old=document.querySelector('.pushn');if(old)old.remove();clearTimeout(PN.t);
  var n=document.createElement('button');n.type='button';n.className='pushn';n.setAttribute('role','status');

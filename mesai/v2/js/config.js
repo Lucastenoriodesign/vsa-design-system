@@ -7,5 +7,5 @@ var MESAI_CONFIG = {
   googleLogin: false,
   // Planos e Mesaí+: ficam escondidos (banner, perfil, tela de oferta) até existir cobrança de verdade.
   // Para religar, troque para true.
-  planos: false
+  planos: true
 };
