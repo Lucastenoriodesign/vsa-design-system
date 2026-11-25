@@ -1045,3 +1045,29 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 .of3-time b{font-size:var(--fs-sm);line-height:1.2;margin-bottom:2px}
 .onb.o2 .of3 .o2-cta{position:sticky;bottom:0;z-index:2;box-shadow:inset 0 -4px 0 #0000001f,0 0 0 10px #fff,0 -14px 18px 6px #fff}
 .of3-stk{display:none}
+/* Oferta especial: cabeçalho emoldurado */
+.of3-head{position:relative;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:0;margin:44px 0 0;padding:34px 16px 22px;border:3px solid #2b1a14;border-radius:24px;box-shadow:0 5px 0 #2b1a14;background:radial-gradient(120% 90% at 50% 0,#fff 0,#fff3e6 55%,#fde4d4 100%);text-align:center}
+.of3-badge{position:absolute;top:0;left:50%;transform:translate(-50%,-55%) rotate(-2deg);white-space:nowrap;z-index:2}
+.onb.o2 .of3 h2.of3-title{margin:0;font-size:27px;line-height:1.08;letter-spacing:-.035em;font-weight:900;color:#2b1a14;text-align:center;max-width:none;text-wrap:balance}
+.onb.o2 .of3 p.of3-kick{margin:0;display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:99px;background:#e87558;color:#2b1a14;font-size:var(--fs-sm);font-weight:900;max-width:none}
+.of3-sk{position:absolute;width:44px;height:44px;border-radius:50%;overflow:hidden;border:3px solid #fff;box-shadow:0 0 0 2px #2b1a14}
+.of3-sk img{width:100%;height:100%;object-fit:cover;display:block}
+.of3-sk.k1{left:-12px;bottom:-14px;transform:rotate(-8deg)}
+.of3-sk.k2{right:-12px;top:22px;transform:rotate(8deg)}
+.of3-sp{position:absolute;color:#f2b544;font-style:normal}.of3-sp svg{width:18px;height:18px;display:block}
+.of3-sp.s1{left:18px;top:18px}.of3-sp.s2{right:42px;bottom:14px}.of3-sp.s2 svg{width:13px;height:13px}
+.onb.o2 .of3 .onb-x{top:calc(10px + env(safe-area-inset-top));width:40px;height:40px}
+@media(max-height:700px){.of3-head{padding:30px 14px 18px}.onb.o2 .of3 h2.of3-title{font-size:24px}}
+/* Oferta especial: o selo do nome como faixa (ribbon) reta, com moldura interna e pontas recortadas */
+.of3-badge{transform:translate(-50%,-50%);height:40px;padding:0 20px;gap:10px;border-radius:6px;background:#f2b544;border:3px solid #2b1a14;box-shadow:0 4px 0 #2b1a14;outline:1.5px dashed #2b1a14;outline-offset:-8px;font-size:15px;letter-spacing:.16em;font-weight:900}
+.of3-badge svg{width:14px;height:14px;color:#2b1a14}
+.of3-badge::before,.of3-badge::after{content:"";position:absolute;top:9px;width:22px;height:30px;background:#2b1a14;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,38% 50%)}
+.of3-badge::before{left:-19px}
+.of3-badge::after{right:-19px;transform:scaleX(-1)}
+.of3-head{margin-top:48px;padding:32px 16px 18px}
+.onb.o2 .of3 h2.of3-title{font-size:25px}
+.of3-sk{width:38px;height:38px}
+.of3-sk.k2{top:30px}
+.of3-time span{display:none}
+.of3-time b{margin:0}
+.of3-time span{display:block;font-size:0;line-height:0}.of3-time span b{font-size:var(--fs-sm);line-height:1.2}
