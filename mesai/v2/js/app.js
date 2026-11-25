@@ -284,7 +284,7 @@ function openDetail(id){var p=byId(id);if(!p)return;if(recent[0]!==id)addRecent(
   +'<button class="dfab dback" data-close aria-label="Voltar">'+ico('back')+'</button>'
   +'<span class="dfabs"><button class="dfab" data-share="'+esc(p.id)+'" aria-label="Compartilhar">'+ico('share')+'</button><button class="dfab'+(s?' saved':'')+'" id="saveBtn" aria-pressed="'+s+'" aria-label="'+(s?'Remover dos salvos':'Salvar lugar')+'">'+ico('heart',!!s)+'</button></span>'
   +(fl>1?'<span class="dcount" data-galcount>1 / '+fl+'</span>':'')+'</div>'
-  +'<div class="dcard'+(p.logo?' haslogo':'')+'">'+(p.logo?'<img class="dlogo" src="'+esc(p.logo)+'" alt="Logo de '+esc(p.n)+'" referrerpolicy="no-referrer" data-oe="rm">':'')+'<h2 class="detail-title dt-c">'+esc(p.n)+'</h2><p class="dsub-c">'+esc(p.c||p.g)+' em '+esc(region(p))+', Maceió</p><p class="dsub-a">'+esc(shortAddr(p))+'</p>'
+  +'<div class="dcard'+(p.logo?' haslogo':'')+'">'+(p.logo?'<img class="dlogo" src="'+esc(p.logo)+'" alt="Logo de '+esc(p.n)+'" referrerpolicy="no-referrer" data-oe="rm">':'')+'<h2 class="detail-title dt-c">'+esc(p.n)+'</h2>'+navHint(p.id)+'<p class="dsub-c">'+esc(p.c||p.g)+' em '+esc(region(p))+', Maceió</p><p class="dsub-a">'+esc(shortAddr(p))+'</p>'
   +'<div class="dstats">'+col.join('')+'</div>'
   +(p.d?'<section class="dsec"><p class="ddesc'+(longo?' clamp':'')+'">'+esc(p.d)+'</p>'+(longo?'<button class="btn ghost block dmore" type="button" data-dmore>Mostrar mais</button>':'')+'</section>':'')
   +'<section class="dsec"><h3>O que esse lugar oferece</h3><ul class="dofer">'+of.join('')+'</ul></section>'
@@ -323,7 +323,8 @@ document.addEventListener('click',function(e){var t=e.target.closest('button');i
 if(D.filtToggle!==undefined){var fr=$('filters'),o=fr.hidden;fr.hidden=!o;$('filtBtn').setAttribute('aria-expanded',String(o));return}
 if(D.sheet){openSheet(D.sheet);return}
  if(D.cleardata!==undefined){clearAll();return}
- if(D.open){openDetail(D.open);return}
+ if(D.navstep){navStep(+D.navstep);return}
+ if(D.open){navFrom(t,D.open);openDetail(D.open);return}
  if(D.homecat!==undefined){resetSearch();S.cat=D.homecat;renderSearch();go('buscar');return}
  if(D.cat!==undefined){S.cat=D.cat;renderSearch();return}
  if(D.region!==undefined){S.region=D.region;renderSearch();return}
@@ -516,3 +517,10 @@ function spamOk(k,txt){try{var key='mesai-rl-'+k,now=Date.now(),R={post:[30000,5
  if(a.filter(function(x){return now-x.t<R[2]}).length>=R[1]){toast('Você enviou muitas mensagens. Tente de novo mais tarde.');return false}
  var h=String(txt).toLowerCase().replace(/\s+/g,' ').trim();if(a.some(function(x){return x.h===h&&now-x.t<3600000})){toast('Você já enviou isso.');return false}
  a.push({t:now,h:h});localStorage.setItem(key,JSON.stringify(a.slice(-20)));return true}catch(er){return true}}
+
+/* Navegar entre lugares da mesma lista arrastando o cartão (não a foto) */
+var NAV={ids:[],i:-1};
+function navFrom(btn,id){if(btn.closest('#detail'))return;var el=btn.parentElement,ids=[];while(el&&el!==document.body){var l=[].map.call(el.querySelectorAll('[data-open]'),function(b){return b.dataset.open});ids=l.filter(function(x,k){return l.indexOf(x)===k&&byId(x)});if(ids.length>1||el.matches('.view,section,.sheet,#app'))break;el=el.parentElement}NAV=ids.length>1&&ids.indexOf(id)>-1?{ids:ids,i:ids.indexOf(id)}:{ids:[],i:-1}}
+function navHint(id){if(NAV.ids.length<2||NAV.ids[NAV.i]!==id)return '';var n=NAV.ids.length;return '<div class="dnav"><button type="button" data-navstep="-1" aria-label="Lugar anterior"'+(NAV.i?'':' disabled')+'>‹</button><span>'+(NAV.i+1)+' de '+n+'</span><button type="button" data-navstep="1" aria-label="Próximo lugar"'+(NAV.i<n-1?'':' disabled')+'>›</button></div>'}
+function navStep(d){var j=NAV.i+d;if(j<0||j>=NAV.ids.length)return;NAV.i=j;openDetail(NAV.ids[j]);var dt=$('detail');if(dt){dt.scrollTop=0;var c=dt.querySelector('.dcard');if(c){c.classList.add(d>0?'nav-in-r':'nav-in-l')}}}
+(function(){var x0=null,y0=0;document.addEventListener('touchstart',function(e){var c=e.target.closest&&e.target.closest('#detail .dcard');if(!c||e.target.closest('.leaflet-container,.hscroll,input,textarea')){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>70&&Math.abs(dy)<45&&NAV.ids.length>1)navStep(dx<0?1:-1)},{passive:true})})();
