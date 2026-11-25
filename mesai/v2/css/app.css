@@ -1095,3 +1095,9 @@ h1,h2,h3,.sheet-head b{text-wrap:balance}
 }
 @media(max-height:600px){.of3-time{display:none}.onb.o2 .of3 p.of3-kick{display:none}}
 .of3-nm em{white-space:nowrap}@media(max-width:390px){.of3-pr small{font-size:11px}}
+/* arte das boas-vindas: largura calculada pela área útil (tela − 56px de margem), sempre centrada */
+.onb.o2 .o2-art:not(.a4){height:min(50vh,calc((min(100vw,430px) - 56px) * 6 / 7),400px);max-width:100%;margin:0 auto;align-self:center}
+@media(max-height:700px){.onb.o2 .o2-art:not(.a4){height:min(36vh,calc((min(100vw,430px) - 56px) * 6 / 7),400px)}.onb.o2 .o2-txt{padding-top:14px}.onb.o2 .onb-s:not(.offer) h2{font-size:22px;margin-top:10px}.onb.o2 .onb-s:not(.offer) p{font-size:var(--fs-sm);margin-top:6px}.onb.o2 .o2-chip{height:26px}.onb.o2 .onb-foot{gap:10px;padding-top:6px}}
+@media(max-width:360px){.of3-opt{gap:8px;padding:10px}.of3-pr b{font-size:17px}.of3-pr small{white-space:normal;max-width:96px}.of3-nm{font-size:var(--fs-sm)}.of3-tabs button{font-size:12px}.onb.o2 .of3 h2.of3-title{font-size:20px}.of3-badge{font-size:12px;letter-spacing:.12em}}
+.of3-sp.s1{left:12px;top:12px}.of3-sp.s2{right:12px;bottom:10px}
+.onb.o2 .o2-bub{font-size:clamp(9px,4.1cqw,15px)}.onb.o2 .o2-bub b{font-size:clamp(8px,3cqw,12px)}
